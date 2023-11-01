@@ -22,13 +22,14 @@
     1. Portability to run my components inside another framework or in a simple HTML file w/ a script block or import
     1. Fast builds and small bundles (using Vite) (currently under 60kB)
     1. Typescript and strong typing for authoring components and consuming components
+    1. Integration with a big, full-featured library/framework while preserving the fruit of my labor in a common, reusable place where the library/framework can't dictate how I write and manage my code
 
 ## Why might you want to avoid using this library?
 
+    1. I wrote it in like an hour
     1. You hate Observables
     1. You don't understand Observables
     1. You think signals are better than Observables because that's what everyone is talking about now
-    1. I wrote it in like an hour
     1. No one is using it (yet) not even me (but it works)
     1. The name isn't cool
     1. Creating component templates is currently straight vanillaJS (jsx or something hackier is planned though)
@@ -46,6 +47,59 @@
     1. Decide how to avoid naming collisions with DOM and frameworks for eventHandlers
     1. Define standard attributes/events
     1. Implement stuff like `hide` or `visibility` attributes
+
+## Framework Integration
+
+### Angular
+
+```
+// app.component.ts
+
+export class AppComponent implements OnInit {
+  }
+  ngOnInit(): void {
+    VanillaButton.register();
+  }
+}
+```
+
+```
+// some.component.ts
+
+vanillaClick($event: any){
+    console.warn('vanillaClick', $event)
+}
+
+vanillaClickSucceeded(element: HTMLElement, $event: any){
+    console.warn('vanillaClickSucceeded', $event)
+    element.style.backgroundColor=$event.detail;
+}
+
+```
+
+```
+
+// some.component.html
+
+<ng-container *ngIf="form">
+    <form [formGroup]="form">
+        <input formControlName="color" type="text" />
+    </form>
+    <button (click)="ask(form.value?.color)" [disabled]="form.invalid">ask</button>
+</ng-container>
+
+<vanilla-button
+    #vanillaButton
+    *ngIf="form.value?.color"
+    [attr.color]="form.value.color"
+    (clicked)="vanillaClickSucceeded(test, $event)"
+    (click)="vanillaClick(vanillaButton)"
+    >
+    click me
+</vanilla-button>
+
+```
+
 
 <a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
 
