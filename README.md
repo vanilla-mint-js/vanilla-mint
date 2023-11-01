@@ -12,6 +12,7 @@
     1. Change-detection cycles and batching (Angular)
     1. Obfuscation due to excessive abstraction (Angular)
     1. An ever-changing framework/library API (React)
+    1. Component templates as one big string (Lit)
 
 ### And because I do want:
 
@@ -19,10 +20,32 @@
     1. True reactivity (via Observables)
     1. Ability to author most of my components in one agnostic technology instead of re-implementing the same thing every time I have to work on a different framework
     1. Portability to run my components inside another framework or in a simple HTML file w/ a script block or import
-    1. Fast builds and small bundles (using Vite)
+    1. Fast builds and small bundles (using Vite) (currently under 60kB)
+    1. Typescript and strong typing for authoring components and consuming components
 
+## Why might you want to avoid using this library?
 
+    1. You hate Observables
+    1. You don't understand Observables
+    1. You think signals are better than Observables because that's what everyone is talking about now
+    1. I wrote it in like an hour
+    1. No one is using it (yet) not even me (but it works)
+    1. The name isn't cool
+    1. Creating component templates is currently straight vanillaJS (jsx or something hackier is planned though)
+    1. Only bare-minimum features are currently implemented (but I think they're pretty slick and can get better)
 
+## TODO
+
+    1. Implement a method in the base class that composes DOM elements
+    1. Add better typing support
+    1. Add a documentation feature in the base class that can use abstract members of subclasses to spit out dox/example code for subclasses
+    1. create vanilla-mints/components lib
+    1. Create example projects (starting w/ Angular)
+    1. Create vanilla-mints/angular to wrap vanilla-mints/components as a module or something (repeat for other frameworks)
+    1. Expose properties of VanillaMint subclass to the handler evaluation
+    1. Decide how to avoid naming collisions with DOM and frameworks for eventHandlers
+    1. Define standard attributes/events
+    1. Implement stuff like `hide` or `visibility` attributes
 
 <a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
 
