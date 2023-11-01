@@ -1,0 +1,21 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>VanillaMints Demo</title>
+    <script src="dist/core/index.mjs" type="module"></script>
+  </head>
+  <body>
+    <div id="app" style="padding: 4rem;"></div>
+
+    <vanilla-button
+        clicked="console.warn(`parent responding to ${$event}`)"
+        onclick="this.onClick(app)"
+        color="lightsteelblue"
+    >
+    click me
+    </vanilla-button>
+
+  </body>
+</html>

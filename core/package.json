@@ -1,7 +1,9 @@
 {
   "name": "@vanilla-mints/core",
-  "version": "0.0.1",
-  "dependencies": {},
+  "version": "0.0.5",
+  "dependencies": {
+    "rxjs": "latest"
+  },
   "main": "./index.js",
   "module": "./index.mjs",
   "typings": "./index.d.ts"
