@@ -1,5 +1,8 @@
 {
   "name": "@vanilla-mints/core",
+  "repository": {
+    "url": "https://github.com/vanilla-mints/vanilla-mints"
+  },
   "version": "0.0.5",
   "dependencies": {
     "rxjs": "latest"
