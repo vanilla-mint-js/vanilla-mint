@@ -1,7 +1,7 @@
 {
   "name": "core",
-  "$schema": "../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "core/src",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/core/src",
   "projectType": "library",
   "targets": {
     "build": {
@@ -9,7 +9,7 @@
       "generatePackageJson": true,
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/core"
+        "outputPath": "dist/libs/core"
       }
     },
     "test": {
@@ -17,14 +17,14 @@
       "outputs": ["{options.reportsDirectory}"],
       "options": {
         "passWithNoTests": true,
-        "reportsDirectory": "../coverage/core"
+        "reportsDirectory": "../../coverage/libs/core"
       }
     },
     "lint": {
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["core/**/*.ts", "core/package.json"]
+        "lintFilePatterns": ["libs/core/**/*.ts", "libs/core/package.json"]
       }
     }
   },
