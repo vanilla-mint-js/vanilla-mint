@@ -17,7 +17,8 @@ export class VanillaButton extends VanillaMint<{
 
   override vmConnectedCallback() {
     this.onclick = (e) => {
-      this.onClick(e);
+      // this.onClick(e);
+      this.emit('clicked', e);
     };
   }
 
@@ -29,13 +30,11 @@ export class VanillaButton extends VanillaMint<{
     ];
   }
 
-  onClick(e: MouseEvent) {
+  changeColor() {
     const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'violet'];
     const i = this.i++ % colors.length;
-    //   el.setAttribute('color', colors[i]);
-    //   el.style.backgroundColor = colors[i]
-
-    this.emit('clicked', colors[i]);
+    this.setAttribute('color', colors[i]);
+    this.style.backgroundColor = colors[i]
   }
 
   override vmDisconnectedCallback() {}

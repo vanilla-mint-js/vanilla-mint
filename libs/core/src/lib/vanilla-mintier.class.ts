@@ -1,6 +1,8 @@
 import { Subject, Observable, Subscription, shareReplay } from 'rxjs';
+import { TMintable } from './mintable.type';
 
-export abstract class VanillaMint<TAttributes> extends HTMLElement {
+
+export abstract class VanillaMintier<TAttributes> extends HTMLElement {
   static registrar = (mint: CustomElementConstructor & { tagName: string }) =>
     customElements.define(mint.tagName, mint);
   subjects$$: Record<string, Subject<any>> = {};
@@ -8,11 +10,17 @@ export abstract class VanillaMint<TAttributes> extends HTMLElement {
   attrSubscriptions: Record<string, Subscription> = {};
   subscriptions: Array<Subscription> = [];
 
-  onChanges(attr: keyof TAttributes): Observable<any> {
+  onChanges(attr: keyof TAttributes) {
     return (this.$ as any)[attr];
   }
 
-  emit(handlerName: string, detail?: any) {
+  static build (minter: TMintable<any>) {
+    const el = document.createElement(minter.tagName);
+
+    return el;
+  }
+
+  emit(handlerName: string, detail: any) {
     const handler = this.getAttribute(handlerName);
     if (handler) {
       Function(`const $event = arguments[0]; ${handler}`)(detail);
@@ -34,10 +42,10 @@ export abstract class VanillaMint<TAttributes> extends HTMLElement {
   abstract vmConnectedCallback(): void;
 
   connectedCallback() {
+    this.vmConnectedCallback();
     (this.vmSubscribe() || []).forEach(($) =>
       this.subscriptions.push($.subscribe())
     );
-    this.vmConnectedCallback();
   }
 
   abstract vmDisconnectedCallback(): void;
@@ -61,9 +69,10 @@ export abstract class VanillaMint<TAttributes> extends HTMLElement {
   }
 
   attributeChangedCallback(name: string, oldValue: any, newValue: any) {
-    if (oldValue != newValue) {
+    console.warn(this.tagName, name, oldValue, newValue)
+    // if (oldValue != newValue) {
       const subject$$ = this.subjects$$[name];
       if (subject$$) subject$$.next(newValue);
-    }
+    // }
   }
 }

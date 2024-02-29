@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "core": ["libs/core/src/index.ts"]
+      "@vanilla-mints/core": ["libs/core/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
