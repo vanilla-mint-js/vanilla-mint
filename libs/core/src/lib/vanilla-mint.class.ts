@@ -5,6 +5,7 @@ export type TKeysOf<TKeySource, TValue> = { [key in keyof TKeySource]: TValue };
 export abstract class VanillaMint<TAttrs> extends HTMLElement {
   static define = (mint: CustomElementConstructor & { tagName: string }) => customElements.define(mint.tagName, mint);
 
+  private readonly __: TKeysOf<TAttrs, any> = {} as any;
   private readonly _$$: TKeysOf<TAttrs, Subject<any>> = {} as any;
   private readonly _$: TKeysOf<TAttrs, Observable<any>> = {} as any;
   private readonly _$$$: TKeysOf<TAttrs, Subscription> = {} as any;
@@ -36,6 +37,7 @@ export abstract class VanillaMint<TAttrs> extends HTMLElement {
 
   attributeChangedCallback(name: keyof TAttrs, oldValue: any, newValue: any) {
     const subject$$ = this._$$[name];
+    this.__[name] = newValue;
     if (subject$$) subject$$.next(newValue);
   }
 
@@ -60,6 +62,10 @@ export abstract class VanillaMint<TAttrs> extends HTMLElement {
       Function(`const $event = arguments[0]; const event = arguments[0]; ${handler}`).bind(this)(detail);
     }
     this.dispatchEvent(new CustomEvent(handlerName, { detail, bubbles: true }));
+
+    if(handlerName.startsWith('on')) {
+      this.vmDispatch(handlerName.slice(2), detail);
+    }
   }
 
   vmSupervise(...observables: Array<Observable<any>>) {
@@ -76,28 +82,38 @@ export abstract class VanillaMint<TAttrs> extends HTMLElement {
   }
 
   vmSetStyles(_: Record<string, string>) {
-    // Object.entries(_ || {}).forEach(([key, value]) => this.style[key as any] = value);
     setStyles(_, this);
   }
 
   vmSetAttrs(_: Record<string, string>) {
-    // Object.entries(_ || {}).forEach(([key, value]) => this.setAttribute(key, value));
     setAttrs(_, this);
   }
 
   vmAppendChild(config: TChildConfig) {
     return appendChild(config, this);
   }
+
+  vmPrependChild(config: TChildConfig) {
+    const child = appendChild(config);
+    this.prepend(child);
+    return child;
+  }
+
+  vmGet(attr: keyof TAttrs) {
+    return this.__[attr];
+  }
 }
 
 function setStyles(_: Record<string, string>, target: any) { Object.entries(_ || {}).forEach(([key, value]) => target.style[key as any] = value); }
 function setAttrs(_: Record<string, string>, target: any) { Object.entries(_ || {}).forEach(([key, value]) => target.setAttribute(key, value)); }
 type TChildConfig = { tag: string, attrs?: Record<string, string>, styles?: Record<string, string>, children?: TChildConfig[], classList?: string }
-function appendChild(config: TChildConfig, parent: HTMLElement) {
+function appendChild(config: TChildConfig, parent?: HTMLElement) {
   const element = document.createElement(config.tag);
   (config.children || []).forEach(child => appendChild(child, element));
   setAttrs(config.attrs || {}, element);
   setStyles(config.styles || {}, element);
-  parent.appendChild(element);
+  if(parent) {
+    parent.appendChild(element);
+  }
   return element;
 }

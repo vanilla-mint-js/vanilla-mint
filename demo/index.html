@@ -17,7 +17,7 @@
       <plastic-button id="btn" color="#123456" background-color="hotpink" onclick="console.warn('we did it, Joe!')" onconnected="window.color.value = this.getAttribute('color')"><h1>Click Me</h1></plastic-button>
       <div style="display: flex; flex-direction: row; justify-content: space-between;">
         <input id="it" type="text" onchange="card.setAttribute('title', this.value)" />
-        <plastic-card onconnected="it.value = this.getAttribute('title')" id="card" title="hotpink">Card Content</plastic-button>
+        <plastic-card onconnected="it.value = this.vmGet('title')" id="card" title="hotpink!!!!">Card Content <input value='things'></plastic-button>
         </div>
     </div>
   </body>

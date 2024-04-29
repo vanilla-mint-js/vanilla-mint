@@ -23,7 +23,7 @@ export class PlasticCard extends VanillaMint<TAttrs> {
       color: 'midnightblue'
     });
 
-    const title = this.vmAppendChild({
+    const title = this.vmPrependChild({
       tag: 'h1',
       styles: {
         fontSize: '32px',
