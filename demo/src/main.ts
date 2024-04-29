@@ -1,6 +1,5 @@
-import './app/app.element';
+import { PlasticButton } from "./app/plastic-button.class";
+import { PlasticCard } from "./app/plastic-card.class";
 
-import {VanillaButton, VanillaCard} from '@vanilla-mints/core';
-
-VanillaButton.register();
-VanillaCard.register();
+PlasticButton.define(PlasticButton);
+PlasticCard.define(PlasticCard);

@@ -10,9 +10,15 @@
     <link rel="stylesheet" href="/src/styles.css" />
   </head>
   <body>
-    <vanilla-card id="card" heading="maybe">
-      <vanilla-button color="steelblue" clicked="card.setAttribute('heading', $event.pointerType)">click me</vanilla-button>
-    </vanilla-card>
     <script type="module" src="/src/main.ts"></script>
+    <div style="display: flex; flex-direction: row; justify-content: space-between;">
+      <input id="background-color" type="color" onchange="btn.setAttribute('background-color', this.value)" />
+      <input id="color" type="color" onchange="btn.setAttribute('color', this.value)" />
+      <plastic-button id="btn" color="#123456" background-color="hotpink" onclick="console.warn('we did it, Joe!')" onconnected="window.color.value = this.getAttribute('color')"><h1>Click Me</h1></plastic-button>
+      <div style="display: flex; flex-direction: row; justify-content: space-between;">
+        <input id="it" type="text" onchange="card.setAttribute('title', this.value)" />
+        <plastic-card onconnected="it.value = this.getAttribute('title')" id="card" title="hotpink">Card Content</plastic-button>
+        </div>
+    </div>
   </body>
 </html>
