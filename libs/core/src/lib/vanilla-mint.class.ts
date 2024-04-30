@@ -1,15 +1,26 @@
 import { Subject, Observable, Subscription, shareReplay, tap } from 'rxjs';
+import { TChildConfig } from './types/element.type';
+import { appendChild } from './functions/append-child.function';
+import { setAttrs } from './functions/set-attrs.function';
+import { setStyles } from './functions/set-styles.function';
+import { classListAdd } from './functions/class-list-add.function';
+import { classListRemove } from './functions/class-list-remove.function';
+import { insertCss } from './functions/insert-css.function';
+import { setStyle } from './functions/set-style.function';
+import { setCssVar } from './functions/set-css-var.function';
+import { createElement } from './functions/create-element.function';
+import { prependChild } from './functions/prepend-child.function';
+import { setCssVars } from './functions/set-css-vars.function';
 
 export type TKeysOf<TKeySource, TValue> = { [key in keyof TKeySource]: TValue };
 
 export abstract class VanillaMint<TAttrs> extends HTMLElement {
-  static define = (mint: CustomElementConstructor & { tagName: string }) => customElements.define(mint.tagName, mint);
 
   private readonly __: TKeysOf<TAttrs, any> = {} as any;
   private readonly _$$: TKeysOf<TAttrs, Subject<any>> = {} as any;
   private readonly _$: TKeysOf<TAttrs, Observable<any>> = {} as any;
   private readonly _$$$: TKeysOf<TAttrs, Subscription> = {} as any;
-  private readonly subscriptions: Array<Subscription> = [];
+  private readonly $$$s: Array<Subscription> = [];
 
   abstract vmConnected(): any;
   abstract vmDisconnected(): any;
@@ -20,7 +31,7 @@ export abstract class VanillaMint<TAttrs> extends HTMLElement {
   }
 
   disconnectedCallback() {
-    this.subscriptions.forEach((sub) => {
+    this.$$$s.forEach((sub) => {
       sub.unsubscribe();
     });
 
@@ -69,7 +80,7 @@ export abstract class VanillaMint<TAttrs> extends HTMLElement {
   }
 
   vmSupervise(...observables: Array<Observable<any>>) {
-    (observables || []).forEach($ => this.subscriptions.push($.subscribe()));
+    (observables || []).forEach($ => this.$$$s.push($.subscribe()));
   }
 
   vmSubscribe(attr: keyof TAttrs, handler?: (value: string) => any): Observable<any> | undefined {
@@ -81,39 +92,18 @@ export abstract class VanillaMint<TAttrs> extends HTMLElement {
     return this.vmObserve(attr);
   }
 
-  vmSetStyles(_: Record<string, string>) {
-    setStyles(_, this);
-  }
-
-  vmSetAttrs(_: Record<string, string>) {
-    setAttrs(_, this);
-  }
-
-  vmAppendChild(config: TChildConfig) {
-    return appendChild(config, this);
-  }
-
-  vmPrependChild(config: TChildConfig) {
-    const child = appendChild(config);
-    this.prepend(child);
-    return child;
-  }
-
-  vmGet(attr: keyof TAttrs) {
+  vmAppendChild = appendChild.bind(null, this);
+  vmClassListAdd = classListAdd.bind(null, this);
+  vmClassListRemove = classListRemove.bind(null, this);
+  vmCreateElement = createElement.bind(null);
+  vmInsertCss = insertCss.bind(null, this);
+  vmPrependChild = prependChild.bind(null, this);
+  vmSetAttrs = setAttrs.bind(null, this);
+  vmSetCssVar = setCssVar.bind(null, this);
+  vmSetCssVars = setCssVars.bind(null, this);
+  vmSetStyle = setStyle.bind(null, this);
+  vmSetStyles = setStyles.bind(null, this);
+  vmAttr(attr: keyof TAttrs) {
     return this.__[attr];
   }
-}
-
-function setStyles(_: Record<string, string>, target: any) { Object.entries(_ || {}).forEach(([key, value]) => target.style[key as any] = value); }
-function setAttrs(_: Record<string, string>, target: any) { Object.entries(_ || {}).forEach(([key, value]) => target.setAttribute(key, value)); }
-type TChildConfig = { tag: string, attrs?: Record<string, string>, styles?: Record<string, string>, children?: TChildConfig[], classList?: string }
-function appendChild(config: TChildConfig, parent?: HTMLElement) {
-  const element = document.createElement(config.tag);
-  (config.children || []).forEach(child => appendChild(child, element));
-  setAttrs(config.attrs || {}, element);
-  setStyles(config.styles || {}, element);
-  if(parent) {
-    parent.appendChild(element);
-  }
-  return element;
 }

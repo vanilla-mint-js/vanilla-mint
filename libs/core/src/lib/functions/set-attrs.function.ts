@@ -1,0 +1,1 @@
+export function setAttrs(target: HTMLElement, _: Record<string, string>) { Object.entries(_ || {}).forEach(([key, value]) => target.setAttribute(key, value)); }

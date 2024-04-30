@@ -1,6 +1,5 @@
 
 import { VanillaMint } from '@vanilla-mints/core';
-import { tap } from 'rxjs';
 
 type TAttrs = {
   color: string;
@@ -16,25 +15,148 @@ export class PlasticButton extends VanillaMint<TAttrs> {
   }
 
   override vmConnected() {
-    this.vmSetStyles({
-      padding: '2rem 4rem',
-      display: 'flex',
-      flexDirection: 'row',
-      fontSize: '32px'
-    });
+    const id = `pb-${Math.random().toString().split('.')[1]}`;
+    this.vmInsertCss(`
+    .${id} {
+      --bg: hsl(221, 37%, 10%);
+      --button-text: transparent;
+      --_padding: 1rem 1.5rem;
+      --_transition-speed: 200ms;
+      --_hover-opacity: 0.4;
+      --_pressed-opacity: 0.15;
+      --_hover-blurriness: 5px;
+      --_pressed-blurriness: 10px;
+      --_frostiness: 0.3;
+      --_hover-offset: 0.5rem;
+      --_pressed-offset: 0.25rem;
+      --_motion-factor: 0.1;
+      --_surface: transparent;
+      outline: 0;
+      cursor: pointer;
+      font: inherit;
+      color: var(--button-text);
+      font-weight: 500;
+      padding: 0;
+      border: 0;
+      border-radius: 1rem;
+      background-color: transparent;
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      gap: 0.125rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: stretch;
 
-    this.vmSetAttrs({role: 'button'});
+      span {
+          display: grid;
+          place-items: center;
+          overflow: hidden;
+          padding: var(--_padding);
+          border-radius: inherit;
+          background-color: hsl(0 0% 100% / 0);
+          backdrop-filter: blur(0px);
+          transition: background-color var(--_transition-speed),
+              backdrop-filter var(--_transition-speed),
+              translate var(--_transition-speed);
 
-    this.vmSupervise(
-      ...PlasticButton.observedAttributes.map(_ =>
-        this.vmObserve(_ as any)
-          .pipe(
-            tap((__: string) => (this.style[(_ as any)] = __))
-          )));
+          &::before {
+              content: "";
+              position: absolute;
+              inset: 0;
+              z-index: -1;
 
-          return 'hotsauce';
+              opacity: 0;
+              transition: opacity var(--_transition-speed);
+          }
+      }
+
+      &::after {
+          content: "";
+          position: absolute;
+          z-index: -1;
+          inset: 0;
+          border-radius: inherit;
+          background-color: var(--_surface);
+          transition: scale var(--_transition-speed),
+              translate var(--_transition-speed);
+          animation: exit forwards var(--_transition-speed);
+      }
+
+      &:hover,
+      &:focus-visible {
+          span {
+              outline: 1px solid hsl(0 0% 100% / 0.7);
+              background-color: hsl(0 0% 100% / var(--_hover-opacity));
+              backdrop-filter: blur(var(--_hover-blurriness));
+              translate: 0 calc(var(--_hover-offset) * -1);
+
+              &::before {
+                  opacity: var(--_frostiness);
+              }
+          }
+
+          &::after {
+              scale: 0.95;
+              translate: 0 0.125rem;
+              animation: enter forwards var(--_transition-speed);
+          }
+      }
+
+      &:active {
+          span {
+              backdrop-filter: blur(var(--_pressed-blurriness));
+              background-color: hsl(0 0% 100% / var(--_pressed-opacity));
+              translate: 0 calc(var(--_pressed-offset) * -1);
+          }
+
+          &::after {
+              scale: 0.875;
+              translate: 0 0.25rem;
+          }
+      }
   }
 
-  override vmDisconnected() {}
-  override vmAdopted() {}
+  @keyframes enter {
+      from {
+          transform: translate(0, 0);
+      }
+
+      to {
+          transform: translate(calc(var(--_x-motion) * var(--_motion-factor) * -1),
+                  calc(var(--_y-motion) * var(--_motion-factor) * -1));
+      }
+  }
+
+  @keyframes exit {
+      from {
+          transform: translate(calc(var(--_x-motion) * var(--_motion-factor) * -1),
+                  calc(var(--_y-motion) * var(--_motion-factor) * -1));
+      }
+
+      to {
+          transform: translate(0, 0);
+      }
+  }`);
+
+    this.vmClassListAdd(id);
+    this.vmSetAttrs({ role: 'button' });
+
+    this.vmSubscribe('color', _ => this.vmSetCssVar('button-text', _));
+    this.vmSubscribe('background-color', _ => this.vmSetCssVar('_surface', _));
+
+    this.addEventListener("mousemove", (event) => {
+      const centerX = this.offsetWidth / 2;
+      const centerY = this.offsetHeight / 2;
+
+      const offsetX = event.offsetX - centerX;
+      const offsetY = event.offsetY - centerY;
+
+      this.vmSetCssVar('_x-motion', `${offsetX}px`);
+      this.vmSetCssVar('_y-motion', `${offsetY}px`);
+    });
+  }
+
+  override vmDisconnected() { }
+  override vmAdopted() { }
 }

@@ -1,160 +1,59 @@
 # VanillaMints
 
-## Why?
+A tightly-focused project that leverages `"vanilla"` JavaScript to `"mint"` custom elements.
 
-### Because I don't want:
+<img src="vanilla-mint.jpeg" height="320" width="320"/>
+
+## Library Documentation
+
+1. [@vanilla-mints/core](libs/core/README.md)
+
+
+## Justification
+
+### Because you want:
+
+    1. Basic ability to customize the web
+    1. True reactivity (via rxjs Observables currently but could easily be ported to signals resulting in two flavors from which to choose)
+    1. Ability to author most of my SIMPLE components in one agnostic technology instead of re-implementing the same thing every time I have to work on a different framework
+    1. Portability to run my components inside another framework or in a simple HTML file w/ a script block or in dynamic content (think CMS) where framework evaluation/compilation isn't practical
+    1. Fast builds and small bundles (using Vite) (currently under 60kB)
+    1. Super simple API that rides as close to the rails of the web as possible
+    1. Typescript and strong typing for authoring components and consuming components
+    1. Ability to integrate with a big, full-featured library/framework while dehydrating/preserving the fruit of my labor in an ubiquitously reusable place where the library/framework can't dictate how I write and manage my code
+
+### But you don't want:
 
     1. A devtime compiler (other than TypeScript processors) (Svelte)
     1. A runtime (other than JavaScript) (Angular/React)
     1. A virtual DOM (React)
-    1. A massive framework (Angular)
+    1. A massive framework (Angular) or any framework at all
     1. Technological lock-in (All frameworks/libraries basically limit code portability)
     1. Change-detection cycles and batching (Angular)
-    1. Obfuscation due to excessive abstraction (Angular)
-    1. An ever-changing framework/library API (React)
+    1. Arbitrarily magic expressions in native JavaScript (React's use* as well as Svelte's $ and =)
+    1. Obfuscation due to excessive abstraction
+    1. An ever-changing framework/library API that forces me to rewrite simple components that haven't functionally changed
     1. Component templates as one big string (Lit)
 
-### And because I do want:
+## Design goals:
 
-    1. Basic ability to customize the web
-    1. True reactivity (via Observables)
-    1. Ability to author most of my components in one agnostic technology instead of re-implementing the same thing every time I have to work on a different framework
-    1. Portability to run my components inside another framework or in a simple HTML file w/ a script block or import
-    1. Fast builds and small bundles (using Vite) (currently under 60kB)
-    1. Typescript and strong typing for authoring components and consuming components
-    1. Integration with a big, full-featured library/framework while preserving the fruit of my labor in a common, reusable place where the library/framework can't dictate how I write and manage my code
+    1. Minimal abstraction
+    1. Minimal package size
+    1. Maximum expressiveness
+    1. Minimal boilerplate (there is a small amount)
+    1. Maximal stability (aka minimal API changes)
+    1. Maximal distinction between library idioms and native web APIs
 
 ## Why might you want to avoid using this library?
 
-    1. I wrote it in like an hour
-    1. You hate Observables
-    1. You don't understand Observables
-    1. You think signals are better than Observables because that's what everyone is talking about now
-    1. No one is using it (yet) not even me (but it works)
-    1. The name isn't cool
-    1. Creating component templates is currently straight vanillaJS (jsx or something hackier is planned though)
-    1. Only bare-minimum features are currently implemented (but I think they're pretty slick and can get better)
+    1. You don't understand the value propisition which means you probably don't have a valid use-case
+    1. You love writing HTML and hate using the JavaScript API to interact with elements
+    1. Only bare-minimum features are currently implemented
 
 ## TODO
-
-    1. Implement a method in the base class that composes DOM elements
-    1. Add better typing support
-    1. Add a documentation feature in the base class that can use abstract members of subclasses to spit out dox/example code for subclasses
-    1. create vanilla-mints/components lib
-    1. Create example projects (starting w/ Angular)
-    1. Create vanilla-mints/angular to wrap vanilla-mints/components as a module or something (repeat for other frameworks)
-    1. Expose properties of VanillaMint subclass to the handler evaluation
-    1. Decide how to avoid naming collisions with DOM and frameworks for eventHandlers
-    1. Define standard attributes/events
-    1. Implement stuff like `hide` or `visibility` attributes
-
-## Framework Integration
-
-### Angular
-
-```
-// app.component.ts
-
-export class AppComponent implements OnInit {
-  }
-  ngOnInit(): void {
-    VanillaButton.register();
-  }
-}
-```
-
-```
-// some.component.ts
-
-vanillaClick($event: any){
-    console.warn('vanillaClick', $event)
-}
-
-vanillaClickSucceeded(element: HTMLElement, $event: any){
-    console.warn('vanillaClickSucceeded', $event)
-    element.style.backgroundColor=$event.detail;
-}
-
-```
-
-```
-
-// some.component.html
-
-<ng-container *ngIf="form">
-    <form [formGroup]="form">
-        <input formControlName="color" type="text" />
-    </form>
-    <button (click)="ask(form.value?.color)" [disabled]="form.invalid">ask</button>
-</ng-container>
-
-<vanilla-button
-    #vanillaButton
-    *ngIf="form.value?.color"
-    [attr.color]="form.value.color"
-    (clicked)="vanillaClickSucceeded(test, $event)"
-    (click)="vanillaClick(vanillaButton)"
-    >
-    click me
-</vanilla-button>
-
-```
-
-
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
-
-✨ **This workspace has been generated by [Nx, a Smart, fast and extensible build system.](https://nx.dev)** ✨
-
-## Generate code
-
-If you happen to use Nx plugins, you can leverage code generators that might come with it.
-
-Run `nx list` to get a list of available plugins and whether they have generators. Then run `nx list <plugin-name>` to see what generators are available.
-
-Learn more about [Nx generators on the docs](https://nx.dev/plugin-features/use-code-generators).
-
-## Running tasks
-
-To execute tasks with Nx use the following syntax:
-
-```
-nx <target> <project> <...options>
-```
-
-You can also run multiple targets:
-
-```
-nx run-many -t <target1> <target2>
-```
-
-..or add `-p` to filter specific projects
-
-```
-nx run-many -t <target1> <target2> -p <proj1> <proj2>
-```
-
-Targets can be defined in the `package.json` or `projects.json`. Learn more [in the docs](https://nx.dev/core-features/run-tasks).
-
-## Want better Editor Integration?
-
-Have a look at the [Nx Console extensions](https://nx.dev/nx-console). It provides autocomplete support, a UI for exploring and running tasks & generators, and more! Available for VSCode, IntelliJ and comes with a LSP for Vim users.
-
-## Ready to deploy?
-
-Just run `nx build demoapp` to build the application. The build artifacts will be stored in the `dist/` directory, ready to be deployed.
-
-## Set up CI!
-
-Nx comes with local caching already built-in (check your `nx.json`). On CI you might want to go a step further.
-
-- [Set up remote caching](https://nx.dev/core-features/share-your-cache)
-- [Set up task distribution across multiple machines](https://nx.dev/core-features/distribute-task-execution)
-- [Learn more how to setup CI](https://nx.dev/recipes/ci)
-
-## Connect with us!
-
-- [Join the community](https://nx.dev/community)
-- [Subscribe to the Nx Youtube Channel](https://www.youtube.com/@nxdevtools)
-- [Follow us on Twitter](https://twitter.com/nxdevtools)
+    1. Possibly implement management of event handler binding similar to how rxjs subscription management works
+    1. Library-level demo and documentation via prefabbed components defined in a separate library
+    1. Add a component-level self-documentation feature in the base class that can use abstract members of subclasses to spit out example code for subclasses
+    1. Possibly implement stuff like `hide` or `visibility` attributes that are common framework primitives
 
 

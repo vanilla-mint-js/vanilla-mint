@@ -1,0 +1,1 @@
+export function classListParse(_: string) { return (_ || '').split(' ').map(__ => __.trim()).filter(Boolean); }

@@ -1,9 +1,9 @@
 {
-  "name": "@vanilla-mints/core",
+  "name": "@vanilla-mint/core",
   "repository": {
-    "url": "https://github.com/vanilla-mints/vanilla-mints"
+    "url": "https://github.com/vanilla-mint-js/vanilla-mint"
   },
-  "version": "0.1.1",
+  "version": "0.0.1",
   "dependencies": {
     "rxjs": "latest"
   },
