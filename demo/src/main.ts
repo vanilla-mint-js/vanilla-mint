@@ -1,5 +1,5 @@
 import { define } from "@vanilla-mint/core";
-
-import { FrostedButton } from "./app/frosted-button.class";
+import { FrostedButton, QrCode } from "@vanilla-mint/components";
 
 define(FrostedButton);
+define(QrCode);

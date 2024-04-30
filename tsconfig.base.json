@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@vanilla-mint/components": ["libs/components/src/index.ts"],
       "@vanilla-mint/core": ["libs/core/src/index.ts"]
     }
   },

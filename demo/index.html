@@ -12,7 +12,11 @@
   <body>
     <script type="module" src="/src/main.ts"></script>
     <div style="display: grid; place-items: center; height: 100vh;">
-      <frosted-button color="white" background-color="hotpink" onclick="console.warn('we did it, Joe!')"><span>hey</span></frosted-button>
-      <frosted-button color="orange" background-color="midnightblue" onclick="console.warn('we did it, Joe!')"><span>hey</span></frosted-button>
+      <frosted-button color="white" background-color="hotpink" onclick="console.warn('we did it, Joe!')"><span>FrostedButton</span></frosted-button>
+      <div style="display: flex; flex-direction: row; border: solid 1px blue; padding: 2rem; width: 100%;">
+        <input type="number" id=cellSize onchange="qrcode.setAttribute('cell-size', this.value)"/>
+        <input type="text" id=text onchange="qrcode.setAttribute('text', this.value)"/>
+        <qr-code id=qrcode cell-size="12" text="orange" onconnected="cellSize.value = this.vmAttr('cell-size')"></qr-code>
+      </div>
   </body>
 </html>
