@@ -3,6 +3,7 @@ export * from './lib/functions/class-list-add.function';
 export * from './lib/functions/class-list-parse.function';
 export * from './lib/functions/class-list-remove.function';
 export * from './lib/functions/define.function';
+export * from './lib/functions/inject-script.function';
 export * from './lib/functions/insert-css.function';
 export * from './lib/functions/set-attrs.function';
 export * from './lib/functions/set-css-var.function';
