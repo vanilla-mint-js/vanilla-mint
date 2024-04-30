@@ -1,5 +1,5 @@
 
-import { VanillaMint } from '@vanilla-mints/core';
+import { VanillaMint } from '@vanilla-mint/core';
 
 type TAttrs = {
   color: string;

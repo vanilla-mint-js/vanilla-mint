@@ -1,4 +1,4 @@
-# @vanilla-mints/core
+# @vanilla-mint/core
 
 ## Quick Start
 

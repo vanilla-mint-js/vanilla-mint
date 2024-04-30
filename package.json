@@ -1,9 +1,9 @@
 {
-  "name": "vanilla-mints",
+  "name": "vanilla-mint",
   "version": "0.0.0",
   "license": "MIT",
   "repository": {
-    "url": "https://github.com/vanilla-mints/vanilla-mints"
+    "url": "https://github.com/vanilla-mint-js/vanilla-mint"
   },
   "scripts": {},
   "private": true,
