@@ -21,18 +21,17 @@ export class FrostedButton extends VanillaMint<TAttrs> {
 
     this.vmInsertCss(`
     .${id} {
-      --bg: hsl(221, 37%, 10%);
       --button-text: transparent;
       --_padding: 1rem 1.5rem;
       --_transition-speed: 200ms;
-      --_hover-opacity: 0.4;
+      --_hover-opacity: 0.1;
       --_pressed-opacity: 0.15;
       --_hover-blurriness: 5px;
-      --_pressed-blurriness: 10px;
+      --_pressed-blurriness: 2px;
       --_frostiness: 0.3;
-      --_hover-offset: 0.5rem;
-      --_pressed-offset: 0.25rem;
-      --_motion-factor: 0.1;
+      --_hover-offset: 0.005rem;
+      --_pressed-offset: 0.0025rem;
+      --_motion-factor: 0.05;
       --_surface: transparent;
       outline: 0;
       cursor: pointer;
@@ -90,10 +89,10 @@ export class FrostedButton extends VanillaMint<TAttrs> {
       &:hover,
       &:focus-visible {
           span {
-              outline: 1px solid hsl(0 0% 100% / 0.7);
+              outline: 1px solid hsl(0 0% 100% / 0.5);
               background-color: hsl(0 0% 100% / var(--_hover-opacity));
               backdrop-filter: blur(var(--_hover-blurriness));
-              translate: 0 calc(var(--_hover-offset) * -1);
+              translate: 0 calc(var(--_hover-offset) * 0);
 
               &::before {
                   opacity: var(--_frostiness);
@@ -102,7 +101,7 @@ export class FrostedButton extends VanillaMint<TAttrs> {
 
           &::after {
               scale: 0.95;
-              translate: 0 0.125rem;
+              translate: 0 0;
               animation: enter forwards var(--_transition-speed);
           }
       }
@@ -111,12 +110,12 @@ export class FrostedButton extends VanillaMint<TAttrs> {
           span {
               backdrop-filter: blur(var(--_pressed-blurriness));
               background-color: hsl(0 0% 100% / var(--_pressed-opacity));
-              translate: 0 calc(var(--_pressed-offset) * -1);
+              translate: 0 calc(var(--_pressed-offset) * 0);
           }
 
           &::after {
-              scale: 0.875;
-              translate: 0 0.25rem;
+              scale: 0.975;
+              translate: 0 --_hover-offset;
           }
       }
   }
