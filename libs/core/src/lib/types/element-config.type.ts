@@ -1,0 +1,1 @@
+export type TElementConfig = { tag: string, attrs?: Record<string, string | Function>, styles?: Record<string, string>, children?: TElementConfig[], classList?: string }
