@@ -3,7 +3,7 @@
   "repository": {
     "url": "https://github.com/vanilla-mint-js/vanilla-mint"
   },
-  "version": "0.0.2",
+  "version": "0.0.3",
   "dependencies": {
     "rxjs": "latest"
   },
