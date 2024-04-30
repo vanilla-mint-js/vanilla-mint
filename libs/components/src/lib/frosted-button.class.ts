@@ -52,6 +52,7 @@ export class FrostedButton extends VanillaMint<TAttrs> {
       align-items: stretch;
 
       span {
+          width: 100%;
           display: grid;
           place-items: center;
           overflow: hidden;
