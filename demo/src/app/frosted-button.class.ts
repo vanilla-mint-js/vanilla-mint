@@ -6,16 +6,19 @@ type TAttrs = {
   'background-color': string;
 };
 
-export class PlasticButton extends VanillaMint<TAttrs> {
+// adaptation of https://codepen.io/kevinpowell/pen/LYvBZyb to demonstrate VanillaMint API
+
+export class FrostedButton extends VanillaMint<TAttrs> {
   static observedAttributes: Array<keyof TAttrs> = ['color', 'background-color'];
-  static tagName = 'plastic-button';
+  static tagName = 'frosted-button';
 
   constructor() {
-    super(PlasticButton.observedAttributes);
+    super(FrostedButton.observedAttributes);
   }
 
   override vmConnected() {
-    const id = `pb-${Math.random().toString().split('.')[1]}`;
+    const id = this.vmId(FrostedButton);
+
     this.vmInsertCss(`
     .${id} {
       --bg: hsl(221, 37%, 10%);

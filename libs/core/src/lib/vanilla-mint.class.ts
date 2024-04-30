@@ -1,5 +1,4 @@
 import { Subject, Observable, Subscription, shareReplay, tap } from 'rxjs';
-import { TChildConfig } from './types/element.type';
 import { appendChild } from './functions/append-child.function';
 import { setAttrs } from './functions/set-attrs.function';
 import { setStyles } from './functions/set-styles.function';
@@ -15,6 +14,7 @@ import { setCssVars } from './functions/set-css-vars.function';
 export type TKeysOf<TKeySource, TValue> = { [key in keyof TKeySource]: TValue };
 
 export abstract class VanillaMint<TAttrs> extends HTMLElement {
+  private _id: string | undefined;
 
   private readonly __: TKeysOf<TAttrs, any> = {} as any;
   private readonly _$$: TKeysOf<TAttrs, Subject<any>> = {} as any;
@@ -74,7 +74,7 @@ export abstract class VanillaMint<TAttrs> extends HTMLElement {
     }
     this.dispatchEvent(new CustomEvent(handlerName, { detail, bubbles: true }));
 
-    if(handlerName.startsWith('on')) {
+    if (handlerName.startsWith('on')) {
       this.vmDispatch(handlerName.slice(2), detail);
     }
   }
@@ -105,5 +105,12 @@ export abstract class VanillaMint<TAttrs> extends HTMLElement {
   vmSetStyles = setStyles.bind(null, this);
   vmAttr(attr: keyof TAttrs) {
     return this.__[attr];
+  }
+  vmId({name}: {name: string}) {
+    if (!this._id) {
+      this._id = `${name}-${Math.random().toString().split('.')[1]}`;
+    }
+
+    return this._id;
   }
 }
