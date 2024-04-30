@@ -1,4 +1,4 @@
-# VanillMint
+# VanillaMint
 
 A tightly-focused project that leverages `"vanilla"` JavaScript to `"mint"` custom elements.
 
