@@ -5,7 +5,9 @@
     "url": "https://github.com/vanilla-mint-js/vanilla-mint"
   },
   "scripts": {
-    "start": "nx serve demo"
+    "start": "nx serve demo",
+    "components:deploy": "nx build components --skip-nx-cache && cd dist/libs/components && npm publish --access public",
+    "core:deploy": "nx build core --skip-nx-cache && cd dist/libs/core && npm publish --access public"
   },
   "private": true,
   "dependencies": {
