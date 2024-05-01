@@ -13,6 +13,7 @@
     <script type="module" src="/src/main.ts"></script>
     <div style="display: grid; place-items: center; height: 100vh;">
       <frosted-button color="white" background-color="hotpink" onclick="console.warn('we did it, Joe!')"><span>FrostedButton</span></frosted-button>
+      <frosted-button color="yellow" background-color="black" onclick="console.warn('we did it, Joe!')"><span>FrostedButton</span></frosted-button>
       <div style="display: flex; flex-direction: row; border: solid 1px blue; padding: 2rem; width: 100%;">
         <input type="number" id=cellSize onchange="qrcode.setAttribute('cell-size', this.value)"/>
         <input type="text" id=text onchange="qrcoder.setAttribute('text', this.value)"/>

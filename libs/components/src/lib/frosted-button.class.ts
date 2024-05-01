@@ -111,6 +111,7 @@ export class FrostedButton extends VanillaMint<TAttrs> {
               backdrop-filter: blur(var(--_pressed-blurriness));
               background-color: hsl(0 0% 100% / var(--_pressed-opacity));
               translate: 0 calc(var(--_pressed-offset) * 0);
+              scale: 0.99;
           }
 
           &::after {
