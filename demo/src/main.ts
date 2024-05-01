@@ -1,5 +1,6 @@
 import { define } from "@vanilla-mint/core";
-import { FrostedButton, QrCode } from "@vanilla-mint/components";
+import { FrostedButton, PdfViewer, QrCode } from "@vanilla-mint/components";
 
 define(FrostedButton);
+define(PdfViewer);
 define(QrCode);

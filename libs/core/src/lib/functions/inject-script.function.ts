@@ -1,9 +1,15 @@
-export function injectScript(target: HTMLElement, src: string) {
+import { appendChild } from "./append-child.function";
+
+export function injectScript(target: HTMLElement, src: string, type?: any) {
     return new Promise((resolve, reject) => {
-        const s = document.createElement('script');
-        s.onload = resolve;
-        s.onerror = reject;
-        s.src = src;
-        target.appendChild(s);
+        appendChild(target, {
+            tag: 'script',
+            attrs: {
+                onload: resolve,
+                onerror: reject,
+                src,
+                type,
+            }
+        });
     });
 }
