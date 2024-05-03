@@ -43,10 +43,10 @@ export class PdfViewer extends VanillaMint<TAttrs> {
 
     await this.init();
 
-    this.vmSupervise(
+    this.vmSubscribe(
       combineLatest([
-        this.vmObserve('url').pipe(filter(Boolean), concatMap(async (url) => await this.loadPdf(url))),
-        this.vmObserve('page').pipe(startWith(1), map(Number), distinctUntilChanged()),
+        this.vmObserveAttr('url').pipe(filter(Boolean), concatMap(async (url) => await this.loadPdf(url))),
+        this.vmObserveAttr('page').pipe(startWith(1), map(Number), distinctUntilChanged()),
         this.width$,
       ]).pipe(
         map(([pdf, page, width]) => ({ pdf, page, width })),

@@ -17,7 +17,7 @@ export class FrostedButton extends VanillaMint<TAttrs> {
   }
 
   override vmConnected() {
-    const id = this.vmId(FrostedButton);
+    const id = this.vmId('FrostedButton');
 
     this.vmInsertCss(`
     .${id} {
@@ -146,8 +146,11 @@ export class FrostedButton extends VanillaMint<TAttrs> {
     this.vmClassListAdd(id);
     this.vmSetAttrs({ role: 'button' });
 
-    this.vmSubscribe('color', _ => this.vmSetCssVar('button-text', _));
-    this.vmSubscribe('background-color', _ => this.vmSetCssVar('_surface', _));
+    this.vmOnChangedAttr('color', _ => this.vmSetCssVar('button-text', _));
+    this.vmOnChangedAttr('background-color', _ => this.vmSetCssVar('_surface', _));
+    this.vmOnChangedAttrs(['color', 'background-color'], console.warn.bind(console, 'reactmany'));
+
+    this.vmUseEffect(console.warn.bind(console, 'effect'), ['color', 'background-color']);
 
     this.addEventListener("mousemove", (event) => {
       const centerX = this.offsetWidth / 2;

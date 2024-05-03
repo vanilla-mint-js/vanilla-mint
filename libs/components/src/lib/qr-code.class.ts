@@ -35,10 +35,10 @@ export class QrCode extends VanillaMint<TAttrs> {
             const typeNumber = 0;
             const errorCorrectionLevel = 'H';
 
-            this.vmSupervise(
+            this.vmSubscribe(
                 combineLatest([
-                    this.vmObserve('cell-size'),
-                    this.vmObserve('text')]
+                    this.vmObserveAttr('cell-size'),
+                    this.vmObserveAttr('text')]
                 ).pipe(
                     tap(([cellSize, text]) => {
                         const qr = qrcode(typeNumber, errorCorrectionLevel);

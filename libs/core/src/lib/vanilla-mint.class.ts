@@ -1,4 +1,4 @@
-import { Subject, Observable, Subscription, shareReplay, tap } from 'rxjs';
+import { Subject, Observable, Subscription, shareReplay, tap, combineLatest, fromEvent } from 'rxjs';
 import { appendChild } from './functions/append-child.function';
 import { setAttrs } from './functions/set-attrs.function';
 import { setStyles } from './functions/set-styles.function';
@@ -63,10 +63,6 @@ export abstract class VanillaMint<TAttrs> extends HTMLElement {
     });
   }
 
-  vmObserve(_: keyof TAttrs): Observable<any> {
-    return (this._$)[_];
-  }
-
   vmDispatch(handlerName: string, detail?: any) {
     const handler = this.getAttribute(handlerName);
     if (handler) { // $event is angular only... is it needed ???
@@ -79,17 +75,61 @@ export abstract class VanillaMint<TAttrs> extends HTMLElement {
     }
   }
 
-  vmSupervise(...observables: Array<Observable<any>>) {
-    (observables || []).forEach($ => this.$$$s.push($.subscribe()));
+  vmObserveAttr(attr: keyof TAttrs): Observable<any> {
+    return (this._$)[attr];
   }
 
-  vmSubscribe(attr: keyof TAttrs, handler?: (value: string) => any): Observable<any> | undefined {
-    if (handler) {
-      this.vmSupervise(this.vmObserve(attr).pipe(tap(_ => handler(_))));
-      return;
-    }
+  vmObserveAttrs(attrs: Array<keyof TAttrs>): Observable<any[]> {
+    return combineLatest(attrs.map(_ => this.vmObserveAttr(_)));
+  }
 
-    return this.vmObserve(attr);
+  vmObserveEvent(event: keyof HTMLElementEventMap): Observable<any> {
+    return fromEvent(this, event);
+  }
+
+  vmObserveEvents(events: Array<keyof HTMLElementEventMap>): Observable<any[]> {
+    return combineLatest(events.map(event => fromEvent(this, event)));
+  }
+
+  vmSubscribe(observable: Observable<any>) {
+    this.$$$s.push(observable.subscribe());
+  }
+
+  vmSubscribeMany(observables: Array<Observable<any>>) {
+    (observables || []).forEach(observable => this.$$$s.push(observable.subscribe()));
+  }
+
+  vmOnChangedAttr(attr: keyof TAttrs, handler: (value: string) => any): void {
+    if ((typeof handler) === 'function') {
+      this.vmSubscribe(this.vmObserveAttr(attr).pipe(tap(handler)));
+    }
+  }
+
+  vmOnChangedAttrs(attrs: Array<keyof TAttrs>, handler: (values: any[]) => any): void {
+    if ((typeof handler) === 'function') {
+      this.vmSubscribe(this.vmObserveAttrs(attrs).pipe(tap(handler)));
+    }
+  }
+
+  vmOnEvent(event: keyof HTMLElementEventMap, handler: (value: any) => any): void {
+    if ((typeof handler) === 'function') {
+      this.vmSubscribe(this.vmObserveEvent(event).pipe(tap(handler)));
+    }
+  }
+
+  vmOnEvents(events: Array<keyof HTMLElementEventMap>, handler: (values: any[]) => any): void {
+    if ((typeof handler) === 'function') {
+      this.vmSubscribe(this.vmObserveEvents(events).pipe(tap(handler)));
+    }
+  }
+
+  // need to support the handler returning a cleanup function
+  // bc the only purpose of this method is to match react semantix
+  // even tho it's far less powerful/useful than the observable-based counterparts
+  vmUseEffect(handler: (values: any[]) => void, attrs: Array<keyof TAttrs>): void {
+    if ((typeof handler) === 'function') {
+      this.vmSubscribe(this.vmObserveAttrs(attrs).pipe(tap((_) => handler(_))));
+    }
   }
 
   vmAppendChild = appendChild.bind(null, this);
@@ -106,7 +146,7 @@ export abstract class VanillaMint<TAttrs> extends HTMLElement {
   vmAttr(attr: keyof TAttrs) {
     return this.__[attr];
   }
-  vmId({name}: {name: string}) {
+  vmId(name: string) {
     if (!this._id) {
       this._id = `${name}-${Math.random().toString().split('.')[1]}`;
     }
