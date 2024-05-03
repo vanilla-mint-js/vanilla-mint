@@ -143,7 +143,11 @@ export abstract class VanillaMint<TAttrs> extends HTMLElement {
   vmSetCssVars = setCssVars.bind(null, this);
   vmSetStyle = setStyle.bind(null, this);
   vmSetStyles = setStyles.bind(null, this);
-  vmAttr(attr: keyof TAttrs) {
+  vmAttr<T>(attr: keyof TAttrs, defaultValue?: T) {
+    if((typeof this.__[attr]) === 'undefined') {
+      return defaultValue;
+    }
+
     return this.__[attr];
   }
   vmId(name: string) {
