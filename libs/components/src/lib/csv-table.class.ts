@@ -17,42 +17,50 @@ export class CsvTable extends VanillaMint<TAttrs> {
     }
 
     override async vmConnected() {
-        this.vmOnChangedAttrs(['csv', 'has-header'], ([csv, hasHeader]) => {
-            const allLines: string[] = csv.split('\n');
+        const csv = (this.textContent || '').trim();
 
-            this.vmAppendChild({
-                tag: 'table',
-                styles: { borderCollapse: 'collapse'},
-                children: [
-                    hasHeader && {
-                        tag: 'thead',
-                        children: [allLines[0]]
-                            .map((_, i) => ({
-                                tag: 'tr',
-                                children: _.split(',')
-                                    .map(textContent => ({
-                                        tag: 'th',
-                                        attrs: {textContent},
-                                        styles
-                                    }))
-                            }))
-                    },
-                    {
-                        tag: 'tbody',
-                        children: (hasHeader ? allLines.slice(1) : allLines)
-                            .map((_, i) => ({
-                                tag: 'tr',
-                                children: _.split(',')
-                                    .map(textContent => ({
-                                        tag: 'td',
-                                        attrs: {textContent},
-                                        styles,
-                                    }))
-                            }))
-                    }
-                ]
-            })
+        const allLines: string[] = csv.split('\n').map(_ => _.trim()).filter(Boolean);
 
+        if (!allLines.length) {
+            this.textContent = `Put the CSV inside the <${CsvTable.tagName}></${CsvTable.tagName}>`;
+            return;
+        } else {
+            this.innerHTML = '';
+        }
+
+        const hasHeader = this.vmAttr('has-header');
+
+        this.vmAppendChild({
+            tag: 'table',
+            styles: { borderCollapse: 'collapse' },
+            children: [
+                hasHeader && {
+                    tag: 'thead',
+                    children: [allLines[0]]
+                        .map((_, i) => ({
+                            tag: 'tr',
+                            children: _.split(',').map(_ => _.trim())
+                                .map(textContent => ({
+                                    tag: 'th',
+                                    attrs: { textContent },
+                                    styles
+                                }))
+                        }))
+                },
+                {
+                    tag: 'tbody',
+                    children: (hasHeader ? allLines.slice(1) : allLines)
+                        .map((_, i) => ({
+                            tag: 'tr',
+                            children: _.split(',').map(_ => _.trim())
+                                .map(textContent => ({
+                                    tag: 'td',
+                                    attrs: { textContent },
+                                    styles,
+                                }))
+                        }))
+                }
+            ]
         });
     }
 
