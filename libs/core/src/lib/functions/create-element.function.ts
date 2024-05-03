@@ -6,7 +6,7 @@ import { setStyles } from "./set-styles.function";
 
 export function createElement(config: TElementConfig) {
   const element = document.createElement(config.tag);
-  (config.children || []).forEach(child => appendChild(element, child));
+  (config.children || []).filter(Boolean).forEach(child => appendChild(element, child));
   setAttrs(element, config.attrs || {});
   setStyles(element, config.styles || {});
 
