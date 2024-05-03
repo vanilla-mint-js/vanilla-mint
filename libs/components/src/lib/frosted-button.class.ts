@@ -148,9 +148,6 @@ export class FrostedButton extends VanillaMint<TAttrs> {
 
     this.vmOnChangedAttr('color', _ => this.vmSetCssVar('button-text', _));
     this.vmOnChangedAttr('background-color', _ => this.vmSetCssVar('_surface', _));
-    this.vmOnChangedAttrs(['color', 'background-color'], console.warn.bind(console, 'reactmany'));
-
-    this.vmUseEffect(console.warn.bind(console, 'effect'), ['color', 'background-color']);
 
     this.addEventListener("mousemove", (event) => {
       const centerX = this.offsetWidth / 2;
