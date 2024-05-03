@@ -18,7 +18,7 @@ export class PdfViewer extends VanillaMint<TAttrs> {
 
   readonly resize$ = fromEvent(window, 'resize').pipe(share());
   readonly width$ = this.resize$.pipe(
-    startWith(() => this.parentElement?.getBoundingClientRect().width),
+    startWith(() => null),
     map(() => this.parentElement?.getBoundingClientRect().width),
     map(width => width || window.innerWidth),
     map(width => width * this.scale),
