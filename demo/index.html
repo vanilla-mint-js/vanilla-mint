@@ -17,7 +17,7 @@
       <frosted-button id=btn color="white" background-color="#ff0000" onclick="console.warn('we did it, Joe!')" onconnected="backgroundcolor.value = this.vmAttr('background-color'); color.value = this.vmAttr('color')"><span>FrostedButton</span></frosted-button>
       <frosted-button color="yellow" background-color="black" onclick="console.warn('we did it, Joe!')"><span>FrostedButton</span></frosted-button>
       <div style="display: flex; flex-direction: row; border: solid 1px blue; padding: 2rem; width: 100%;">
-        <input type="number" id=cellsize onchange="qrcode.setAttribute('cell-size', this.value)"/>
+        <input type="number" id=cellsize onchange="qrcoder.setAttribute('cell-size', this.value)"/>
         <input type="text" id=text onchange="qrcoder.setAttribute('text', this.value)"/>
         <qr-code id=qrcoder cell-size="12" text="orange" onconnected="cellsize.value = this.vmAttr('cell-size')"></qr-code>
         <qr-code cell-size="12" text="blah"></qr-code>
