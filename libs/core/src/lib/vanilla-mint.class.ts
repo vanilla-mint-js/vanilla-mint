@@ -27,7 +27,14 @@ export abstract class VanillaMint<TAttrs> extends HTMLElement {
   abstract vmAdopted(): any;
 
   connectedCallback() {
-    this.vmDispatch('onconnected', this.vmConnected());
+    const result = this.vmConnected();
+    if(result) {
+      if(result instanceof Promise) {
+        result.then((_: any) => this.vmDispatch('onconnected', _));
+      } else {
+        this.vmDispatch('onconnected', result);
+      }
+    }
   }
 
   disconnectedCallback() {

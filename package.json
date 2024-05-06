@@ -11,6 +11,7 @@
   },
   "private": true,
   "dependencies": {
+    "monaco-editor": "^0.48.0",
     "rxjs": "^7.8.1",
     "tslib": "^2.3.0"
   },

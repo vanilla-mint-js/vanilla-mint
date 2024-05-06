@@ -1,5 +1,5 @@
 import { define } from "@vanilla-mint/core";
-import { CsvTable, FrostedButton, PdfViewer, QrCode, SigPad } from "@vanilla-mint/components";
+import { CsvTable, FrostedButton, MonacoEditor, PdfViewer, QrCode, SigPad } from "@vanilla-mint/components";
 const rows = 3;
 
 const arr = Array(rows).fill(0);
@@ -19,6 +19,7 @@ const content = [
 
 define(CsvTable);
 define(FrostedButton);
+define(MonacoEditor);
 define(PdfViewer);
 define(QrCode);
 define(SigPad);
