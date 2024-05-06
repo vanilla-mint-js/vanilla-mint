@@ -1,4 +1,6 @@
 export * from './lib/functions/append-child.function';
+export * from './lib/functions/append-external-asset.function';
+export * from './lib/functions/append-stylesheet.function';
 export * from './lib/functions/camel-case.function';
 export * from './lib/functions/class-list-add.function';
 export * from './lib/functions/class-list-parse.function';
