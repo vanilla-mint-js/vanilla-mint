@@ -1,26 +1,18 @@
-import { VanillaMint, appendChild, appendStylesheet, injectScript } from "@vanilla-mint/core";
-
-// import * as monaco from 'monaco-editor'
-// import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
-// import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker'
-// import cssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker'
-// import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker'
-// import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
-import * as monaco from 'https://cdn.jsdelivr.net/npm/monaco-editor@0.39.0/+esm';
+import { VanillaMint, injectScript } from "@vanilla-mint/core";
 
 type TAttrs = {
     input: any;
-    language: any;
+    language: string;
+    theme: string;
 };
 
 export class MonacoEditor extends VanillaMint<TAttrs> {
-    static observedAttributes: Array<keyof TAttrs> = ['input', 'language'];
+    static observedAttributes: Array<keyof TAttrs> = ['input', 'language', 'theme'];
     static tagName = 'monaco-editor';
-    editor!: any; //monaco.editor.IStandaloneCodeEditor;
+    editor!: any;
 
     get monaco() {
-        // return (self as any).monaco;
-        return monaco;
+        return (self as any).monaco;
     }
 
     constructor() {
@@ -28,9 +20,21 @@ export class MonacoEditor extends VanillaMint<TAttrs> {
     }
 
     override async vmConnected() {
+        await injectScript(document.body, 'https://unpkg.com/monaco-editor@latest/min/vs/loader.js');
+        (require as any).config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@latest/min/vs' } });
 
-        await appendStylesheet(document.body, 'https://cdn.jsdelivr.net/npm/vscode-codicons@0.0.17/dist/codicon.min.css');
-        await appendStylesheet(document.body, 'https://cdn.jsdelivr.net/npm/monaco-editor@0.39.0/min/vs/editor/editor.main.css');
+        (self as any).MonacoEnvironment = {
+            getWorkerUrl: function (workerId: any, label: any) {
+                return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
+        self.MonacoEnvironment = {
+          baseUrl: 'https://unpkg.com/monaco-editor@latest/min/'
+        };
+        importScripts('https://unpkg.com/monaco-editor@latest/min/vs/base/worker/workerMain.js');`
+                )}`;
+            }
+        };
+
+        await new Promise(res => (require as any)(["vs/editor/editor.main"], res as any));
 
         this.vmSetStyles({
             display: 'flex',
@@ -71,11 +75,12 @@ export class MonacoEditor extends VanillaMint<TAttrs> {
             value: this.vmAttr('input'),
             language: this.vmAttr('language'),
             automaticLayout: true,
+            theme: this.vmAttr('theme'),
         };
     }
 
     override vmDisconnected() {
-        this.editor?.dispose();
+        this.editor?.dispose?.();
     }
 
     override vmAdopted() { }
