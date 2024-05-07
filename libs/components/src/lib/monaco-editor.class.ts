@@ -1,11 +1,12 @@
-import { VanillaMint } from "@vanilla-mint/core";
+import { VanillaMint, appendChild, appendStylesheet, injectScript } from "@vanilla-mint/core";
 
-import * as monaco from 'monaco-editor'
-import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
-import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker'
-import cssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker'
-import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker'
-import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
+// import * as monaco from 'monaco-editor'
+// import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
+// import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker'
+// import cssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker'
+// import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker'
+// import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
+import * as monaco from 'https://cdn.jsdelivr.net/npm/monaco-editor@0.39.0/+esm';
 
 type TAttrs = {
     input: any;
@@ -15,25 +16,21 @@ type TAttrs = {
 export class MonacoEditor extends VanillaMint<TAttrs> {
     static observedAttributes: Array<keyof TAttrs> = ['input', 'language'];
     static tagName = 'monaco-editor';
-    editor!: monaco.editor.IStandaloneCodeEditor;
+    editor!: any; //monaco.editor.IStandaloneCodeEditor;
+
+    get monaco() {
+        // return (self as any).monaco;
+        return monaco;
+    }
 
     constructor() {
         super(MonacoEditor.observedAttributes);
-
-        if (!self.MonacoEnvironment) {
-            self.MonacoEnvironment = {
-                getWorker(_, label) {
-                    if (label === 'json') { return new jsonWorker(); }
-                    if (label === 'css' || label === 'scss' || label === 'less') { return new cssWorker(); }
-                    if (label === 'html' || label === 'handlebars' || label === 'razor') { return new htmlWorker(); }
-                    if (label === 'typescript' || label === 'javascript') { return new tsWorker(); }
-                    return new editorWorker();
-                }
-            }
-        }
     }
 
     override async vmConnected() {
+
+        await appendStylesheet(document.body, 'https://cdn.jsdelivr.net/npm/vscode-codicons@0.0.17/dist/codicon.min.css');
+        await appendStylesheet(document.body, 'https://cdn.jsdelivr.net/npm/monaco-editor@0.39.0/min/vs/editor/editor.main.css');
 
         this.vmSetStyles({
             display: 'flex',
@@ -53,8 +50,7 @@ export class MonacoEditor extends VanillaMint<TAttrs> {
                 position: 'absolute',
             }
         });
-
-        this.editor = monaco.editor.create(container, this.buildModel());
+        this.editor = this.monaco.editor.create(container, this.buildModel());
 
         this.editor.onDidChangeModelContent(() => {
             if (this.editor) {
@@ -64,7 +60,8 @@ export class MonacoEditor extends VanillaMint<TAttrs> {
         });
 
         this.vmOnChangedAttr('input', _ => this.editor?.setValue(_));
-        this.vmOnChangedAttr('language', _ => monaco.editor.setModelLanguage(this.editor.getModel() as any, _));
+        this.vmOnChangedAttr('language', _ => this.monaco.editor.setModelLanguage(this.editor.getModel() as any, _));
+
 
         return this.editor;
     }
