@@ -1,19 +1,11 @@
-import { appendChild } from "./append-child.function";
+import { appendExternalAsset } from "./append-external-asset.function";
 
 export function injectScript(target: HTMLElement, src: string, type?: any) {
-    return new Promise((resolve, reject) => {
-        const attrs: any = {
-            onload: resolve,
-            onerror: reject,
-            src,
-        };
+    const attrs: any = { src };
 
-        if(type) {
-            attrs.type = type;
-        }
-        appendChild(target, {
-            tag: 'script',
-            attrs,
-        });
-    });
+    if ((typeof type) !== 'undefined') {
+        attrs['type'] = type;
+    }
+
+    return appendExternalAsset(target, { tag: 'script', attrs });
 }

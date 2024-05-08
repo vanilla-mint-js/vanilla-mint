@@ -18,17 +18,7 @@
     }
   </style>
   <script type="module" src="/src/main.ts"></script>
-  <div style="display: grid; place-items: center; height: 100vh; width: 100%; border: solid 1px orangered; box-sizing: border-box;">
-    <select onchange="mon.setAttribute('language', this.value)">
-      <option value="javascript">js</option>
-      <option value="html">html</option>
-    </select>
-    <div style="height: 50vh; width: 50%; border: solid 1px orange; box-sizing: border-box;">
-
-    <monaco-editor id="mon" input="console.warn('hello worldddddd')" language="javascript" onmodelchange="console.warn(event)" connected="console.warn(event)"></monaco-editor>
-    </div>
-  </div>
-  <!-- <div style="display: grid; place-items: center; min-height: 100vh;">
+  <div style="display: grid; place-items: center; min-height: 100vh;">
     <sig-pad></sig-pad>
     <csv-table has-header="true">
 test-sku, test-name, test-location, test-qty
@@ -51,7 +41,7 @@ test-sku-2-3-21, test-name-2-3-21, test-location-2-3-21, 3
     </div>
     <div style="border: double 2px midnightblue">
       <pdf-viewer page="2" url="https://videovore-public.s3.us-east-2.amazonaws.com/Blank+W9.pdf"></pdf-viewer>
-    </div> -->
+    </div>
 </body>
 
 </html>
