@@ -1,5 +1,5 @@
 
-import { VanillaMint, injectScript } from '@vanilla-mint/core';
+import { VanillaMint, appendScript } from '@vanilla-mint/core';
 import { combineLatest, tap } from 'rxjs';
 
 const globalQrCodeName = '_globalQrCode';
@@ -25,7 +25,7 @@ export class QrCode extends VanillaMint<TAttrs> {
 
     override async vmConnected() {
         if (!this.qrcode) {
-            await injectScript(this, 'https://cdn.jsdelivr.net/npm/qrcode-generator/qrcode.min.js');
+            await appendScript(this, 'https://cdn.jsdelivr.net/npm/qrcode-generator/qrcode.min.js');
             (window as any)[globalQrCodeName] = (window as any).qrcode;
         }
 

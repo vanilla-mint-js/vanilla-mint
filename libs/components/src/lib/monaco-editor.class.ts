@@ -1,4 +1,4 @@
-import { VanillaMint, injectScript } from "@vanilla-mint/core";
+import { VanillaMint, appendScript } from "@vanilla-mint/core";
 
 type TAttrs = {
     input: any;
@@ -20,7 +20,7 @@ export class MonacoEditor extends VanillaMint<TAttrs> {
     }
 
     override async vmConnected() {
-        await injectScript(document.body, 'https://unpkg.com/monaco-editor@latest/min/vs/loader.js');
+        await appendScript(document.body, 'https://unpkg.com/monaco-editor@latest/min/vs/loader.js');
         (require as any).config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@latest/min/vs' } });
 
         (self as any).MonacoEnvironment = {

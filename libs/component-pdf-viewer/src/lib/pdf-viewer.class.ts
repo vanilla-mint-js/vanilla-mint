@@ -1,4 +1,4 @@
-import { VanillaMint, injectScript, setStyle } from '@vanilla-mint/core';
+import { VanillaMint, appendScript, setStyle } from '@vanilla-mint/core';
 import { combineLatest, concatMap, debounceTime, distinctUntilChanged, filter, fromEvent, map, share, startWith, tap } from 'rxjs';
 
 const globalPdfjsDistName = 'pdfjsLib';
@@ -62,7 +62,7 @@ export class PdfViewer extends VanillaMint<TAttrs> {
     this.context = this.canvas.getContext('2d') as any;
 
     if (!this.pdfjsLib) {
-      await injectScript(this, 'https://mozilla.github.io/pdf.js/build/pdf.mjs', 'module');
+      await appendScript(this, 'https://mozilla.github.io/pdf.js/build/pdf.mjs', 'module');
     }
 
     this.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://mozilla.github.io/pdf.js/build/pdf.worker.mjs';
