@@ -1,0 +1,14 @@
+{
+  "name": "@vanilla-mint/component-qr-code",
+  "repository": {
+    "url": "https://github.com/vanilla-mint-js/vanilla-mint"
+  },
+  "version": "0.0.7",
+  "dependencies": {
+    "@vanilla-mint/core": "0.0.6",
+    "rxjs": "latest"
+  },
+  "main": "./index.js",
+  "module": "./index.mjs",
+  "typings": "./index.d.ts"
+}
