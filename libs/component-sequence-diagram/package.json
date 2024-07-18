@@ -1,0 +1,14 @@
+{
+  "name": "@vanilla-mint/component-sequence-diagram",
+  "repository": {
+    "url": "https://github.com/vanilla-mint-js/vanilla-mint"
+  },
+  "version": "0.1.0",
+  "dependencies": {
+    "@vanilla-mint/core": "0.1.0",
+    "rxjs": "latest"
+  },
+  "main": "./index.js",
+  "module": "./index.mjs",
+  "typings": "./index.d.ts"
+}
