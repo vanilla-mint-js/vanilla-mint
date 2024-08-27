@@ -19,6 +19,7 @@
       "@vanilla-mint/component-pdf-viewer": ["libs/component-pdf-viewer/src/index.ts"],
       "@vanilla-mint/component-qr-code": ["libs/component-qr-code/src/index.ts"],
       "@vanilla-mint/component-sig-pad": ["libs/component-sig-pad/src/index.ts"],
+      "@vanilla-mint/component-sequence-diagram": ["libs/component-sequence-diagram/src/index.ts"],
       "@vanilla-mint/core": ["libs/core/src/index.ts"]
     }
   },

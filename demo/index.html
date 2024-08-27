@@ -19,7 +19,7 @@
   </style>
   <script type="module" src="/src/main.ts"></script>
   <div style="display: grid; place-items: center; min-height: 100vh;">
-    <sig-pad></sig-pad>
+    <!-- <sig-pad></sig-pad>
     <csv-table has-header="true">
 test-sku, test-name, test-location, test-qty
 test-sku-0-3-21, test-name-0-3-21, test-location-0-3-21, 1
@@ -28,20 +28,18 @@ test-sku-2-3-21, test-name-2-3-21, test-location-2-3-21, 3
     </csv-table>
     <input type="color" id=color onchange="btn.setAttribute('color', this.value)" />
     <input type="color" id=backgroundcolor onchange="btn.setAttribute('background-color', this.value)" />
-    <frosted-button id=btn color="white" background-color="#ff0000" onclick="console.warn('we did it, Joe!')"
-      onconnected="backgroundcolor.value = this.vmAttr('background-color'); color.value = this.vmAttr('color')"><span>FrostedButton</span></frosted-button>
-    <frosted-button color="yellow" background-color="black"
-      onclick="console.warn('we did it, Joe!')"><span>FrostedButton</span></frosted-button>
+    <frosted-button id=btn color="white" background-color="#ff0000" onclick="console.warn('we did it, Joe!')" onconnected="backgroundcolor.value = this.vmAttr('background-color'); color.value = this.vmAttr('color')"><span>FrostedButton</span></frosted-button>
+    <frosted-button color="yellow" background-color="black" onclick="console.warn('we did it, Joe!')"><span>FrostedButton</span></frosted-button>
     <div style="display: flex; flex-direction: row; border: solid 1px blue; padding: 2rem; width: 100%;">
       <input type="number" id=cellsize onchange="qrcoder.setAttribute('cell-size', this.value)" />
       <input type="text" id=text onchange="qrcoder.setAttribute('text', this.value)" />
-      <qr-code id=qrcoder cell-size="12" text="orange"
-        onconnected="cellsize.value = this.vmAttr('cell-size')"></qr-code>
+      <qr-code id=qrcoder cell-size="12" text="orange" onconnected="cellsize.value = this.vmAttr('cell-size')"></qr-code>
       <qr-code cell-size="12" text="blah"></qr-code>
     </div>
     <div style="border: double 2px midnightblue">
       <pdf-viewer page="2" url="https://videovore-public.s3.us-east-2.amazonaws.com/Blank+W9.pdf"></pdf-viewer>
-    </div>
+    </div> -->
+    <sequence-diagram></sequence-diagram>
 </body>
 
 </html>
