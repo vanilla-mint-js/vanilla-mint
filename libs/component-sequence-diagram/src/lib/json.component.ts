@@ -39,7 +39,6 @@ export class Json extends VanillaMint<TJsonAttrs> {
         });
 
         this.pre = this.vmAppendChild({ tag: 'pre', styles: {
-            zIndex: 1000,
             flexGrow: 1,
             width: '100%',
             color: 'black', textAlign: 'start', display: 'none', overflowWrap: 'break-word !important', maxWidth: '100%'
@@ -74,7 +73,7 @@ export class Json extends VanillaMint<TJsonAttrs> {
                 textContent: 'JSON +',
                 onclick: () => {
                     this.pre.innerHTML = this.vmAttr('stringified');
-                    this.vmSetStyles(frost);
+                    this.vmSetStyles({...frost, zIndex: 10000});
                     this.previewButton.style.display = 'none';
                     this.pre.style.display = 'initial';
                     this.hideButton.style.display = 'initial';
@@ -94,6 +93,7 @@ export class Json extends VanillaMint<TJsonAttrs> {
                 onclick: () => {
                     this.vmSetStyles({backgroundColor: 'transparent'});
                     this.pre.style.display = 'none';
+                    this.vmSetStyles({zIndex: 1000});
                     this.previewButton.style.display = 'initial';
                     this.hideButton.style.display = 'none';
                     heading.style.display = 'none';

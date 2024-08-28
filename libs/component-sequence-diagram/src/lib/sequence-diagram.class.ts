@@ -34,14 +34,14 @@ export class SequenceDiagram extends VanillaMint<TAttrs> {
 
     render(steps: IStep[], SYSTEMS: string[]) {
         // TODO: replace these entity invocations w/ vm* api
-        const rightArrowHtmlEntity = () => { const el = createElement({ tag: 'div', styles: { fontSize: '1.8rem' } }); el.innerHTML = '&rarr;'; return el; };
-        const leftArrowHtmlEntity = () => { const el = createElement({ tag: 'div', styles: { fontSize: '1.8rem' } }); el.innerHTML = '&larr;'; return el; };
+        const rightArrowHtmlEntity = () => { const el = createElement({ tag: 'div', styles: { fontSize: '1.8rem', } }); el.innerHTML = '&rarr;'; return el; };
+        const leftArrowHtmlEntity = () => { const el = createElement({ tag: 'div', styles: { fontSize: '1.8rem', } }); el.innerHTML = '&larr;'; return el; };
 
         const colCount = SYSTEMS.length;
 
         const gridStyles = {
             width: '100%',
-            gridTemplateColumns: `repeat(${colCount}, minmax(0, 1fr))`,
+            gridTemplateColumns: `repeat(${colCount}, 1fr)`,
             display: 'grid',
             gap
         };
@@ -49,21 +49,24 @@ export class SequenceDiagram extends VanillaMint<TAttrs> {
         this.vmSetStyles({
             width: '100%',
             minHeight: '100vh',
+            maxHeight: '100vh',
+            overflowY: 'scroll',
             position: 'relative',
+            display: 'flex',
+            flexDirection: 'column',
             backgroundColor: '#000000',
             fontFamily: `-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif`
         });
 
         const header = div({
             children: [
-                {
-                    tag: 'header',
+                div({
                     styles: {
                         ...gridStyles,
                         color: frost,
-                        zIndex: 10000,
+                        zIndex: 1000,
                         fontWeight: 'bold',
-                        position: 'sticky'
+                        position: 'fixed'
                     },
                     children: SYSTEMS
                         .map((system, index) => div({
@@ -75,13 +78,18 @@ export class SequenceDiagram extends VanillaMint<TAttrs> {
                                         textAlign: 'center',
                                         color: colors[index],
                                         backgroundColor: frost,
-                                        padding: '1.2rem 0',
-                                        fontSize: '1.4rem',
+                                        padding: '.2rem 0',
+                                        fontSize: '1.2rem',
+                                        height: '100%',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
                                     }
                                 }
                             ]
                         }))
-                }
+                })
             ]
         });
 
@@ -93,19 +101,22 @@ export class SequenceDiagram extends VanillaMint<TAttrs> {
         this.vmAppendChild(div({
             styles: {
                 width: '100%',
-                minHeight: '100vh',
                 position: 'relative',
                 zIndex: 10000,
                 display: 'flex',
                 flexDirection: 'column',
+                minHeight: '100vh',
+                overflowY: 'scroll',
                 gap
             },
             children: [
                 { ...header, styles: { ...header.styles, top: 0, } },
+                { ...header, styles: { ...header.styles, bottom: '40px', position: 'fixed', zIndex: 10000, } },
                 div({
                     styles: {
                         display: 'flex',
                         flexDirection: 'column',
+                        padding: '3rem 0',
                         gap
                     },
                     children: steps
@@ -123,11 +134,13 @@ export class SequenceDiagram extends VanillaMint<TAttrs> {
                             const endName = SYSTEMS[endIndex];
 
                             const handoff = div({
+                                classList: 'handoff',
                                 styles: {
                                     display: 'flex',
-                                    flexDirection: 'column',
-                                    justifyContent: 'center',
-                                    alignItems: isRtl ? 'flex-start' : 'flex-end',
+                                    flexDirection: isRtl ? 'row' : 'row-reverse',
+                                    flexGrow: '1',
+                                    justifyContent: isRtl ? 'flex-start' : 'flex-end',
+                                    alignItems: 'center',
                                     left: isRtl && '-1rem',
                                     right: !isRtl && '-1rem',
                                     position: 'relative'
@@ -163,19 +176,24 @@ export class SequenceDiagram extends VanillaMint<TAttrs> {
                                         ]
                                     }),
                                     div({
-                                        attrs: {
-                                            textContent: getMessage(step, startName, endName)
-                                        },
-                                        styles: {
-                                            flexGrow: '1',
-                                            alignItems: 'center',
-                                            ...(step.internally
-                                                ? { display: 'flex', justifyContent: 'center' }
-                                                : {}
-                                            ),
-                                        }
+                                        styles: { display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', flexGrow: '1' },
+                                        children: [
+                                            div({
+                                                attrs: {
+                                                    textContent: getMessage(step, startName, endName)
+                                                },
+                                                styles: {
+                                                    flexGrow: '1',
+                                                    alignItems: 'center',
+                                                    ...(step.internally
+                                                        ? { display: 'flex', justifyContent: 'center' }
+                                                        : {}
+                                                    ),
+                                                }
+                                            }),
+                                            handoff
+                                        ]
                                     }),
-                                    handoff
                                 ]
                             });
 
@@ -193,6 +211,7 @@ export class SequenceDiagram extends VanillaMint<TAttrs> {
                                             color: colors[startIndex],
                                             textAlign: isRtl ? 'left' : 'right',
                                             padding,
+                                            flexGrow: 1,
                                             border: `solid 1px ${colors[startIndex]}`
                                         },
                                         attrs: {
@@ -210,21 +229,21 @@ export class SequenceDiagram extends VanillaMint<TAttrs> {
                             });
                         })
                 }),
-                { ...header, styles: { ...header.styles, bottom: 0, } },
             ]
         }));
     }
 }
 
 function getWith(step: IStep) {
-    if (step.withJson) {
-        return 'JSON';
-    }
     if ((step?.with as any)?.join) {
         return `{${(step.with as any).join(', ')}}`;
     }
 
-    return step.with || 'JSON';
+    if ((step?.with as any)) {
+        return `{${(step.with as any)}}`;
+    }
+
+    return 'JSON';
 }
 
 function getMessage(step: IStep, startName: string, endName: string) {
@@ -235,7 +254,7 @@ function getMessage(step: IStep, startName: string, endName: string) {
     const transmission = getWith(step);
     const defaultMessage = `${startName} transmits ${typeof transmission === 'string' ? transmission : JSON.stringify(transmission, null, 2)} to ${endName}`;
 
-    if(step.because && (step.with || step.withJson)) {
+    if (step.because && (step.with || step.withJson)) {
         return `${defaultMessage} because ${step.because}`;
     }
 
