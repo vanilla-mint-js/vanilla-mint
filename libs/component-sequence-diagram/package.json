@@ -3,9 +3,9 @@
   "repository": {
     "url": "https://github.com/vanilla-mint-js/vanilla-mint"
   },
-  "version": "0.1.0",
+  "version": "0.2.0",
   "dependencies": {
-    "@vanilla-mint/core": "0.1.0",
+    "@vanilla-mint/core": "0.2.0",
     "rxjs": "latest"
   },
   "main": "./index.js",
