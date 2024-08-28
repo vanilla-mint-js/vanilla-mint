@@ -39,7 +39,25 @@ test-sku-2-3-21, test-name-2-3-21, test-location-2-3-21, 3
     <div style="border: double 2px midnightblue">
       <pdf-viewer page="2" url="https://videovore-public.s3.us-east-2.amazonaws.com/Blank+W9.pdf"></pdf-viewer>
     </div> -->
-    <sequence-diagram></sequence-diagram>
+    <!-- <sequence-diagram id="diagram"></sequence-diagram> -->
+    <sequence-diagram id="video"></sequence-diagram>
+    <script>
+
+        const isa = 'Isaiah';
+        const leah = 'Leah';
+        const mal = 'Malachi';
+        const pg = 'Prissy-G';
+
+
+        window.video.setAttribute('systems', JSON.stringify([leah, isa, mal, pg]));
+        window.video.setAttribute('steps', JSON.stringify([
+          { from: leah, to: isa, with: 'video idea' },
+          { from: isa, to: leah, with: 'URL' },
+
+        ]));
+
+
+    </script>
 </body>
 
 </html>

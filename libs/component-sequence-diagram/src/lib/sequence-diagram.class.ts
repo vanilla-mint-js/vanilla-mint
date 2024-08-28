@@ -1,22 +1,16 @@
 import { TElementConfig, VanillaMint, appendChild, appendScript, createElement, div } from '@vanilla-mint/core';
 import { IStep } from './types/i-step';
+import { colors } from './colors.constant';
+import { filter, tap } from 'rxjs';
 
-type TAttrs = {};
-
-const user = 'User';
-const browser = 'Browser';
-const server = 'Server';
-const db = 'Database';
-
-const colors = [
-    'red', 'green', 'navy', 'steelblue'
-];
+type TAttrs = { steps: IStep[], systems: string[] };
 
 const gap = '0.4rem'
 const frost = 'rgba(255, 255, 255, 0.8)';
+const padding = '.25rem';
 
 export class SequenceDiagram extends VanillaMint<TAttrs> {
-    static observedAttributes: Array<keyof TAttrs> = [];
+    static observedAttributes: Array<keyof TAttrs> = ['steps', 'systems'];
     static tagName = 'sequence-diagram';
 
     constructor() {
@@ -24,27 +18,21 @@ export class SequenceDiagram extends VanillaMint<TAttrs> {
     }
 
     override async vmConnected() {
-        this.render(
-            [
-                { from: user, to: browser, with: 'URL' },
-                { from: browser, to: server, with: 'Request for data' },
-                { from: server, to: db, with: 'SQL Query' },
-                { from: db, to: server, with: 'Query Result' },
-                { internally: server, will: 'filter data by user login state' },
-                { from: server, to: browser, with: 'Data to render' },
-                { internally: browser, will: 'Create visualizations' },
-                { from: browser, to: user, withJson: { lee: 'Norris' } },
-                { from: user, to: browser, withJson: { erica: 'Norris' } }
-            ],
-            [user, browser, db, server],
-            false
-        );
+        this.vmSubscribe(this.vmObserveAttrs(['steps', 'systems'])
+            .pipe(
+                filter(([steps, systems]) => steps && systems),
+                tap(([steps, systems]) => {
+                    this.render(
+                        JSON.parse(steps),
+                        JSON.parse(systems),
+                    );
+                })));
     }
 
     override vmDisconnected() { }
     override vmAdopted() { }
 
-    render(steps: IStep[], SYSTEMS: string[], DEBUG: boolean, notes?: string[], risks?: string[]) {
+    render(steps: IStep[], SYSTEMS: string[]) {
         const rightArrowHtmlEntity = () => { const el = createElement({ tag: 'div', styles: { fontSize: '1.8rem' } }); el.innerHTML = '&rarr;'; return el; };
         const leftArrowHtmlEntity = () => { const el = createElement({ tag: 'div', styles: { fontSize: '1.8rem' } }); el.innerHTML = '&larr;'; return el; };
 
@@ -65,8 +53,15 @@ export class SequenceDiagram extends VanillaMint<TAttrs> {
             fontFamily: `-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif`
         });
 
-        const header: TElementConfig = {
-            tag: 'div',
+        const gridLines: TElementConfig = {
+            tag: 'section',
+            styles: { ...gridStyles, position: 'absolute', minHeight: '100vh', width: '100%' },
+            children: new Array(colCount).fill(0).map((_, index) => ({ tag: 'section', styles: { border: `solid 2px ${colors[index]}` } }))
+        };
+
+        this.vmAppendChild(gridLines);
+
+        const header: TElementConfig = div({
             children: [
                 {
                     tag: 'header',
@@ -75,15 +70,15 @@ export class SequenceDiagram extends VanillaMint<TAttrs> {
                         color: frost,
                     },
                     children: SYSTEMS
-                        .map((system, index) => ({
-                            tag: 'div',
+                        .map((system, index) => div({
                             children: [
                                 {
                                     tag: 'div',
                                     attrs: { textContent: system },
                                     styles: {
                                         textAlign: 'center',
-                                        backgroundColor: colors[index],
+                                        color: colors[index],
+                                        backgroundColor: frost,
                                         padding: '1.2rem 0',
                                         fontSize: '1.4rem',
                                         border: `solid 2px ${frost}`,
@@ -93,10 +88,9 @@ export class SequenceDiagram extends VanillaMint<TAttrs> {
                         }))
                 }
             ]
-        };
+        });
 
-        const main: TElementConfig = {
-            tag: 'div',
+        const main: TElementConfig = div({
             styles: {
                 display: 'flex',
                 flexDirection: 'column',
@@ -123,8 +117,7 @@ export class SequenceDiagram extends VanillaMint<TAttrs> {
                         ]
                     });
 
-                    const _step: TElementConfig = {
-                        tag: 'div',
+                    const _step: TElementConfig = div({
                         styles: {
                             gridColumnStart,
                             gridColumnEnd,
@@ -144,26 +137,25 @@ export class SequenceDiagram extends VanillaMint<TAttrs> {
                                 styles: { display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' },
                                 children: [
                                     div({
-                                        styles: { backgroundColor: frost, color: colors[startIndex], padding: '.25rem', fontSize: '1.4rem', flexGrow: 1, fontWeight: 'bold' },
+                                        styles: { backgroundColor: frost, color: colors[startIndex], padding, fontSize: '1.4rem', flexGrow: 1, fontWeight: 'bold' },
                                         attrs: { textContent: (stepNumber + 1).toString() }
                                     }),
                                 ]
                             }),
-                            {
-                                tag: 'div',
+                            div({
                                 attrs: {
                                     textContent: getMessage(step, startName, endName)
-                                    // textContent: step.internally ? step.internally : `${startName} => ${endName}`
                                 },
                                 styles: {
                                     flexGrow: '1'
                                 }
-                            },
+                            }),
                             handoff
                         ]
-                    };
+                    });
 
                     if (step.withJson) {
+                        // TODO: make this use vm* api instead of native api
                         const element = document.createElement('j-son');
                         element.setAttribute('stringified', JSON.stringify(step.withJson, null, 2));
                         element.setAttribute('heading', `${stepNumber}. ${getMessage(step, startName, endName)}`);
@@ -174,7 +166,9 @@ export class SequenceDiagram extends VanillaMint<TAttrs> {
                                 styles: {
                                     backgroundColor: frost,
                                     color: colors[startIndex],
-                                    textAlign: isRtl ? 'left' : 'right'
+                                    textAlign: isRtl ? 'left' : 'right',
+                                    padding,
+                                    border: `solid 1px ${colors[startIndex]}`
                                 },
                                 attrs: {
                                     textContent: getWith(step) as any
@@ -183,18 +177,16 @@ export class SequenceDiagram extends VanillaMint<TAttrs> {
                         );
                     }
 
-                    return {
-                        tag: 'div',
+                    return div({
                         styles: {
                             ...gridStyles
                         },
                         children: [_step]
-                    } satisfies TElementConfig;
+                    });
                 })
-        };
+        });
 
-        const content: TElementConfig = {
-            tag: 'div',
+        const content: TElementConfig = div({
             styles: {
                 width: '100%',
                 minHeight: '100vh',
@@ -206,15 +198,8 @@ export class SequenceDiagram extends VanillaMint<TAttrs> {
                 main,
                 { ...header, styles: { zIndex: 10000, position: 'sticky', bottom: 0, } },
             ]
-        };
+        });
 
-        const gridLines: TElementConfig = {
-            tag: 'section',
-            styles: { ...gridStyles, position: 'absolute', minHeight: '100vh', width: '100%' },
-            children: new Array(colCount).fill(0).map((_, index) => ({ tag: 'section', styles: { border: `solid 2px ${colors[index]}` } }))
-        };
-
-        this.vmAppendChild(gridLines);
         this.vmAppendChild(content);
     }
 }
