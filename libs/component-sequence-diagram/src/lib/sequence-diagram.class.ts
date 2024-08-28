@@ -200,6 +200,8 @@ export class SequenceDiagram extends VanillaMint<TAttrs> {
                             if (step.withJson) {
                                 // TODO: make this use vm* api instead of native api
                                 const element = document.createElement('j-son');
+                                element.style.flexGrow = '1';
+                                element.style.alignSelf = 'flex-end'; // don't think this is needed
                                 element.setAttribute('stringified', JSON.stringify(step.withJson, null, 2));
                                 element.setAttribute('heading', `${stepNumber}. ${getMessage(step, startName, endName)}`);
                                 handoff.children!.push(element);
@@ -236,11 +238,11 @@ export class SequenceDiagram extends VanillaMint<TAttrs> {
 
 function getWith(step: IStep) {
     if ((step?.with as any)?.join) {
-        return `{${(step.with as any).join(', ')}}`;
+        return `[${(step.with as any).join(', ')}]`;
     }
 
     if ((step?.with as any)) {
-        return `{${(step.with as any)}}`;
+        return `${(step.with as any)}`;
     }
 
     return 'JSON';
