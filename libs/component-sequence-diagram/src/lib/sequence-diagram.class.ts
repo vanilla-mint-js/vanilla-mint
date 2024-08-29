@@ -120,7 +120,7 @@ export class SequenceDiagram extends VanillaMint<TAttrs> {
                         gap
                     },
                     children: steps
-                        .filter(step => ('if' in step) && !!step.if)
+                        .filter(step => !('if' in step) || !!step.if)
                         .map((rawStep, stepNumber) => {
                             const step: IStep = (rawStep.internally || rawStep.the) ? { ...rawStep, from: (rawStep.internally || rawStep.the), to: (rawStep.internally || rawStep.the) } : rawStep;
                             const startIndex = SYSTEMS.indexOf(step.from || (step.internally || step.the) as string);
