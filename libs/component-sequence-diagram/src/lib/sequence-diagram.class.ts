@@ -120,16 +120,17 @@ export class SequenceDiagram extends VanillaMint<TAttrs> {
                         gap
                     },
                     children: steps
+                        .filter(step => ('if' in step) && !!step.if)
                         .map((rawStep, stepNumber) => {
-                            const step: IStep = rawStep.internally ? { ...rawStep, from: rawStep.internally, to: rawStep.internally } : rawStep;
-                            const startIndex = SYSTEMS.indexOf(step.from || step.internally as string);
-                            const endIndex = SYSTEMS.indexOf((step.to || step.internally as string) as string);
+                            const step: IStep = (rawStep.internally || rawStep.the) ? { ...rawStep, from: (rawStep.internally || rawStep.the), to: (rawStep.internally || rawStep.the) } : rawStep;
+                            const startIndex = SYSTEMS.indexOf(step.from || (step.internally || step.the) as string);
+                            const endIndex = SYSTEMS.indexOf((step.to || (step.internally || step.the) as string) as string);
                             const isRtl = startIndex > endIndex;
 
                             const gridColumnEnd = Math.max(endIndex, startIndex) + (isRtl ? 2 : 1);
                             const gridColumnStart = Math.min(endIndex, startIndex) + (isRtl ? 2 : 1);
                             const textAlign = startIndex === endIndex ? 'center' : (startIndex < endIndex ? 'left' : 'right');
-                            const selfDirected = (startIndex === endIndex) || step.internally;
+                            const selfDirected = (startIndex === endIndex) || (step.internally || step.the);
                             const startName = SYSTEMS[startIndex];
                             const endName = SYSTEMS[endIndex];
 
@@ -185,7 +186,7 @@ export class SequenceDiagram extends VanillaMint<TAttrs> {
                                                 styles: {
                                                     flexGrow: '1',
                                                     alignItems: 'center',
-                                                    ...(step.internally
+                                                    ...((step.internally || step.the)
                                                         ? { display: 'flex', justifyContent: 'center' }
                                                         : {}
                                                     ),
@@ -203,7 +204,7 @@ export class SequenceDiagram extends VanillaMint<TAttrs> {
                                 element.style.flexGrow = '1';
                                 element.style.alignSelf = 'flex-end'; // don't think this is needed
                                 element.setAttribute('stringified', JSON.stringify(step.withJson, null, 2));
-                                element.setAttribute('heading', `${stepNumber}. ${getMessage(step, startName, endName)}`);
+                                element.setAttribute('heading', `${stepNumber + 1}. ${getMessage(step, startName, endName)}`);
                                 handoff.children!.push(element);
                             } else if (step.with) {
                                 handoff.children!.push(
@@ -249,8 +250,8 @@ function getWith(step: IStep) {
 }
 
 function getMessage(step: IStep, startName: string, endName: string) {
-    if (step.internally) {
-        return `${step.internally} will ${step.will || step.because}`;
+    if (step.internally || step.the) {
+        return `${step.internally || step.the} will ${step.will || step.because}`;
     }
 
     const transmission = getWith(step);

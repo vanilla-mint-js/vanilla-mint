@@ -4,6 +4,7 @@ export interface IStep {
   from?: string;
   to?: string;
   internally?: string;
+  the?: string;
   because?: string;
   will?: string;
   withJson?: object;
