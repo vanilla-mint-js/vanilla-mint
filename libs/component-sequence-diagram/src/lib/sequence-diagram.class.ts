@@ -167,36 +167,38 @@ export class SequenceDiagram extends VanillaMint<TAttrs> {
                                     color: frost
                                 },
                                 children: [
-                                    createElement({
-                                        tag: 'a', attrs: { id: `${stepNumber + 1}`, href: `#${stepNumber + 1}` }, children: [
+                                    div({
+                                        styles: { display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' },
+                                        children: [
                                             div({
-                                                styles: { display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' },
+                                                styles: { backgroundColor: frost, color: colors[startIndex], padding, fontSize: '1.4rem', flexGrow: 1, fontWeight: 'bold' },
                                                 children: [
-                                                    div({
+                                                    createElement({
+                                                        tag: 'a',
                                                         styles: { backgroundColor: frost, color: colors[startIndex], padding, fontSize: '1.4rem', flexGrow: 1, fontWeight: 'bold' },
-                                                        attrs: { textContent: (stepNumber + 1).toString() }
-                                                    }),
+                                                        attrs: { id: `${stepNumber + 1}`, href: `#${stepNumber + 1}`, textContent: (stepNumber + 1).toString() },
+                                                    })
                                                 ]
                                             }),
+                                        ]
+                                    }),
+                                    div({
+                                        styles: { display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', flexGrow: '1' },
+                                        children: [
                                             div({
-                                                styles: { display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', flexGrow: '1' },
-                                                children: [
-                                                    div({
-                                                        attrs: {
-                                                            textContent: getMessage(step, startName, endName)
-                                                        },
-                                                        styles: {
-                                                            flexGrow: '1',
-                                                            alignItems: 'center',
-                                                            ...((step.internally || step.the)
-                                                                ? { display: 'flex', justifyContent: 'center' }
-                                                                : {}
-                                                            ),
-                                                        }
-                                                    }),
-                                                    handoff
-                                                ]
+                                                attrs: {
+                                                    textContent: getMessage(step, startName, endName)
+                                                },
+                                                styles: {
+                                                    flexGrow: '1',
+                                                    alignItems: 'center',
+                                                    ...((step.internally || step.the)
+                                                        ? { display: 'flex', justifyContent: 'center' }
+                                                        : {}
+                                                    ),
+                                                }
                                             }),
+                                            handoff
                                         ]
                                     }),
                                 ]
