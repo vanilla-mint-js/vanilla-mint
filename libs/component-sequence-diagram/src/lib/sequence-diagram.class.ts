@@ -167,32 +167,36 @@ export class SequenceDiagram extends VanillaMint<TAttrs> {
                                     color: frost
                                 },
                                 children: [
-                                    div({
-                                        styles: { display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' },
-                                        children: [
+                                    createElement({
+                                        tag: 'a', attrs: { id: `${stepNumber + 1}`, href: `#${stepNumber + 1}` }, children: [
                                             div({
-                                                styles: { backgroundColor: frost, color: colors[startIndex], padding, fontSize: '1.4rem', flexGrow: 1, fontWeight: 'bold' },
-                                                attrs: { textContent: (stepNumber + 1).toString() }
+                                                styles: { display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' },
+                                                children: [
+                                                    div({
+                                                        styles: { backgroundColor: frost, color: colors[startIndex], padding, fontSize: '1.4rem', flexGrow: 1, fontWeight: 'bold' },
+                                                        attrs: { textContent: (stepNumber + 1).toString() }
+                                                    }),
+                                                ]
                                             }),
-                                        ]
-                                    }),
-                                    div({
-                                        styles: { display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', flexGrow: '1' },
-                                        children: [
                                             div({
-                                                attrs: {
-                                                    textContent: getMessage(step, startName, endName)
-                                                },
-                                                styles: {
-                                                    flexGrow: '1',
-                                                    alignItems: 'center',
-                                                    ...((step.internally || step.the)
-                                                        ? { display: 'flex', justifyContent: 'center' }
-                                                        : {}
-                                                    ),
-                                                }
+                                                styles: { display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', flexGrow: '1' },
+                                                children: [
+                                                    div({
+                                                        attrs: {
+                                                            textContent: getMessage(step, startName, endName)
+                                                        },
+                                                        styles: {
+                                                            flexGrow: '1',
+                                                            alignItems: 'center',
+                                                            ...((step.internally || step.the)
+                                                                ? { display: 'flex', justifyContent: 'center' }
+                                                                : {}
+                                                            ),
+                                                        }
+                                                    }),
+                                                    handoff
+                                                ]
                                             }),
-                                            handoff
                                         ]
                                     }),
                                 ]
