@@ -10,6 +10,7 @@ import { setCssVar } from './functions/set-css-var.function';
 import { createElement } from './functions/create-element.function';
 import { prependChild } from './functions/prepend-child.function';
 import { setCssVars } from './functions/set-css-vars.function';
+import { define } from './functions/define.function';
 
 export type TKeysOf<TKeySource, TValue> = { [key in keyof TKeySource]: TValue };
 
@@ -30,8 +31,8 @@ export abstract class VanillaMint<TAttrs> extends HTMLElement {
     // should we set up setters for the registered attrs here
     // so that consumers don't have to use .setAttributeValue ???
     const result = this.vmConnected();
-    if(result) {
-      if(result instanceof Promise) {
+    if (result) {
+      if (result instanceof Promise) {
         result.then((_: any) => this.vmDispatch('onconnected', _));
       } else {
         this.vmDispatch('onconnected', result);
@@ -153,7 +154,7 @@ export abstract class VanillaMint<TAttrs> extends HTMLElement {
   vmSetStyle = setStyle.bind(null, this);
   vmSetStyles = setStyles.bind(null, this);
   vmAttr<T>(attr: keyof TAttrs, defaultValue?: T) {
-    if((typeof this.__[attr]) === 'undefined') {
+    if ((typeof this.__[attr]) === 'undefined') {
       return defaultValue;
     }
 
