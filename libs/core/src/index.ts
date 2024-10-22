@@ -1,4 +1,5 @@
 export * from './lib/functions/append-child.function';
+export * from './lib/functions/prepend-child.function';
 export * from './lib/functions/append-external-asset.function';
 export * from './lib/functions/append-stylesheet.function';
 export * from './lib/functions/camel-case.function';
