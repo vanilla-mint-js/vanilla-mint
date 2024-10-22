@@ -17,6 +17,8 @@ export * from './lib/functions/set-css-vars.function';
 export * from './lib/functions/set-style.function';
 export * from './lib/functions/set-styles.function';
 
+export * from './lib/functions/create-element-v2.function';
+
 export * from './lib/types/element-config.type';
 
 export * from './lib/vanilla-mint.class';
