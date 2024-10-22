@@ -5,8 +5,7 @@ import { combineLatest, fromEvent, Observable, shareReplay, Subject, Subscriptio
 const height = window.innerHeight * .8;
 const width = window.innerWidth * .8;
 
-export function mint<TAttrs, TBaseElement extends HTMLElement, TBaseCtr extends new (...args: any[]) => TBaseElement>(
-    BaseElement: TBaseCtr,
+export function mint<TAttrs, TBaseElement extends HTMLElement>(
     tagName: string,
     observedAttributes: Array<keyof TAttrs>,
     fns?: {
@@ -14,6 +13,7 @@ export function mint<TAttrs, TBaseElement extends HTMLElement, TBaseCtr extends 
         vmDisconnected?: (vm: VanillaMint<TAttrs> & TBaseElement) => void,
         vmAdopted?: (vm: VanillaMint<TAttrs> & TBaseElement) => void,
     },
+    BaseElement = HTMLElement
 ) {
 
 
@@ -65,12 +65,8 @@ abstract class VanillaMint<TAttrs> extends BaseElement {
     if (subject$$) subject$$.next(newValue);
   }
 
-  public attrs: Array<keyof TAttrs> = [];
-
-  constructor(...args: any[]) {
-    super(...args);
-    this.attrs = args[0];
-    const attrs = this.attrs;
+  constructor(public attrs: Array<keyof TAttrs>) {
+    super();
     (attrs || []).forEach((attr) => {
       const $$ = new Subject();
       this._$$[attr] = $$;
@@ -208,7 +204,7 @@ abstract class VanillaMint<TAttrs> extends BaseElement {
     return (props: Partial<TBaseElement>) => $({ tag: tagName, ...props }) as TBaseElement
 }
 
-const $button = mint(HTMLButtonElement, 'but-ton', ['color'], {
+const $button = mint('but-ton', ['color'], {
     vmConnected(_) {
         const colors = ['red', 'orange', 'yellow'];
         let i = 1;
@@ -222,7 +218,7 @@ const $button = mint(HTMLButtonElement, 'but-ton', ['color'], {
 });
 
 
-const $canvas = mint(HTMLCanvasElement, 'can-vas', ['phrase'], {
+const $canvas = mint<{ phrase: string }, HTMLCanvasElement>('can-vas', ['phrase'], {
     vmConnected(_) {
         let i = 1;
         _.vmSetStyles({ padding: '2rem' });
