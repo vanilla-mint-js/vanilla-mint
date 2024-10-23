@@ -13,7 +13,8 @@ export function mint<TAttrs, TBaseElement extends HTMLElement>(
         vmDisconnected?: (vm: VanillaMint<TAttrs> & TBaseElement) => void,
         vmAdopted?: (vm: VanillaMint<TAttrs> & TBaseElement) => void,
     },
-    BaseElement = HTMLElement
+    is?: string,
+    BaseElement = HTMLElement,
 ) {
 
 
@@ -175,6 +176,7 @@ abstract class VanillaMint<TAttrs> extends BaseElement {
     class Subclass extends VanillaMint<TAttrs> {
         static observedAttributes = observedAttributes;
         static tagName = tagName;
+        static is = is;
 
         constructor() {
             super(observedAttributes);
@@ -201,7 +203,7 @@ abstract class VanillaMint<TAttrs> extends BaseElement {
 
     define(Subclass);
 
-    return (props: Partial<TBaseElement>) => $({ tag: tagName, ...props }) as TBaseElement
+    return (props: Partial<TBaseElement>) => $(is ? { tag: is, ...props, is: tagName} : { tag: tagName, ...props}) as TBaseElement
 }
 
 const $button = mint('but-ton', ['color'], {
@@ -221,6 +223,7 @@ const $button = mint('but-ton', ['color'], {
 const $canvas = mint<{ phrase: string }, HTMLCanvasElement>('can-vas', ['phrase'], {
     vmConnected(_) {
         let i = 1;
+        _.vmSetAttrs({is: 'can-vas'})
         _.vmSetStyles({ padding: '2rem' });
         _.vmOnChangedAttr('phrase', (_value) => {
             const ctx = _.getContext('2d');
@@ -233,8 +236,8 @@ const $canvas = mint<{ phrase: string }, HTMLCanvasElement>('can-vas', ['phrase'
             ctx!.lineWidth = 2;
             ctx!.strokeText(_value, canvas.width / 2, 150);
         });
-    }
-});
+    },
+}, 'canvas');
 
 
 const border = 'solid 1px orange';
