@@ -43,7 +43,7 @@ export function setAttrsV2(target: HTMLElement, _: Record<string, TAttrV2>) {
 }
 
 export function $(config: TElementConfigV2) {
-  const element = config instanceof HTMLElement ? config : document.createElement(config.tag!);
+  const element = config instanceof HTMLElement ? config : ((config as any).is ? document.createElement(config.tag!) : document.createElement(config.tag!, {is: (config as any).is}));
   const { styles, tag, $$: children, classes, ...attrs } = config;
 
   console.warn({ element, children });
