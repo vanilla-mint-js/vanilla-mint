@@ -42,11 +42,13 @@ export function setAttrsV2(target: HTMLElement, _: Record<string, TAttrV2>) {
   });
 }
 
-export function $(config: TElementConfigV2) {
-  const element = config instanceof HTMLElement ? config : ((config as any).is ? document.createElement(config.tag!) : document.createElement(config.tag!, {is: (config as any).is}));
+export function $<THTMLElement extends HTMLElement>(config: TElementConfigV2) {
+  const element = config instanceof HTMLElement
+    ? config
+    : document.createElement(config.tag!);
+
   const { styles, tag, $$: children, classes, ...attrs } = config;
 
-  console.warn({ element, children });
   ((children || []) as any).filter(Boolean).forEach((child: any) => _$(element, child as TElementOrTextConfig));
 
   setAttrsV2(element, attrs || {});
@@ -56,7 +58,7 @@ export function $(config: TElementConfigV2) {
     classListAdd(element, classes as string);
   }
 
-  return element;
+  return element as THTMLElement;
 }
 
 export function $_$() {
