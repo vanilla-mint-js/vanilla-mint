@@ -1,5 +1,4 @@
-import { _$, $ } from "@vanilla-mint/core";
-import { mint } from "./lib-v2";
+import { _$, $, mint } from "@vanilla-mint/core";
 
 const border = 'solid 1px orange';
 const flex = { display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: '1rem' };
