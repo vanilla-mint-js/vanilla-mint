@@ -1,3 +1,4 @@
+export * from './lib/lib-v2';
 export * from './lib/functions/append-child.function';
 export * from './lib/functions/prepend-child.function';
 export * from './lib/functions/append-external-asset.function';
@@ -22,4 +23,5 @@ export * from './lib/functions/create-element-v2.function';
 
 export * from './lib/types/element-config.type';
 
-export * from './lib/vanilla-mint.class';
+// export * from './lib/vanilla-mint.class';
+
