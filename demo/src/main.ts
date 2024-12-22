@@ -22,18 +22,18 @@ const $button = mint('but-ton', ['color'], {
   }
 });
 
-const $canvas = mint<{ phrase: string, width: number, height: number }, HTMLCanvasElement>('can-vas', ['phrase', 'width', 'height'], {
-  vmConnected(___) {
+const $canvas = mint('can-vas', ['phrase', 'width', 'height'], {
+  vmConnected(_) {
     const canvas = $<HTMLCanvasElement>({ tag: 'canvas' });
     // const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     (window as any).lee = canvas;
-    ___.vmAppendChild(canvas);
+    _.vmAppendChild(canvas);
 
-    ___.vmOnChangedAttrs(['phrase', 'width', 'height'], ([text, w, h]) => {
+    _.vmOnChangedAttrs(['phrase', 'width', 'height'], ([text, w, h]) => {
       const width = Number(w);
       const height = Number(h);
-      ___.vmSetStyles({  width: `${w}px`, height: `${h}px` });
+      _.vmSetStyles({  width: `${w}px`, height: `${h}px` });
       // ___.textContent = _value;
 
       canvas.width = width;
@@ -68,7 +68,7 @@ const $canvas = mint<{ phrase: string, width: number, height: number }, HTMLCanv
   }
 });
 
-const $input = (props: Partial<HTMLInputElement>) => $({ tag: 'input', ...props }) as HTMLInputElement;
+const $input = (props: Partial<HTMLInputElement>) => $<HTMLInputElement>({ tag: 'input', ...props });
 
 const canvas = $canvas({ width: window.innerHeight * .8, height: window.innerWidth * .8 } as any);
 const count = $input({ value: '337', onchange: (e: any) => { console.warn('$input.onchange', e.target?.value); handleChange(e.target?.value); } });

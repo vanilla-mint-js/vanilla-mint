@@ -2,7 +2,9 @@ import { _$, $, define, VanillaMint, appendChild, classListAdd, classListRemove,
 import { prependChild } from "@vanilla-mint/core";
 import { combineLatest, fromEvent, Observable, shareReplay, Subject, Subscription, tap } from "rxjs";
 
-export function mint<TAttrs, TBaseElement extends HTMLElement>(
+type TBaseElement = HTMLElement;
+
+export function mint<TAttrs>(
   tagName: string,
   observedAttributes: Array<keyof TAttrs>,
   fns?: {
@@ -10,7 +12,6 @@ export function mint<TAttrs, TBaseElement extends HTMLElement>(
     vmDisconnected?: (vm: VanillaMint<TAttrs> & TBaseElement) => void,
     vmAdopted?: (vm: VanillaMint<TAttrs> & TBaseElement) => void,
   },
-  BaseElement = HTMLElement,
 ) {
 
   type TKeysOf<TKeySource, TValue> = { [key in keyof TKeySource]: TValue };
