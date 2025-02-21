@@ -1,0 +1,32 @@
+{
+  "name": "dom",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/dom/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/vite:build",
+      "generatePackageJson": true,
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/dom"
+      }
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "passWithNoTests": true,
+        "reportsDirectory": "../../coverage/libs/dom"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/dom/**/*.ts", "libs/dom/package.json"]
+      }
+    }
+  },
+  "tags": []
+}
