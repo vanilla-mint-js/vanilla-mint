@@ -2,7 +2,7 @@ import { TElementProps } from "../types/element-props.type";
 import { setAttrs } from "./set-element-attributes.function";
 import { setElementStyles } from "./set-element-styles.function";
 
-function _<TElement extends HTMLElement>(element: TElement, { style, className, children, ...props }: TElementProps = {}) {
+export function _<TElement extends HTMLElement>(element: TElement, { style, className, children, ...props }: TElementProps = {}) {
     if (style) {
         setElementStyles(element, style);
     }

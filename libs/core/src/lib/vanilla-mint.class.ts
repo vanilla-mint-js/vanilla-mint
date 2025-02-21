@@ -27,6 +27,8 @@ export abstract class VanillaMint<TAttrs> extends HTMLElement {
   abstract vmAdopted(): any;
 
   connectedCallback() {
+    // should we set up setters for the registered attrs here
+    // so that consumers don't have to use .setAttributeValue ???
     const result = this.vmConnected();
     if(result) {
       if(result instanceof Promise) {
