@@ -6,7 +6,11 @@
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"]
     },
-    "lint": {
+    "@nx/vite:test": {
+      "cache": true,
+      "inputs": ["default", "^production"]
+    },
+    "@nx/eslint:lint": {
       "cache": true,
       "inputs": [
         "default",
@@ -14,14 +18,6 @@
         "{workspaceRoot}/.eslintignore",
         "{workspaceRoot}/eslint.config.js"
       ]
-    },
-    "test": {
-      "cache": true,
-      "inputs": ["default", "^production"]
-    },
-    "e2e": {
-      "cache": true,
-      "inputs": ["default", "^production"]
     }
   },
   "namedInputs": {
@@ -42,5 +38,7 @@
       "unitTestRunner": "vitest",
       "e2eTestRunner": "cypress"
     }
-  }
+  },
+  "useInferencePlugins": false,
+  "useLegacyCache": true
 }

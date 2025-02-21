@@ -8,6 +8,8 @@ const rows = 3;
 
 const arr = Array(rows).fill(0);
 
+console.warn('things and stuff')
+
 const columns = [
     'test-sku', 'test-name', 'test-location'
 ];
