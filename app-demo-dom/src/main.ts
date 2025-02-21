@@ -1,1 +1,1 @@
-import './app/app.element';
+import './app/counter';

@@ -56,7 +56,7 @@ document.querySelector<HTMLDivElement>('#app')!
 
 ```js
 import { $b, $button, $div } from "@vanilla-mint/dom";
-import { signal, effect } from "@preact/signals";
+import { signal, effect } from "@preact/signals-core";
 
 const count = signal(0);
 
@@ -64,10 +64,10 @@ const label = $b({ style: { fontSize: '2rem' } });
 effect(() => { label.textContent = `${count.value}`; });
 
 const minus = $button({ style: { backgroundColor: 'red' }, textContent: '-' });
-minus.onclick = () => count.value--; // declare handler outside  declaration
+minus.onclick = () => count.value--; // declare handler outside  declaration optionally
 
-// declare handler as part of declaration
-const plus = $button({ style: { backgroundColor: 'green' }, textContent: '+' onclick: () => count.value++ });
+// declare handler as part of declaration optionally
+const plus = $button({ style: { backgroundColor: 'green' }, textContent: '+', onclick: () => count.value++ } as any);
 
 
 document.querySelector<HTMLDivElement>('#app')!
