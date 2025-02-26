@@ -7,17 +7,17 @@ export interface Route<TElement extends HTMLElement = HTMLElement> {
     path: string;
     render: (params?: any) => TElement;
     children?: Route[];
-    outlet?: string; // New property to specify where children should be rendered
+    outlet?: string;
 }
 
 export class Router {
     private notFoundHandler: Route['render'];
 
-    static forRoot(routes: Route[]): Router {
-        return new Router(routes)
+    static forRoot(routes: Route[], hostElement: HTMLElement): Router {
+        return new Router(routes, hostElement)
     }
 
-    constructor(public routes: Route[]) {
+    constructor(public routes: Route[], public hostElement: HTMLElement) {
         this.notFoundHandler = () => document.createElement('h1');
         this.init();
     }
@@ -132,7 +132,7 @@ export class Router {
     }
 
     private render<TElement extends HTMLElement>(content: string | TElement): void {
-        const app = document.getElementById('app');
+        const app = this.hostElement;
         if (app) {
             if (typeof content === 'string') {
                 app.innerHTML = content;

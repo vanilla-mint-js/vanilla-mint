@@ -55,4 +55,4 @@ Router.forRoot([
       }
     ],
   },
-]);
+], document.querySelector('#app')!);

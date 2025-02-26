@@ -1,1 +1,1 @@
-import './app/routes';
+import './app/router-dom';
