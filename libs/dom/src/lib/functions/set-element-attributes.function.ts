@@ -3,6 +3,7 @@ export function setAttrs(target: HTMLElement, _: Record<string, string | Functio
         if (
             (key === 'textContent') ||
             (key === 'innerHTML') ||
+            (key === 'outerHTML') ||
             (typeof value === 'function')
         ) {
             (target as any)[key] = value;

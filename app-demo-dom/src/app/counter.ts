@@ -1,22 +1,33 @@
-import { $b, $button, $div } from "@vanilla-mint/dom";
+import { $b, $button, $canvas, $div, $link, $main, CSSProperties } from "@vanilla-mint/dom";
 import { signal, effect } from "@preact/signals-core";
+
+const baseStyles: CSSProperties = { padding: '1rem', borderRadius: '.5rem', boxSizing: 'border-box' };
 
 const count = signal(0);
 
-const label = $b({ style: { fontSize: '2rem' } });
-effect(() => { label.textContent = `${count.value}`; });
+const label = $canvas({ style: { width: '8rem', height: '4rem' } });
+const ctx = label.getContext('2d')!;
 
-const minus = $button({ style: { backgroundColor: 'red' }, textContent: '-' });
-minus.onclick = () => count.value--; // declare handler outside  declaration optionally
+effect(() => {
+  ctx.reset();
+  ctx.font = '10rem Arial';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = 'darkgray';
+  ctx.fillText(count.value.toString(), label.width/2, label.height/2);
+});
 
-// declare handler as part of declaration optionally
-const plus = $button({ style: { backgroundColor: 'green' }, textContent: '+', onclick: () => count.value++ } as any);
+const minus = $button({ style: { ...baseStyles,  }, textContent: '-', onclick: () => count.value-- });
+const plus = $button({ style: { ...baseStyles,  }, textContent: '+', onclick: () => count.value++ });
 
+document.head.appendChild($link({
+  rel: 'stylesheet',
+  href: 'https://cdn.jsdelivr.net/gh/kimeiga/bahunya/dist/bahunya.min.css'
+}));
 
 document.querySelector<HTMLDivElement>('#app')!
   .appendChild(
-    $div({
-      className: 'main',
+    $main({
       style: {
         height: '100vh',
         display: 'grid',
@@ -24,10 +35,8 @@ document.querySelector<HTMLDivElement>('#app')!
       },
       children: [
         $div({
-          className: 'counter',
           style: {
-            padding: '1rem',
-            borderRadius: '.25rem',
+            ...baseStyles,
             border: 'solid 1px black',
             display: 'flex',
             flexDirection: 'row',
