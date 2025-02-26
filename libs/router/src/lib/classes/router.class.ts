@@ -1,16 +1,19 @@
 export interface Route<TElement extends HTMLElement = HTMLElement> {
     path: string;
-    render: (params?: any) => string | TElement;
+    render: (params?: any) => TElement;
     children?: Route[];
     outlet?: string; // New property to specify where children should be rendered
 }
 
 export class Router {
-    private routes: Route[] = [];
     private notFoundHandler: Route['render'];
 
-    constructor(notFoundHandler: () => string = () => '<h1>404 - Page Not Found</h1>') {
-        this.notFoundHandler = notFoundHandler;
+    static forRoot(routes: Route[]): Router {
+        return new Router(routes)
+    }
+
+    constructor(public routes: Route[]) {
+        this.notFoundHandler = () => document.createElement('h1');
         this.init();
     }
 
@@ -73,33 +76,18 @@ export class Router {
         if (route.children && remainingPath) {
             const fullPath = `${basePath}${route.path}`.replace('//', '/');
             const nestedContent = this.resolveRoute(route.children, remainingPath, fullPath, true);
+            console.warn({ nestedContent })
 
             // If there's an outlet specified and nested content, handle the insertion
             if (route.outlet && nestedContent) {
-                if (typeof parentContent === 'string') {
-                    // Create a temporary container to manipulate the DOM
-                    const tempContainer = document.createElement('div');
-                    tempContainer.innerHTML = parentContent;
-                    const outletElement = tempContainer.querySelector(route.outlet);
-                    if (outletElement) {
-                        if (typeof nestedContent === 'string') {
-                            outletElement.innerHTML = nestedContent;
-                        } else {
-                            outletElement.innerHTML = '';
-                            outletElement.appendChild(nestedContent);
-                        }
-                    }
-                    parentContent = tempContainer.innerHTML;
-                } else {
-                    // If parentContent is an HTMLElement
-                    const outletElement = parentContent.querySelector(route.outlet);
-                    if (outletElement) {
-                        if (typeof nestedContent === 'string') {
-                            outletElement.innerHTML = nestedContent;
-                        } else {
-                            outletElement.innerHTML = '';
-                            outletElement.appendChild(nestedContent);
-                        }
+
+                const outletElement = parentContent.querySelector(route.outlet);
+                if (outletElement) {
+                    if (typeof nestedContent === 'string') {
+                        outletElement.innerHTML = nestedContent;
+                    } else {
+                        outletElement.innerHTML = '';
+                        outletElement.appendChild(nestedContent);
                     }
                 }
             }
