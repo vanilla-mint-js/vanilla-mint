@@ -1,3 +1,8 @@
+// TODO: ADD .LOADER
+// RENAME .RENDER
+// TRANSITIONS
+// ANIMATIONS
+
 export interface Route<TElement extends HTMLElement = HTMLElement> {
     path: string;
     render: (params?: any) => TElement;
