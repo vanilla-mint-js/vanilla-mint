@@ -1,1 +1,1 @@
-import './app/counter';
+import './app/routes';

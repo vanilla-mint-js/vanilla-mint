@@ -1,0 +1,13 @@
+{
+  "name": "@vanilla-mint/router",
+  "repository": {
+    "url": "https://github.com/vanilla-mint-js/vanilla-mint"
+  },
+  "version": "0.2.1",
+  "devDependencies": {
+    "csstype": "^3.1.3"
+  },
+  "main": "./index.js",
+  "module": "./index.mjs",
+  "typings": "./index.d.ts"
+}

@@ -29,7 +29,8 @@
       ],
       "@vanilla-mint/components": ["libs/components/src/index.ts"],
       "@vanilla-mint/core": ["libs/core/src/index.ts"],
-      "@vanilla-mint/dom": ["libs/dom/src/index.ts"]
+      "@vanilla-mint/dom": ["libs/dom/src/index.ts"],
+      "@vanilla-mint/router": ["libs/router/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
