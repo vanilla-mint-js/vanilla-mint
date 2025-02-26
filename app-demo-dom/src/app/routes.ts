@@ -9,7 +9,7 @@ const homePage = () => `
     <nav>
       <a href="/about" data-nav>About</a>
       <a href="/contact" data-nav>Contact</a>
-      <a href="/counter" data-nav>Counter</a>
+      <a href="/counter/3" data-nav>Counter</a>
     </nav>
   </div>
 `;
@@ -31,4 +31,6 @@ const contactPage = () => `
 router.route('/', homePage);
 router.route('/about', aboutPage);
 router.route('/contact', contactPage);
-router.route('/counter', () => $counter());
+router.route('/counter/:count', ({count}) => $counter(count));
+router.route('/counter', () => $counter(0));
+

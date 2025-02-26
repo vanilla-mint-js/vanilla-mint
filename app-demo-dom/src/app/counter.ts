@@ -3,19 +3,20 @@ import { signal, effect } from "@preact/signals-core";
 
 const baseStyles: CSSProperties = { padding: '1rem', borderRadius: '.5rem', boxSizing: 'border-box' };
 
-const count = signal(0);
+export const $counter = (_count = 0) => {
 
-const label = $label();
+  const count = signal(_count);
 
-effect(() => {
-  label.textContent = count.value.toString();
-});
+  const label = $label();
 
-const minus = $button({ style: { ...baseStyles, }, textContent: '-', onclick: () => count.value-- });
-const plus = $button({ style: { ...baseStyles, }, textContent: '+', onclick: () => count.value++ });
+  effect(() => {
+    label.textContent = count.value.toString();
+  });
 
-export const $counter = () =>
-  $main({
+  const minus = $button({ style: { ...baseStyles, }, textContent: '-', onclick: () => count.value-- });
+  const plus = $button({ style: { ...baseStyles, }, textContent: '+', onclick: () => count.value++ });
+
+  return $main({
     className: 'blah tailwind-goes-here-instead-of-inline-css-ideally',
     style: {
       height: '100vh',
@@ -39,3 +40,4 @@ export const $counter = () =>
       })
     ]
   });
+};

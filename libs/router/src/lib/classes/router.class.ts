@@ -1,7 +1,7 @@
 // router.ts
 export interface Route<TElement extends HTMLElement = HTMLElement> {
     path: string;
-    render: () => string | TElement; // Returns HTML string for simplicity
+    render: (params?: any) => string | TElement; // Returns HTML string for simplicity
 }
 
 // Main Router class
@@ -15,7 +15,7 @@ export class Router {
     }
 
     // Add a route
-    public route<TElement extends HTMLElement>(path: string, render: () => string | TElement): void {
+    public route<TElement extends HTMLElement>(path: string, render: Route['render']): void {
         this.routes.push({ path, render });
     }
 
@@ -52,18 +52,41 @@ export class Router {
     // Match route and render
     private navigate(): void {
         const currentPath = window.location.pathname;
-        const matchedRoute = this.routes.find(route =>
-            this.matchRoute(route.path, currentPath)
-        );
+        const match = this.routes.map(route => ({
+          route,
+          result: this.matchRoute(route.path, currentPath)
+        })).find(m => m.result.matches);
 
-        const content = matchedRoute ? matchedRoute.render() : this.notFoundHandler();
+        const content = match
+          ? match.route.render(match.result.params)
+          : this.notFoundHandler();
         this.render(content);
-    }
+      }
 
-    // Basic route matching (no params yet)
-    private matchRoute(routePath: string, currentPath: string): boolean {
-        return routePath === currentPath;
-    }
+    private matchRoute(routePath: string, currentPath: string): { matches: boolean; params?: Record<string, string> } {
+        const routeParts = routePath.split('/').filter(Boolean);
+        const currentParts = currentPath.split('/').filter(Boolean);
+        console.warn({routeParts, currentParts})
+
+        if (routeParts.length !== currentParts.length) {
+          return { matches: false };
+        }
+
+        const params: Record<string, string> = {};
+        let matches = true;
+
+        routeParts.forEach((part, index) => {
+          if (part.startsWith(':')) {
+            params[part.slice(1)] = currentParts[index];
+          } else if (part !== currentParts[index]) {
+            matches = false;
+          }
+        });
+
+        const things = { matches, params: Object.keys(params).length ? params : undefined };
+        console.warn({things})
+        return things;
+      }
 
     // Render content to the DOM
     private render<TElement extends HTMLElement>(content: string | TElement): void {
