@@ -4,6 +4,10 @@
     "url": "https://github.com/vanilla-mint-js/vanilla-mint"
   },
   "version": "0.2.1",
+  "dependencies": {
+    "@vanilla-mint/dom": "latest",
+    "@vanilla-mint/router": "latest"
+  },
   "devDependencies": {
     "csstype": "^3.1.3"
   },
