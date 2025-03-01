@@ -1,0 +1,44 @@
+:root {
+    /* Light Theme Variables */
+    --light-mint-green: #A2E4B8;        /* Primary */
+    --light-off-white: #F5F7F5;         /* Background */
+    --light-gray: #7A8C87;             /* Text/Secondary */
+    --light-dark-mint: #5D8575;        /* Accent */
+    --light-bright-white: #FFFFFF;     /* Highlight */
+
+    /* Dark Theme Variables */
+    --dark-deep-mint: #3B6B5C;         /* Primary */
+    --dark-gray: #1E2A28;             /* Background */
+    --dark-pale-mint: #B8D6C9;        /* Text/Secondary */
+    --dark-vivid-mint: #76C9A1;       /* Accent */
+    --dark-charcoal: #141C1A;         /* Shadow */
+  }
+
+  /* Example usage for Light Theme */
+  .light-theme {
+    background-color: var(--light-off-white);
+    color: var(--light-gray);
+    accent-color: var(--light-dark-mint);
+  }
+
+  /* Example usage for Dark Theme */
+  .dark-theme {
+    background-color: var(--dark-gray);
+    color: var(--dark-pale-mint);
+    accent-color: var(--dark-vivid-mint);
+  }
+
+  /* Optional: Apply theme to the body or a container */
+  body {
+    /* Default to light theme */
+    background-color: var(--light-off-white);
+    color: var(--light-gray);
+  }
+
+  /* Example media query for dark mode preference */
+  @media (prefers-color-scheme: dark) {
+    body {
+      background-color: var(--dark-gray);
+      color: var(--dark-pale-mint);
+    }
+  }
