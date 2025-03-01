@@ -1,44 +1,85 @@
 :root {
-    /* Light Theme Variables */
-    --light-mint-green: #A2E4B8;        /* Primary */
-    --light-off-white: #F5F7F5;         /* Background */
-    --light-gray: #7A8C87;             /* Text/Secondary */
-    --light-dark-mint: #5D8575;        /* Accent */
-    --light-bright-white: #FFFFFF;     /* Highlight */
+    /* Light Theme Semantic Colors */
+    --light-primary: #A2E4B8;          /* Mint Green: Main actions or branding */
+    --light-secondary: #7A8C87;        /* Light Gray: Subtle text or borders */
+    --light-background: #F5F7F5;       /* Off-White: Base surface */
+    --light-success: #5D8575;          /* Dark Mint: Positive feedback */
+    --light-error: #E4A2A2;            /* Derived soft red for errors */
+    --light-warning: #E4D4A2;          /* Derived muted yellow for caution */
+    --light-info: #A2C4E4;             /* Derived light blue for neutral info */
+    --light-text: #5D8575;             /* Dark Mint: Readable text */
+    --light-surface: #FFFFFF;          /* Bright White: Elevated elements */
 
-    /* Dark Theme Variables */
-    --dark-deep-mint: #3B6B5C;         /* Primary */
-    --dark-gray: #1E2A28;             /* Background */
-    --dark-pale-mint: #B8D6C9;        /* Text/Secondary */
-    --dark-vivid-mint: #76C9A1;       /* Accent */
-    --dark-charcoal: #141C1A;         /* Shadow */
+    /* Dark Theme Semantic Colors */
+    --dark-primary: #76C9A1;           /* Vivid Mint: Main actions or branding */
+    --dark-secondary: #B8D6C9;         /* Pale Mint: Subtle text or borders */
+    --dark-background: #1E2A28;        /* Dark Gray: Base surface */
+    --dark-success: #3B6B5C;           /* Deep Mint: Positive feedback */
+    --dark-error: #C97676;             /* Derived muted red for errors */
+    --dark-warning: #C9B876;           /* Derived muted yellow for caution */
+    --dark-info: #76A9C9;              /* Derived muted blue for neutral info */
+    --dark-text: #B8D6C9;              /* Pale Mint: Readable text */
+    --dark-surface: #141C1A;           /* Charcoal: Elevated elements */
   }
 
-  /* Example usage for Light Theme */
+  /* Light Theme Application */
   .light-theme {
-    background-color: var(--light-off-white);
-    color: var(--light-gray);
-    accent-color: var(--light-dark-mint);
+    --primary: var(--light-primary);
+    --secondary: var(--light-secondary);
+    --background: var(--light-background);
+    --success: var(--light-success);
+    --error: var(--light-error);
+    --warning: var(--light-warning);
+    --info: var(--light-info);
+    --text: var(--light-text);
+    --surface: var(--light-surface);
   }
 
-  /* Example usage for Dark Theme */
+  /* Dark Theme Application */
   .dark-theme {
-    background-color: var(--dark-gray);
-    color: var(--dark-pale-mint);
-    accent-color: var(--dark-vivid-mint);
+    --primary: var(--dark-primary);
+    --secondary: var(--dark-secondary);
+    --background: var(--dark-background);
+    --success: var(--dark-success);
+    --error: var(--dark-error);
+    --warning: var(--dark-warning);
+    --info: var(--dark-info);
+    --text: var(--dark-text);
+    --surface: var(--dark-surface);
   }
 
-  /* Optional: Apply theme to the body or a container */
+  /* Usage Examples */
   body {
-    /* Default to light theme */
-    background-color: var(--light-off-white);
-    color: var(--light-gray);
+    background-color: var(--background);
+    color: var(--text);
   }
 
-  /* Example media query for dark mode preference */
+  button.primary {
+    background-color: var(--primary);
+    color: var(--background);
+  }
+
+  .alert-success {
+    background-color: var(--success);
+    color: var(--text);
+  }
+
+  .alert-error {
+    background-color: var(--error);
+    color: var(--text);
+  }
+
+  /* Theme Switcher with Media Query */
   @media (prefers-color-scheme: dark) {
-    body {
-      background-color: var(--dark-gray);
-      color: var(--dark-pale-mint);
+    :root {
+      --primary: var(--dark-primary);
+      --secondary: var(--dark-secondary);
+      --background: var(--dark-background);
+      --success: var(--dark-success);
+      --error: var(--dark-error);
+      --warning: var(--dark-warning);
+      --info: var(--dark-info);
+      --text: var(--dark-text);
+      --surface: var(--dark-surface);
     }
   }
