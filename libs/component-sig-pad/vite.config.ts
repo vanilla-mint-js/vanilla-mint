@@ -1,4 +1,3 @@
-/// <reference types='vitest' />
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 import * as path from 'path';
@@ -41,19 +40,5 @@ export default defineConfig({
       // External packages that should not be bundled into your library.
       external: [],
     },
-  },
-
-  test: {
-    reporters: ['default'],
-    coverage: {
-      reportsDirectory: '../../coverage/libs/component-sig-pad',
-      provider: 'v8',
-    },
-    globals: true,
-    cache: {
-      dir: '../../node_modules/.vitest',
-    },
-    environment: 'jsdom',
-    include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
   },
 });
