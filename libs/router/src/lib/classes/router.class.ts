@@ -1,13 +1,9 @@
-// TODO: ADD .LOADER
-// RENAME .RENDER
-// TRANSITIONS
-// ANIMATIONS
-
 export interface Route<TElement extends HTMLElement = HTMLElement> {
     path: string;
-    render: (params?: any) => TElement;
+    render: (resolution: { params: any, data: any }) => TElement;
     children?: Route[];
     outlet?: string;
+    loader?: (params: any) => any
 }
 
 export class Router {
@@ -20,10 +16,6 @@ export class Router {
     constructor(public routes: Route[], public hostElement: HTMLElement) {
         this.notFoundHandler = () => document.createElement('h1');
         this.init();
-    }
-
-    public route(path: string, render: Route['render'], children?: Route[], outlet?: string): void {
-        this.routes.push({ path, render, children, outlet });
     }
 
     public register(route: Route): void {
@@ -49,18 +41,19 @@ export class Router {
         }
     }
 
-    public go(path: string): void {
+    public async go(path: string): Promise<void> {
         window.history.pushState({}, '', path);
-        this.navigate();
+        await this.navigate();
     }
 
-    private navigate(): void {
+    private async navigate(): Promise<void> {
         const currentPath = window.location.pathname;
-        const content = this.resolveRoute(this.routes, currentPath, '', false);
-        this.render(content);
+        const content = await this.resolveRoute(this.routes, currentPath, '', false);
+
+        this.createRoot(content);
     }
 
-    private resolveRoute(routes: Route[], currentPath: string, basePath: string, disable404: boolean): any {
+    private async resolveRoute(routes: Route[], currentPath: string, basePath: string, disable404: boolean) {
         const matchingRoutes = routes.map(route => {
             const fullPath = `${basePath}${route.path}`.replace('//', '/');
             const match = this.matchRoute(fullPath, currentPath);
@@ -70,17 +63,25 @@ export class Router {
         const pathMatch = matchingRoutes.find(m => m.match.matches);
 
         if (!pathMatch) {
-            return disable404 ? '' : this.notFoundHandler();
+            return disable404 ? '' : this.notFoundHandler({ params: {}, data: {} });
         }
 
         const { route, match } = pathMatch;
         const remainingPath = currentPath.slice(match.matchedLength);
 
-        let parentContent = route.render(match.params);
+        let data: any = {};
+        const params = match.params || {};
+
+        if (typeof route.loader === 'function') {
+            const assertOutput = route.loader(params)
+            data = isPromise(assertOutput) ? await assertOutput : assertOutput;
+        }
+
+        let parentContent = route.render({ params, data: {} });
 
         if (route.children && remainingPath) {
             const fullPath = `${basePath}${route.path}`.replace('//', '/');
-            const nestedContent = this.resolveRoute(route.children, remainingPath, fullPath, true);
+            const nestedContent = await this.resolveRoute(route.children, remainingPath, fullPath, true);
             console.warn({ nestedContent })
 
             // If there's an outlet specified and nested content, handle the insertion
@@ -131,7 +132,7 @@ export class Router {
         };
     }
 
-    private render<TElement extends HTMLElement>(content: string | TElement): void {
+    private createRoot<TElement extends HTMLElement>(content: string | TElement): void {
         const app = this.hostElement;
         if (app) {
             if (typeof content === 'string') {
@@ -142,4 +143,8 @@ export class Router {
             }
         }
     }
+}
+
+function isPromise(value: any) {
+    return (typeof value?.then) === 'function';
 }

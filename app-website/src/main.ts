@@ -1,1 +1,2 @@
-import './app/router-dom';
+import './styles.css';
+import './app/app';

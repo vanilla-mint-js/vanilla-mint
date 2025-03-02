@@ -1,51 +1,93 @@
-:root {
-    /* Light Theme Semantic Colors */
-    --light-primary: #A2E4B8;          /* Mint Green: Main actions or branding */
-    --light-secondary: #7A8C87;        /* Light Gray: Subtle text or borders */
-    --light-background: #F5F7F5;       /* Off-White: Base surface */
-    --light-success: #5D8575;          /* Dark Mint: Positive feedback */
-    --light-error: #E4A2A2;            /* Derived soft red for errors */
-    --light-warning: #E4D4A2;          /* Derived muted yellow for caution */
-    --light-info: #A2C4E4;             /* Derived light blue for neutral info */
-    --light-text: #5D8575;             /* Dark Mint: Readable text */
-    --light-surface: #FFFFFF;          /* Bright White: Elevated elements */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-    /* Dark Theme Semantic Colors */
+:root {
+  --baseSize: 16px;
+  --baseHeight: 20px;
+    /* Light Theme Semantic Colors with Contrast */
+    --light-primary: #A2E4B8;          /* Mint Green: Main actions or branding */
+    --light-primary-contrast: #1E2A28;  /* Dark Gray: Readable dark contrast */
+    --light-secondary: #7A8C87;        /* Light Gray: Subtle text or borders */
+    --light-secondary-contrast: #F5F7F5;/* Off-White: Light contrast */
+    --light-background: #F5F7F5;       /* Off-White: Base surface */
+    --light-background-contrast: #5D8575;/* Dark Mint: Text or elements */
+    --light-success: #5D8575;          /* Dark Mint: Positive feedback */
+    --light-success-contrast: #FFFFFF; /* Bright White: High contrast */
+    --light-error: #E4A2A2;            /* Soft red for errors */
+    --light-error-contrast: #3B6B5C;   /* Deep Mint: Darker contrast */
+    --light-warning: #E4D4A2;          /* Muted yellow for caution */
+    --light-warning-contrast: #5D8575; /* Dark Mint: Readable contrast */
+    --light-info: #A2C4E4;             /* Light blue for neutral info */
+    --light-info-contrast: #1E2A28;    /* Dark Gray: Dark contrast */
+    --light-text: #5D8575;             /* Dark Mint: Readable text */
+    --light-text-contrast: #F5F7F5;    /* Off-White: Background contrast */
+    --light-surface: #FFFFFF;          /* Bright White: Elevated elements */
+    --light-surface-contrast: #7A8C87; /* Light Gray: Subtle contrast */
+
+    /* Dark Theme Semantic Colors with Contrast */
     --dark-primary: #76C9A1;           /* Vivid Mint: Main actions or branding */
+    --dark-primary-contrast: #141C1A;  /* Charcoal: Darker contrast */
     --dark-secondary: #B8D6C9;         /* Pale Mint: Subtle text or borders */
+    --dark-secondary-contrast: #1E2A28;/* Dark Gray: Darker background */
     --dark-background: #1E2A28;        /* Dark Gray: Base surface */
+    --dark-background-contrast: #B8D6C9;/* Pale Mint: Readable text */
     --dark-success: #3B6B5C;           /* Deep Mint: Positive feedback */
-    --dark-error: #C97676;             /* Derived muted red for errors */
-    --dark-warning: #C9B876;           /* Derived muted yellow for caution */
-    --dark-info: #76A9C9;              /* Derived muted blue for neutral info */
+    --dark-success-contrast: #F5F7F5;  /* Off-White: Light contrast */
+    --dark-error: #C97676;             /* Muted red for errors */
+    --dark-error-contrast: #1E2A28;    /* Dark Gray: Darker contrast */
+    --dark-warning: #C9B876;           /* Muted yellow for caution */
+    --dark-warning-contrast: #141C1A;  /* Charcoal: Deep contrast */
+    --dark-info: #76A9C9;              /* Muted blue for neutral info */
+    --dark-info-contrast: #1E2A28;     /* Dark Gray: Dark contrast */
     --dark-text: #B8D6C9;              /* Pale Mint: Readable text */
+    --dark-text-contrast: #1E2A28;     /* Dark Gray: Background contrast */
     --dark-surface: #141C1A;           /* Charcoal: Elevated elements */
+    --dark-surface-contrast: #76C9A1;  /* Vivid Mint: Bright contrast */
   }
 
   /* Light Theme Application */
   .light-theme {
     --primary: var(--light-primary);
+    --primary-contrast: var(--light-primary-contrast);
     --secondary: var(--light-secondary);
+    --secondary-contrast: var(--light-secondary-contrast);
     --background: var(--light-background);
+    --background-contrast: var(--light-background-contrast);
     --success: var(--light-success);
+    --success-contrast: var(--light-success-contrast);
     --error: var(--light-error);
+    --error-contrast: var(--light-error-contrast);
     --warning: var(--light-warning);
+    --warning-contrast: var(--light-warning-contrast);
     --info: var(--light-info);
+    --info-contrast: var(--light-info-contrast);
     --text: var(--light-text);
+    --text-contrast: var(--light-text-contrast);
     --surface: var(--light-surface);
+    --surface-contrast: var(--light-surface-contrast);
   }
 
   /* Dark Theme Application */
   .dark-theme {
     --primary: var(--dark-primary);
+    --primary-contrast: var(--dark-primary-contrast);
     --secondary: var(--dark-secondary);
+    --secondary-contrast: var(--dark-secondary-contrast);
     --background: var(--dark-background);
+    --background-contrast: var(--dark-background-contrast);
     --success: var(--dark-success);
+    --success-contrast: var(--dark-success-contrast);
     --error: var(--dark-error);
+    --error-contrast: var(--dark-error-contrast);
     --warning: var(--dark-warning);
+    --warning-contrast: var(--dark-warning-contrast);
     --info: var(--dark-info);
+    --info-contrast: var(--dark-info-contrast);
     --text: var(--dark-text);
+    --text-contrast: var(--dark-text-contrast);
     --surface: var(--dark-surface);
+    --surface-contrast: var(--dark-surface-contrast);
   }
 
   /* Usage Examples */
@@ -56,30 +98,73 @@
 
   button.primary {
     background-color: var(--primary);
-    color: var(--background);
+    color: var(--primary-contrast);
+    border: 1px solid var(--primary-contrast);
   }
 
   .alert-success {
     background-color: var(--success);
-    color: var(--text);
+    color: var(--success-contrast);
   }
 
   .alert-error {
     background-color: var(--error);
-    color: var(--text);
+    color: var(--error-contrast);
+  }
+
+  .alert-warning {
+    background-color: var(--warning);
+    color: var(--warning-contrast);
+  }
+
+  .alert-info {
+    background-color: var(--info);
+    color: var(--info-contrast);
   }
 
   /* Theme Switcher with Media Query */
   @media (prefers-color-scheme: dark) {
     :root {
       --primary: var(--dark-primary);
+      --primary-contrast: var(--dark-primary-contrast);
       --secondary: var(--dark-secondary);
+      --secondary-contrast: var(--dark-secondary-contrast);
       --background: var(--dark-background);
+      --background-contrast: var(--dark-background-contrast);
       --success: var(--dark-success);
+      --success-contrast: var(--dark-success-contrast);
       --error: var(--dark-error);
+      --error-contrast: var(--dark-error-contrast);
       --warning: var(--dark-warning);
+      --warning-contrast: var(--dark-warning-contrast);
       --info: var(--dark-info);
+      --info-contrast: var(--dark-info-contrast);
       --text: var(--dark-text);
+      --text-contrast: var(--dark-text-contrast);
       --surface: var(--dark-surface);
+      --surface-contrast: var(--dark-surface-contrast);
     }
   }
+
+
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+html {
+  --ratio: .6;
+  font-size: calc(var(--baseSize) * var(--ratio));
+  line-height: calc(var(--baseHeight) * var(--ratio));
+}
+
+@media screen and (min-width: 768px) {
+  html {
+      --ratio: .7;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  html {
+      --ratio: 1;
+  }
+}

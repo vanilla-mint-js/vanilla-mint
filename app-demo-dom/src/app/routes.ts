@@ -24,7 +24,7 @@ Router.forRoot([
     children: [
       { path: '/', render: () => $h1({ textContent: 'Home' })},
       { path: '/contact', render: () => $h1({ textContent: 'Contact' })},
-      { path: '/counter/:count', render: ({ count }) => $counter(count) },
+      { path: '/counter/:count', render: ({ params: {count} }) => $counter(count) },
       { path: '/counter', render: () => $counter(0) },
       {
         path: '/about',
