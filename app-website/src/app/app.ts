@@ -49,11 +49,12 @@ document.querySelector('#app')!.appendChild(
           { path: frameworkPath, render: () => $div({ children: [$h1({ textContent: 'Framework' })] }) },
           {
             path: librariesPath,
-            render: () => $div({ textContent: 'libs' }),
+            render: () => $div({ textContent: 'libs', className: 'libs' }),
+
             children: [
-              // { path: '/', loader: () => { }, render: () => $div({ textContent: 'wtf' }) },
+              // { path: '/libraries', loader: () => { }, render: () => $div({  }) },
               {
-                path: 'all',
+                path: '/',
                 render: () => $div({
                   children: [
                     $h1({ textContent: 'Libraries' }),
@@ -71,19 +72,18 @@ document.querySelector('#app')!.appendChild(
                   ]
                 })
               },
-              // {
-              //   path: '/:library',
-              //   render: ({ params }) => {
-              //     console.warn({ params })
-              //     return $section({
-              //       children: [
-              //         $h1({ textContent: params?.library }),
-              //       ]
-              //     });
-              //   },
-              // }
+              {
+                path: `/:library`,
+                render: ({ params }) => {
+                  console.warn({ params })
+                  return $section({
+                    children: [
+                      $h1({ textContent: params?.library }),
+                    ]
+                  });
+                },
+              }
             ],
-            outlet: '.data-outlet'
           }
         ],
       },

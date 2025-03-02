@@ -27,7 +27,7 @@ document.querySelector('#app')!.appendChild(
         children: [
           { path: '/', render: () => $h1({ textContent: 'Home with router-dom' }) },
           { path: '/contact', render: () => $h1({ textContent: 'Contact' }) },
-          { path: '/counter/:count', render: ({params: { count }}) => $counter(count) },
+          { path: '/counter/:count', render: ({params: { count }}) => $counter(count as any) },
           { path: '/counter', render: () => $counter(0) },
           {
             path: '/about',
