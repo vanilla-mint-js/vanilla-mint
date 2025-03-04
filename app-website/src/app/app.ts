@@ -3,8 +3,7 @@ import { $a, $div, $footer, $h1, $header, $main, $nav, $section } from '@vanilla
 import { $navLink } from './components/nav-link.component';
 import { $navBar } from './components/nav-bar.component';
 import { basePath, frameworkPath, librariesPath, toolsPath } from './constants/paths.constant';
-const rootOutletSelector = 'data-outlet-root';
-
+const rootOutletSelector = '.outlet';
 const libraries = [
   'dom',
   'router',
@@ -17,7 +16,6 @@ document.querySelector('#app')!.appendChild(
     className: 'min-h-[100vh] flex flex-col items-stretch justify-stretch w-full',
     children: [
       {
-        outlet: `.${rootOutletSelector}`,
         path: basePath,
         render: () => $div({
           className: 'grow flex flex-col items-stretch justify-stretch w-full bg-background text-bg-background-contrast',
@@ -68,7 +66,7 @@ document.querySelector('#app')!.appendChild(
                         })]
                       }))
                     }),
-                    $div({ className: 'data-outlet' })
+                    $div({ className: 'outlet' })
                   ]
                 })
               },

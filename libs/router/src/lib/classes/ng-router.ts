@@ -12,15 +12,17 @@ interface Params {
   /**
    * Route configuration interface
    */
-  interface RouteConfig {
+  interface RouteConfig<TElement extends HTMLElement = HTMLElement> {
     path: string;
-    component?: any;
+    render: (resolution: { params: Record<string, string>; data?: any, search?: any }) => TElement;
     templateUrl?: string;
     redirectTo?: string;
     children?: RouteConfig[];
     fullPath?: string;
     paramNames?: string[];
     regex?: RegExp;
+    parent?: RouteConfig;
+    loader?: (params: Record<string, string>) => any;
   }
 
   /**
@@ -69,7 +71,7 @@ interface Params {
      */
     constructor(config: RouterConfig = {}) {
       this.routes = config.routes || [];
-      this.outlet = config.outlet || '#router-outlet';
+      this.outlet = config.outlet!;
       this.useHash = config.useHash || false;
       this.baseHref = config.baseHref || '/';
       this.currentRoute = null;
@@ -119,7 +121,7 @@ interface Params {
      * @param parentPath - Parent path for nested routes
      * @private
      */
-    private _normalizeRoutes(routes: RouteConfig[], parentPath: string = ''): void {
+    private _normalizeRoutes(routes: RouteConfig[], parentPath: string = '', parentRoute: RouteConfig | undefined = undefined): void {
       routes.forEach(route => {
         // Combine parent path with route path for nested routes
         route.fullPath = parentPath + (route.path || '');
@@ -131,6 +133,7 @@ interface Params {
         // Convert path parameters to regex capture groups
         const regexPath = pathPattern
           .replace(/\//g, '\\/')
+          .replace('\\/\\/\\/', '\\/')
           .replace(/:[a-zA-Z0-9_]+/g, (match: string) => {
             paramNames.push(match.slice(1)); // Store parameter name without the colon
             return '([^/]+)';
@@ -138,10 +141,11 @@ interface Params {
 
         route.paramNames = paramNames;
         route.regex = new RegExp(`^${regexPath}($|\\?)`, 'i');
+        route.parent = parentRoute;
 
         // Process child routes recursively
         if (route.children && Array.isArray(route.children)) {
-          this._normalizeRoutes(route.children, route.fullPath + '/');
+          this._normalizeRoutes(route.children, route.fullPath + '/', route);
         }
       });
     }
@@ -261,41 +265,24 @@ interface Params {
         return;
       }
 
-      if (typeof route.component === 'function') {
-        // If component is a constructor function
+      if (typeof route.render === 'function') {
+
         try {
-          const componentInstance = new route.component(this.params, this.queryParams);
-          if (componentInstance.render) {
+
+          const componentInstance = route.render({params: this.params, data: {}, search: this.queryParams});
+
             outlet.innerHTML = '';
-            const result = componentInstance.render();
+
+            const result = componentInstance;
             if (typeof result === 'string') {
               outlet.innerHTML = result;
             } else if (result instanceof Node) {
               outlet.appendChild(result);
             }
 
-            // Call lifecycle hooks if available
-            if (componentInstance.afterViewInit) {
-              setTimeout(() => componentInstance.afterViewInit(), 0);
-            }
-          } else {
-            console.error('Component must have a render method');
-          }
         } catch (error) {
           console.error('Error rendering component:', error);
         }
-      } else if (typeof route.component === 'string') {
-        // If component is an HTML string
-        outlet.innerHTML = route.component;
-      } else if (typeof route.templateUrl === 'string') {
-        // If component should be loaded from a URL
-        this._loadTemplate(route.templateUrl)
-          .then(html => {
-            outlet.innerHTML = html;
-          })
-          .catch(error => {
-            console.error(`Error loading template: ${route.templateUrl}`, error);
-          });
       } else if (typeof route.redirectTo === 'string') {
         // Handle redirects
         this.navigate(route.redirectTo);
@@ -421,31 +408,5 @@ interface Params {
     }
   }
 
-  /**
-   * Component base class to extend for creating route components
-   */
-  abstract class Component {
-    protected routeParams: Params;
-    protected queryParams: Record<string, string>;
-
-    constructor(routeParams: Params = {}, queryParams: Record<string, string> = {}) {
-      this.routeParams = routeParams;
-      this.queryParams = queryParams;
-    }
-
-    /**
-     * Render method to be implemented by subclasses
-     * @returns HTML string or DOM node
-     */
-    abstract render(): string | Node;
-
-    /**
-     * Lifecycle hook called after the component is rendered
-     */
-    afterViewInit(): void {
-      // Optional lifecycle hook
-    }
-  }
-
   // Export the router and component base class
-  export { VanillaRouter, Component, RouteConfig, RouterConfig, Params, NavigationOptions, NavigationEvent };
+  export { VanillaRouter, RouteConfig, RouterConfig, Params, NavigationOptions, NavigationEvent };
