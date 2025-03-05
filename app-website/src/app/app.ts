@@ -3,7 +3,6 @@ import { $a, $div, $footer, $h1, $header, $main, $nav, $section } from '@vanilla
 import { $navLink } from './components/nav-link.component';
 import { $navBar } from './components/nav-bar.component';
 import { basePath, frameworkPath, librariesPath, toolsPath } from './constants/paths.constant';
-const rootOutletSelector = '.outlet';
 const libraries = [
   'dom',
   'router',
@@ -33,7 +32,9 @@ document.querySelector('#app')!.appendChild(
                 }),
               ]
             }),
-            $main({ className: `${rootOutletSelector} grow` }),
+            $main({ className: `grow`, children: [
+              $div({ className: `outlet grow` })
+            ] }),
             $footer({
               className: 'text-surface bg-surface-contrast flex flex-row justify-around items-center py-2', children: [
                 $div({ textContent: 'Vanilla Mint JS' })
@@ -47,40 +48,39 @@ document.querySelector('#app')!.appendChild(
           { path: frameworkPath, render: () => $div({ children: [$h1({ textContent: 'Framework' })] }) },
           {
             path: librariesPath,
-            render: () => $div({ textContent: 'libs', className: 'libs' }),
+            render: () => $div({ textContent: 'libszzz', className: 'libs', children: [$div({ className: 'outlet' })] }),
 
             children: [
               // { path: '/libraries', loader: () => { }, render: () => $div({  }) },
-              {
-                path: '/',
-                render: () => $div({
-                  children: [
-                    $h1({ textContent: 'Libraries' }),
-                    $div({
-                      className: 'flex flex-wrap flex-row gap-4 items-stretch justify-between',
-                      children: libraries.map(_ => $a({
-                        href: `${librariesPath}/${_}`,
-                        children: [$div({
-                          className: 'p-4 rounded-sm border border-primary',
-                          textContent: `@vanilla-mint/${_}`
-                        })]
-                      }))
-                    }),
-                    $div({ className: 'outlet' })
-                  ]
-                })
-              },
               {
                 path: `/:library`,
                 render: ({ params }) => {
                   console.warn({ params })
                   return $section({
-                    children: [
-                      $h1({ textContent: params?.library }),
-                    ]
+                    children: [$h1({ textContent: params?.library })]
                   });
                 },
-              }
+              },
+              {
+                path: '',
+                render: () => $div({
+                  children: [
+                    $h1({ textContent: 'Libraries' }),
+                    $div({
+                      className: 'flex flex-wrap flex-row gap-4 items-stretch justify-between',
+                      children: libraries.map(_ =>
+                        $a({
+                          href: `${librariesPath}/${_}`,
+                          children: [$div({
+                            className: 'p-4 rounded-sm border border-primary',
+                            textContent: `@vanilla-mint/${_}`
+                          })]
+                        }))
+                    }),
+                    $div({ className: 'outlet' })
+                  ]
+                })
+              },
             ],
           }
         ],

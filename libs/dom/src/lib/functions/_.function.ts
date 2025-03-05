@@ -11,11 +11,17 @@ export const _ = <TElement extends HTMLElement>(element: TElement, { style, clas
         element.className = className;
     }
 
+    setAttrs(element, props as any);
+
     if (children?.length) {
         children.forEach(child => element.appendChild(child));
+
+        // const fragment = document.createDocumentFragment();
+        // fragment.appendChild(element);
+
+        // return fragment;
     }
 
-    setAttrs(element, props as any);
 
     return element;
 }
