@@ -6,6 +6,7 @@
   },
   "scripts": {
     "build": "npm i @rollup/rollup-linux-x64-gnu && nx build app-website --verbose",
+    "buildlocal": "nx build app-website --verbose",
     "start": "nx serve demo",
     "components:deploy": "nx build components --skip-nx-cache && cd dist/libs/components && npm publish --access public",
     "core:deploy": "nx build core --skip-nx-cache && cd dist/libs/core && npm publish --access public"
