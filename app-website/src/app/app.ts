@@ -10,6 +10,8 @@ const libraries = [
   'dom-router',
   'core'
 ];
+export const companyId = 'c2f57fb2-d19a-4f9f-b299-34ed310375fc';
+const apiBase = `https://issessvim.hievilmath.org/api/company/${companyId}`;
 
 document.querySelector('#app')!.appendChild(
   $router({
@@ -44,8 +46,15 @@ document.querySelector('#app')!.appendChild(
           ]
         }),
         children: [
-          { path: '/', render: () => $div({ children: [
+          { path: '/',
+            loader: async () => {
+              const response = await fetch(`${apiBase}/note`, {method: 'GET', headers: {'Content-Type': 'application/json'}});
+              const notes = await response.json();
+              return {notes};
+            },
+            render: ({data}) => $div({ children: [
             $h1({ textContent: 'Home with router-dom' }),
+            ...data.notes.map((note: any) => $div({textContent: note.title})),
             $vmForm({
               config: {
                 firstName: {

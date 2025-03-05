@@ -8,7 +8,6 @@ export function $vmForm<TFormData>({ config, layout, value, onSubmit, onChange }
     const currentValue = signal({} as TFormData);
 
     function _onChange(change: Partial<TFormData>) {
-        console.warn({change});
         currentValue.value = {...currentValue.value, ...change} as TFormData;
     }
 

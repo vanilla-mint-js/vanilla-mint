@@ -1,3 +1,5 @@
+import { isPromise } from "../functions/is-promise.function";
+
 export interface Route<TElement extends HTMLElement = HTMLElement> {
     path: string;
     render: (resolution: { params: Record<string, string>; data: any }) => TElement;
@@ -253,8 +255,4 @@ export class Router {
         this.hostElement.innerHTML = '';
         this.hostElement.appendChild(content);
     }
-}
-
-function isPromise(value: any): value is Promise<any> {
-    return typeof value?.then === 'function';
 }

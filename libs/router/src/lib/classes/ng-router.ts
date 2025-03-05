@@ -2,6 +2,8 @@
  * VanillaRouter - An Angular-inspired router implementation for TypeScript
  */
 
+import { isPromise } from "../functions/is-promise.function";
+
 /**
  * Route parameter interface
  */
@@ -263,7 +265,7 @@ class VanillaRouter {
    * @param route - Route to render
    * @private
    */
-  private _renderRoute(route: RouteConfig): void {
+  private async _renderRoute(route: RouteConfig) {
     if (typeof route.redirectTo === 'string') {
       this.navigate(route.redirectTo);
     } else if (typeof route.render === 'function') {
@@ -280,14 +282,19 @@ class VanillaRouter {
 
         let lastRenderedRouteElement: HTMLElement | undefined = undefined;
 
-        toRender.forEach((routeToRender, i) => {
+        toRender.forEach(async (routeToRender, i) => {
+          // todo: test this
           // if(!routeToRender.rendered || !(Object.values(route.paramNames || {})?.filter(Boolean).length)) {
-            routeToRender.rendered = routeToRender.render({ params: this.params, data: {}, search: this.queryParams });
+          let data: any = {};
+          if(typeof routeToRender.loader === 'function') {
+            const dataResponse = routeToRender.loader(this.params);
+            data = isPromise(dataResponse) ? await dataResponse : dataResponse;
+          }
+          routeToRender.rendered = routeToRender.render({ params: this.params, data, search: this.queryParams });
           // }
 
           const host = !lastRenderedRouteElement ? document : lastRenderedRouteElement;
           const slot: HTMLElement = host.querySelector(this.outlet) as any;
-          // const slot = !lastRenderedOutlet ? document.querySelector(this.outlet) : ((lastRenderedOutlet as any)!.querySelector(this.outlet) || lastRenderedOutlet);
 
           if(!slot) {
             throw new Error(`failed to find slot ${this.outlet} within ${(host as any)!.innerHTML}`)
