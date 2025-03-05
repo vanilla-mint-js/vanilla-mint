@@ -1,5 +1,6 @@
 import { $router } from '@vanilla-mint/router-dom';
 import { $a, $div, $footer, $h1, $header, $main, $nav, $section } from '@vanilla-mint/dom';
+import { $vmForm } from '@vanilla-mint/forms';
 import { $navLink } from './components/nav-link.component';
 import { $navBar } from './components/nav-bar.component';
 import { basePath, frameworkPath, librariesPath, toolsPath } from './constants/paths.constant';
@@ -43,7 +44,23 @@ document.querySelector('#app')!.appendChild(
           ]
         }),
         children: [
-          { path: '/', render: () => $div({ children: [$h1({ textContent: 'Home with router-dom' })] }) },
+          { path: '/', render: () => $div({ children: [
+            $h1({ textContent: 'Home with router-dom' }),
+            $vmForm({
+              config: {
+                firstName: {
+                  type: 'text'
+                },
+                lastName: {
+                  type: 'text'
+                }
+              },
+              value: {firstName: 'string', lastName: 'string'},
+              onSubmit: (things) => console.warn(things) as any,
+              onChange: (things) => console.warn(things) as any,
+              layout: [['firstName', 'lastName']]
+            }),
+          ] }) },
           { path: toolsPath, render: () => $div({ children: [$h1({ textContent: 'Tools' })] }) },
           { path: frameworkPath, render: () => $div({ children: [$h1({ textContent: 'Framework' })] }) },
           {
