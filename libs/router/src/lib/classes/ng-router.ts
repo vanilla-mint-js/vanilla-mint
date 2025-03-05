@@ -7,14 +7,14 @@ import { isPromise } from "../functions/is-promise.function";
 /**
  * Route parameter interface
  */
-interface Params {
+export interface Params {
   [key: string]: string;
 }
 
 /**
  * Route configuration interface
  */
-interface RouteConfig<TElement extends HTMLElement = HTMLElement> {
+export interface RouteConfig<TElement extends HTMLElement = HTMLElement> {
   path: string;
   render: (resolution: { params: Record<string, string>; data?: any, search?: any }) => TElement;
   templateUrl?: string;
@@ -31,7 +31,7 @@ interface RouteConfig<TElement extends HTMLElement = HTMLElement> {
 /**
  * Router configuration interface
  */
-interface RouterConfig {
+export interface RouterConfig {
   routes?: RouteConfig[];
   outlet?: string;
   useHash?: boolean;
@@ -41,7 +41,7 @@ interface RouterConfig {
 /**
  * Navigation options interface
  */
-interface NavigationOptions {
+export interface NavigationOptions {
   queryParams?: Record<string, string>;
   replaceUrl?: boolean;
 }
@@ -49,7 +49,7 @@ interface NavigationOptions {
 /**
  * Navigation event detail interface
  */
-interface NavigationEvent {
+export interface NavigationEvent {
   route: RouteConfig;
   params: Params;
   queryParams: Record<string, string>;
@@ -58,7 +58,7 @@ interface NavigationEvent {
 /**
  * Main router class
  */
-class VanillaRouter {
+export class VanillaRouter {
   private routes: RouteConfig[];
   private outlet: string;
   private useHash: boolean;
@@ -435,6 +435,3 @@ class VanillaRouter {
     return { ...this.queryParams };
   }
 }
-
-// Export the router and component base class
-export { VanillaRouter, RouteConfig, RouterConfig, Params, NavigationOptions, NavigationEvent };
