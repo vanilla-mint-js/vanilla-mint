@@ -1,5 +1,5 @@
 import { $div, TElementProps } from '@vanilla-mint/dom';
-import { Route, Router, VanillaRouter } from '@vanilla-mint/router';
+import { Route, VanillaRouter } from '@vanilla-mint/router';
 
 export type TRouterElementProps = Omit<TElementProps<HTMLDivElement>, 'children'> & { children: Route[] };
 

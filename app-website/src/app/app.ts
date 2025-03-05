@@ -1,5 +1,5 @@
 import { $router } from '@vanilla-mint/router-dom';
-import { $a, $div, $footer, $h1, $header, $main, $nav, $section } from '@vanilla-mint/dom';
+import { $a, $div, $footer, $h1, $header, $main, $section } from '@vanilla-mint/dom';
 import { $vmForm } from '@vanilla-mint/forms';
 import { $navLink } from './components/nav-link.component';
 import { $navBar } from './components/nav-bar.component';

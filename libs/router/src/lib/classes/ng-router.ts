@@ -282,7 +282,7 @@ export class VanillaRouter {
 
         let lastRenderedRouteElement: HTMLElement | undefined = undefined;
 
-        toRender.forEach(async (routeToRender, i) => {
+        toRender.forEach(async (routeToRender) => {
           // todo: test this
           // if(!routeToRender.rendered || !(Object.values(route.paramNames || {})?.filter(Boolean).length)) {
           let data: any = {};
@@ -317,22 +317,6 @@ export class VanillaRouter {
     } else {
       console.error('Invalid route configuration', route);
     }
-  }
-
-  /**
-   * Load an HTML template from a URL
-   * @param url - URL of the template
-   * @returns Promise resolving to the HTML content
-   * @private
-   */
-  private _loadTemplate(url: string): Promise<string> {
-    return fetch(url)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error ${response.status}`);
-        }
-        return response.text();
-      });
   }
 
   /**

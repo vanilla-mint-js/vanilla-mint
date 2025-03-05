@@ -5,7 +5,7 @@ import { TFormLayout } from '../types/form-layout.type';
 
 export function $vmForm<TFormData>({ config, layout, value, onSubmit, onChange }: { config: TFormFields<TFormData>, layout: TFormLayout<TFormData>, value?: TFormData, onChange?: (_: any) => any, onSubmit: (value: TFormData) => any }) {
 
-    const currentValue = signal({} as TFormData);
+    const currentValue = signal((value || {}) as TFormData);
 
     function _onChange(change: Partial<TFormData>) {
         currentValue.value = {...currentValue.value, ...change} as TFormData;
@@ -26,7 +26,7 @@ export function $vmForm<TFormData>({ config, layout, value, onSubmit, onChange }
                 // onChange: () => _onChange(),
                 className: 'flex flex-col justify-center gap-4 items-stretch',
                 onsubmit: onSubmitProxy,
-                children: layout.map((row, rowNumber) =>
+                children: layout.map((row) =>
                     $div({
                         className: 'flex flex-row justify-between items-stretch gap-12',
                         children:
@@ -38,7 +38,7 @@ export function $vmForm<TFormData>({ config, layout, value, onSubmit, onChange }
                                     });
                                 }
                                 const fieldOptions = config[name as keyof TFormData];
-                                const { label, type, validators, options, disabled, className, placeholder } = fieldOptions || {};
+                                const { label, type, options, disabled, className, placeholder } = fieldOptions || {};
                                 return $div({
                                     className: 'flex-1',
                                     children: [
@@ -52,7 +52,7 @@ export function $vmForm<TFormData>({ config, layout, value, onSubmit, onChange }
                                                             $select({
                                                                 id, disabled, className: `grow w-full focus:outline-none text-sm py-5 px-4 border border-solid border-light-gray ${disabled ? 'cursor-not-allowed' : 'cursor-default'} ${className || ''}`, name, children:
 
-                                                                    (typeof options === 'function' ? options({}) : options || []).map((option: any, optionIndex: number) => $option({ value: option.value, textContent: option.display }))
+                                                                    (typeof options === 'function' ? options({}) : options || []).map((option: any) => $option({ value: option.value, textContent: option.display }))
                                                             })
                                                         ]
                                                     })
