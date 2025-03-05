@@ -133,15 +133,15 @@ class VanillaRouter {
 
       // Convert path parameters to regex capture groups
       const regexPath = pathPattern
-        .replace(/\//g, '\\/')
-        .replace('\\/\\/\\/', '\\/')
+        .replace(/\/+/g, '\\/')
         .replace(/:[a-zA-Z0-9_]+/g, (match: string) => {
           paramNames.push(match.slice(1)); // Store parameter name without the colon
           return '([^\/]+)';
         });
 
       route.paramNames = paramNames;
-      route.regex = new RegExp(`^${regexPath}($|\\?)`.replace('\\/\\/', '\\/'), 'i');
+      route.regex = new RegExp(`^${regexPath}($|\\?|\\/)`, 'i');
+      console.warn(route.regex)
       route.parent = parentRoute;
 
       // Process child routes recursively
@@ -203,7 +203,7 @@ class VanillaRouter {
           this.params[name] = match[index + 1]; // +1 because the first match is the entire string
         });
 
-        if(route.children?.find(child => (!child.path) || child.path === '/')) {
+        if(route.children?.find(child => ((!child.path) || child.path === '/') || (child.regex && pathWithoutQuery.match(child.regex)))) {
           return false;
         }
         return true;

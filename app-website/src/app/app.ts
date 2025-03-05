@@ -57,9 +57,20 @@ document.querySelector('#app')!.appendChild(
                 render: ({ params }) => {
                   console.warn({ params })
                   return $section({
-                    children: [$h1({ textContent: params?.library })]
+                    children: [$h1({ textContent: params?.library }), $div({className: 'outlet'})]
                   });
                 },
+                children: [
+                  {
+                    path: `/:version`,
+                    render: ({ params }) => {
+                      console.warn({ params })
+                      return $section({
+                        children: [$h1({ textContent: params?.version })]
+                      });
+                    },
+                  },
+                ]
               },
               {
                 path: '',
