@@ -143,7 +143,6 @@ export class VanillaRouter {
 
       route.paramNames = paramNames;
       route.regex = new RegExp(`^${regexPath}($|\\?|\\/)`, 'i');
-      console.warn(route.regex)
       route.parent = parentRoute;
 
       // Process child routes recursively

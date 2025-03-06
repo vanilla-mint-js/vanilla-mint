@@ -1,5 +1,5 @@
 import { $router } from '@vanilla-mint/router-dom';
-import { $a, $div, $footer, $h1, $header, $main, $section } from '@vanilla-mint/dom';
+import { $a, $div, $footer, $h1, $h2, $header, $main, $section } from '@vanilla-mint/dom';
 import { $vmForm } from '@vanilla-mint/forms';
 import { $navLink } from './components/nav-link.component';
 import { $navBar } from './components/nav-bar.component';
@@ -15,16 +15,17 @@ const apiBase = `https://issessvim.hievilmath.org/api/company/${companyId}`;
 
 document.querySelector('#app')!.appendChild(
   $router({
-    className: 'min-h-[100vh] flex flex-col items-stretch justify-stretch w-full',
+    className: 'min-h-[100vh] flex flex-col items-stretch justify-stretch w-full bg-neutral-200 text-neutral-200-contrast',
     children: [
       {
         path: basePath,
         render: () => $div({
-          className: 'grow flex flex-col items-stretch justify-stretch w-full bg-background text-bg-background-contrast',
+          className: 'grow flex flex-col items-stretch justify-stretch w-full',
           children: [
             $header({
-              className: 'bg-surface text-surface-contrast',
+              className: 'bg-neutral-100 text-neutral-100-contrast flex flex-row justify-between items-center p-4',
               children: [
+                $h1({className: 'font-bold text-2xl text-primary', textContent: 'VanillaMintJS'}),
                 $navBar({
                   children: [
                     $navLink({ href: basePath, textContent: "Home" }),
@@ -39,8 +40,8 @@ document.querySelector('#app')!.appendChild(
               $div({ className: `outlet grow` })
             ] }),
             $footer({
-              className: 'text-surface bg-surface-contrast flex flex-row justify-around items-center py-2', children: [
-                $div({ textContent: 'Vanilla Mint JS' })
+              className: 'bg-neutral-100 text-neutral-100-contrast flex flex-row justify-center items-center p-4', children: [
+                $div({ className: 'font-semibold text-primary', textContent: 'VanillaMintJS 2025' })
               ]
             })
           ]
@@ -53,7 +54,7 @@ document.querySelector('#app')!.appendChild(
               return {notes};
             },
             render: ({data}) => $div({ children: [
-            $h1({ textContent: 'Home with router-dom' }),
+            $h2({ textContent: 'Home with router-dom' }),
             ...data.notes.map((note: any) => $div({textContent: note.title})),
             $vmForm({
               config: {
@@ -70,8 +71,8 @@ document.querySelector('#app')!.appendChild(
               layout: [['firstName', 'lastName']]
             }),
           ] }) },
-          { path: toolsPath, render: () => $div({ children: [$h1({ textContent: 'Tools' })] }) },
-          { path: frameworkPath, render: () => $div({ children: [$h1({ textContent: 'Framework' })] }) },
+          { path: toolsPath, render: () => $div({ children: [$h2({ textContent: 'Tools' })] }) },
+          { path: frameworkPath, render: () => $div({ children: [$h2({ textContent: 'Framework' })] }) },
           {
             path: librariesPath,
             render: () => $div({ textContent: 'libszzz', className: 'libs', children: [$div({ className: 'outlet' })] }),
@@ -83,7 +84,7 @@ document.querySelector('#app')!.appendChild(
                 render: ({ params }) => {
                   console.warn({ params })
                   return $section({
-                    children: [$h1({ textContent: params?.library }), $div({className: 'outlet'})]
+                    children: [$h2({ textContent: params?.library }), $div({className: 'outlet'})]
                   });
                 },
                 children: [
@@ -92,7 +93,7 @@ document.querySelector('#app')!.appendChild(
                     render: ({ params }) => {
                       console.warn({ params })
                       return $section({
-                        children: [$h1({ textContent: params?.version })]
+                        children: [$h2({ textContent: params?.version })]
                       });
                     },
                   },
@@ -102,7 +103,7 @@ document.querySelector('#app')!.appendChild(
                 path: '',
                 render: () => $div({
                   children: [
-                    $h1({ textContent: 'Libraries' }),
+                    $h2({ textContent: 'Libraries' }),
                     $div({
                       className: 'flex flex-wrap flex-row gap-4 items-stretch justify-between',
                       children: libraries.map(_ =>
