@@ -68,14 +68,14 @@ body {
 }
 
 html {
-  --ratio: .6;
+  --ratio: .7;
   font-size: calc(var(--baseSize) * var(--ratio));
   line-height: calc(var(--baseHeight) * var(--ratio));
 }
 
 @media screen and (min-width: 768px) {
   html {
-    --ratio: .7;
+    --ratio: .77;
   }
 }
 
