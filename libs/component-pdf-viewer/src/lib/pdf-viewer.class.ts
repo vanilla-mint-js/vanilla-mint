@@ -1,5 +1,5 @@
-import { VanillaMint, appendScript, setStyle } from '@vanilla-mint/core';
-import { combineLatest, concatMap, debounceTime, distinctUntilChanged, filter, fromEvent, map, share, startWith, tap } from 'rxjs';
+import { VanillaMint, appendScript, setStyle } from '@vanilla-mint/custom';
+import { combineLatest, concatMap, debounceTime, distinctUntilChanged, filter, fromEvent, map, share, startWith } from 'rxjs';
 
 const globalPdfjsDistName = 'pdfjsLib';
 

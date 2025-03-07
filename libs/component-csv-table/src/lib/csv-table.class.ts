@@ -1,5 +1,5 @@
 
-import { VanillaMint } from '@vanilla-mint/core';
+import { VanillaMint } from '@vanilla-mint/custom';
 
 type TAttrs = {
     csv: any;

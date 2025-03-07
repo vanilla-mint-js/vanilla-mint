@@ -1,5 +1,5 @@
 
-import { VanillaMint, appendScript } from '@vanilla-mint/core';
+import { VanillaMint, appendScript } from '@vanilla-mint/custom';
 import { combineLatest, tap } from 'rxjs';
 
 const globalQrCodeName = '_globalQrCode';

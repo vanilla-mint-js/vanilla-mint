@@ -1,4 +1,4 @@
-import { appendChild, VanillaMint } from "@vanilla-mint/core";
+import { appendChild, VanillaMint } from "@vanilla-mint/custom";
 
 const frost = { backgroundColor: 'rgba(255, 255, 255, 0.9)' };
 

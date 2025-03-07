@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --baseSize: 16px;
+  --baseHeight: 20px;
+  --primary: #3eb489;
+  --primary-contrast: #ffffff;
+  --secondary: #3e8fb4;
+  --secondary-contrast: #ffffff;
+  --success: #2ecc71;
+  --success-contrast: #000000;
+  --warning: #f1c40f;
+  --warning-contrast: #000000;
+  --danger: #e74c3c;
+  --danger-contrast: #ffffff;
+
+  --neutral-light-100: #f5f6f5; /* Very light, almost white */
+  --neutral-light-100-contrast: #486271;
+  --neutral-light-200: #e0e0e0; /* Original light neutral */
+  --neutral-light-200-contrast: #2c3e50;
+  --neutral-light-300: #bfc7c5; /* Mid-light with a slight teal tint */
+  --neutral-light-300-contrast: #1f2e3a;
+  --neutral-light-400: #a3adaa; /* Darker light neutral */
+  --neutral-light-400-contrast: #f5f6f5;
+
+  /* Neutral Dark Variations */
+  --neutral-dark-100: #486271; /* Lighter dark neutral */
+  --neutral-dark-100-contrast: #f5f6f5;
+  --neutral-dark-200: #2c3e50; /* Original dark neutral */
+  --neutral-dark-200-contrast: #e0e0e0;
+  --neutral-dark-300: #1f2e3a; /* Deeper dark with teal undertone */
+  --neutral-dark-300-contrast: #bfc7c5;
+  --neutral-dark-400: #141f26; /* Near-black with subtle tint */
+  --neutral-dark-400-contrast: #f5f6f5;
+
+  --surface: var(--neutral-light-100);
+  --surface-contrast: var(--neutral-light-100-contrast);
+  --neutral-100: var(--neutral-light-100);
+  --neutral-200: var(--neutral-light-200);
+  --neutral-300: var(--neutral-light-300);
+  --neutral-400: var(--neutral-light-400);
+  --neutral-100-contrast: var(--neutral-light-100-contrast);
+  --neutral-200-contrast: var(--neutral-light-200-contrast);
+  --neutral-300-contrast: var(--neutral-light-300-contrast);
+  --neutral-400-contrast: var(--neutral-light-400-contrast);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --surface: var(--neutral-100-dark);
+    --surface-contrast: var(--neutral-dark-100-contrast);
+    --neutral-100: var(--neutral-dark-100);
+    --neutral-200: var(--neutral-dark-200);
+    --neutral-300: var(--neutral-dark-300);
+    --neutral-400: var(--neutral-dark-400);
+    --neutral-100-contrast: var(--neutral-dark-100-contrast);
+    --neutral-200-contrast: var(--neutral-dark-200-contrast);
+    --neutral-300-contrast: var(--neutral-dark-300-contrast);
+    --neutral-400-contrast: var(--neutral-dark-400-contrast);
+  }
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  font-optical-sizing: auto;
+}
+
+html {
+  --ratio: 0.7;
+  font-size: calc(var(--baseSize) * var(--ratio));
+  line-height: calc(var(--baseHeight) * var(--ratio));
+}
+
+@media screen and (min-width: 768px) {
+  html {
+    --ratio: 0.77;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  html {
+    --ratio: 1;
+  }
+}

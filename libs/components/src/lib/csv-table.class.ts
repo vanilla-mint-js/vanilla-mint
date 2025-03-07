@@ -1,5 +1,5 @@
 
-import { VanillaMint } from '@vanilla-mint/core';
+import { VanillaMint } from '@vanilla-mint/custom';
 
 type TAttrs = {
     csv: any;
@@ -37,7 +37,7 @@ export class CsvTable extends VanillaMint<TAttrs> {
                 hasHeader && {
                     tag: 'thead',
                     children: [allLines[0]]
-                        .map((_, i) => ({
+                        .map((_) => ({
                             tag: 'tr',
                             children: _.split(',').map(_ => _.trim())
                                 .map(textContent => ({
@@ -50,7 +50,7 @@ export class CsvTable extends VanillaMint<TAttrs> {
                 {
                     tag: 'tbody',
                     children: (hasHeader ? allLines.slice(1) : allLines)
-                        .map((_, i) => ({
+                        .map((_) => ({
                             tag: 'tr',
                             children: _.split(',').map(_ => _.trim())
                                 .map(textContent => ({

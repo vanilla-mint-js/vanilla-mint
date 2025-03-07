@@ -5,7 +5,7 @@
   },
   "version": "0.2.7",
   "dependencies": {
-    "@vanilla-mint/core": "0.2.0",
+    "@vanilla-mint/custom": "0.2.0",
     "rxjs": "latest"
   },
   "main": "./index.js",

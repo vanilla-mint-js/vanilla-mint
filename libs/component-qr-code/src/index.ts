@@ -1,2 +1,2 @@
-export { define } from '@vanilla-mint/core';
+export { define } from '@vanilla-mint/custom';
 export * from './lib/qr-code.class';

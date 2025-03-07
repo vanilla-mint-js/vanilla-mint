@@ -1,11 +1,10 @@
 {
-  "name": "@vanilla-mint/components",
+  "name": "@vanilla-mint/custom",
   "repository": {
     "url": "https://github.com/vanilla-mint-js/vanilla-mint"
   },
-  "version": "0.1.0",
+  "version": "0.2.0",
   "dependencies": {
-    "@vanilla-mint/custom": "0.1.0",
     "rxjs": "latest"
   },
   "main": "./index.js",

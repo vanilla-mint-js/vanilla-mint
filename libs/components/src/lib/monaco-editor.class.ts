@@ -1,4 +1,4 @@
-import { VanillaMint, appendScript } from "@vanilla-mint/core";
+import { VanillaMint, appendScript } from "@vanilla-mint/custom";
 
 type TAttrs = {
     input: any;
@@ -24,7 +24,7 @@ export class MonacoEditor extends VanillaMint<TAttrs> {
         (require as any).config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@latest/min/vs' } });
 
         (self as any).MonacoEnvironment = {
-            getWorkerUrl: function (workerId: any, label: any) {
+            getWorkerUrl: function (_workerId: any, _label: any) {
                 return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
         self.MonacoEnvironment = {
           baseUrl: 'https://unpkg.com/monaco-editor@latest/min/'

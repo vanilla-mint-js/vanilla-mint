@@ -1,4 +1,4 @@
-import { TElementConfig, VanillaMint, appendChild, appendScript, createElement, div } from '@vanilla-mint/core';
+import { TElementConfig, VanillaMint, createElement, div } from '@vanilla-mint/custom';
 import { IStep } from './types/i-step.type';
 import { colors } from './colors.constant';
 import { filter, tap } from 'rxjs';

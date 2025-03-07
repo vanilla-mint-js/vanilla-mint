@@ -6,7 +6,7 @@ A tightly-focused project that leverages `"vanilla"` JavaScript to `"mint"` cust
 
 ## Library Documentation
 
-1. [@vanilla-mint/core](libs/core/README.md)
+1. [@vanilla-mint/custom](libs/core/README.md)
 
 
 ## Justification
