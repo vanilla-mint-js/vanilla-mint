@@ -1,4 +1,5 @@
 export * from './lib/functions/_.function';
+export * from './lib/functions/as-id.function';
 export * from './lib/functions/set-element-attributes.function';
 export * from './lib/functions/set-element-style.function';
 export * from './lib/functions/set-element-styles.function';

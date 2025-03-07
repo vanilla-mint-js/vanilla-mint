@@ -1,4 +1,5 @@
-export * from './lib/functions/_.function';
+export * from './lib/components/vm-form.component';
+export * from './lib/components/vm-select.component';
 
 export * from './lib/constants/error-messages.constant';
 export * from './lib/constants/format-regexes.constant';

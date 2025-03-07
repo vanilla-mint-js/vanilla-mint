@@ -2,6 +2,7 @@ import { $div, $form, $input, $label, $option, $select } from '@vanilla-mint/dom
 import { effect, signal } from '@preact/signals-core';
 import { TFormFields } from '../types/form-fields.type';
 import { TFormLayout } from '../types/form-layout.type';
+import { $vmInput } from './vm-input.component';
 
 export function $vmForm<TFormData>({ config, layout, value, onSubmit, onChange }: { config: TFormFields<TFormData>, layout: TFormLayout<TFormData>, value?: TFormData, onChange?: (_: any) => any, onSubmit: (value: TFormData) => any }) {
 
@@ -70,8 +71,8 @@ export function $vmForm<TFormData>({ config, layout, value, onSubmit, onChange }
                                                 default:
                                                     return $div({
                                                         className: 'relative', children: [
-                                                            $vmLabel({ controlId: id, label }),
-                                                            $input({ placeholder, id, autocomplete: "off", className: `grow w-full focus:outline-none text-sm py-5 px-4 border border-solid border-light-gray ${disabled ? 'cursor-not-allowed' : 'cursor-default'}`, type, onchange: (_) => _onChange({[name]: (_.target as any)?.value}  as Partial<TFormData>) })
+                                                            // $vmLabel({ controlId: id, label }),
+                                                            $vmInput({ placeholder: placeholder || label, id, autocomplete: "off", className: `grow w-full focus:outline-none text-sm py-5 px-4 border border-solid border-light-gray ${disabled ? 'cursor-not-allowed' : 'cursor-default'}`, type, onchange: (_) => _onChange({[name]: (_.target as any)?.value}  as Partial<TFormData>) })
                                                         ]
                                                     });
                                             }

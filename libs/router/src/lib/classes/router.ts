@@ -14,25 +14,25 @@ export interface Params {
 /**
  * Route configuration interface
  */
-export interface RouteConfig<TElement extends HTMLElement = HTMLElement> {
+export interface Route<TParams extends Record<string, string> = any, TData = any, TElement extends HTMLElement = HTMLElement> {
   path: string;
-  render: (resolution: { params: Record<string, string>; data?: any, search?: any }) => TElement;
+  render: (resolution: { params: TParams; data?: TData, search?: any }) => TElement;
   templateUrl?: string;
   redirectTo?: string;
-  children?: RouteConfig[];
+  children?: Route[];
   fullPath?: string;
   paramNames?: string[];
   regex?: RegExp;
-  parent?: RouteConfig;
+  parent?: Route;
   rendered?: HTMLElement;
-  loader?: (params: Record<string, string>) => any;
+  loader?: (params: TParams) => Promise<TData> | TData;
 }
 
 /**
  * Router configuration interface
  */
 export interface RouterConfig {
-  routes?: RouteConfig[];
+  routes?: Route[];
   outlet?: string;
   useHash?: boolean;
   baseHref?: string;
@@ -50,7 +50,7 @@ export interface NavigationOptions {
  * Navigation event detail interface
  */
 export interface NavigationEvent {
-  route: RouteConfig;
+  route: Route;
   params: Params;
   queryParams: Record<string, string>;
 }
@@ -59,11 +59,11 @@ export interface NavigationEvent {
  * Main router class
  */
 export class VanillaRouter {
-  private routes: RouteConfig[];
+  private routes: Route[];
   private outlet: string;
   private useHash: boolean;
   private baseHref: string;
-  private currentRoute: RouteConfig | null;
+  private currentRoute: Route | null;
   private params: Params;
   private queryParams: Record<string, string>;
   private navigationEvents: EventTarget;
@@ -124,7 +124,7 @@ export class VanillaRouter {
    * @param parentPath - Parent path for nested routes
    * @private
    */
-  private _normalizeRoutes(routes: RouteConfig[], parentPath: string = '', parentRoute: RouteConfig | undefined = undefined): void {
+  private _normalizeRoutes(routes: Route[], parentPath: string = '', parentRoute: Route | undefined = undefined): void {
     routes.forEach(route => {
       // Combine parent path with route path for nested routes
       route.fullPath = parentPath + (route.path || '');
@@ -204,7 +204,7 @@ export class VanillaRouter {
           this.params[name] = match[index + 1]; // +1 because the first match is the entire string
         });
 
-        if(route.children?.find(child => ((!child.path) || child.path === '/') || (child.regex && pathWithoutQuery.match(child.regex)))) {
+        if (route.children?.find(child => ((!child.path) || child.path === '/') || (child.regex && pathWithoutQuery.match(child.regex)))) {
           return false;
         }
         return true;
@@ -245,8 +245,8 @@ export class VanillaRouter {
    * @returns Flattened array of routes
    * @private
    */
-  private _getAllRoutes(routes: RouteConfig[]): RouteConfig[] {
-    let allRoutes: RouteConfig[] = [];
+  private _getAllRoutes(routes: Route[]): Route[] {
+    let allRoutes: Route[] = [];
 
     routes.forEach(route => {
       allRoutes.push(route);
@@ -264,15 +264,15 @@ export class VanillaRouter {
    * @param route - Route to render
    * @private
    */
-  private async _renderRoute(route: RouteConfig) {
+  private async _renderRoute(route: Route) {
     if (typeof route.redirectTo === 'string') {
       this.navigate(route.redirectTo);
     } else if (typeof route.render === 'function') {
 
       try {
 
-        let parent: RouteConfig['parent'] = route;
-        const toRender: RouteConfig[] = [];
+        let parent: Route['parent'] = route;
+        const toRender: Route[] = [];
 
         while (parent) {
           toRender.unshift(parent);
@@ -282,28 +282,31 @@ export class VanillaRouter {
         let lastRenderedRouteElement: HTMLElement | undefined = undefined;
 
         toRender.forEach(async (routeToRender) => {
-          // todo: test this
-          // if(!routeToRender.rendered || !(Object.values(route.paramNames || {})?.filter(Boolean).length)) {
-          let data: any = {};
-          if(typeof routeToRender.loader === 'function') {
-            const dataResponse = routeToRender.loader(this.params);
-            data = isPromise(dataResponse) ? await dataResponse : dataResponse;
+
+          const routeHasParams = !!(routeToRender.paramNames?.filter(Boolean).length);
+          if (!routeToRender.rendered || routeHasParams) {
+            console.warn({routeHasParams, routeToRender});
+            let data: any = {};
+            if (typeof routeToRender.loader === 'function') {
+              const dataResponse = routeToRender.loader(this.params);
+              data = isPromise(dataResponse) ? await dataResponse : dataResponse;
+            }
+            routeToRender.rendered = routeToRender.render({ params: this.params, data, search: this.queryParams });
           }
-          routeToRender.rendered = routeToRender.render({ params: this.params, data, search: this.queryParams });
-          // }
 
           const host = !lastRenderedRouteElement ? document : lastRenderedRouteElement;
           const slot: HTMLElement = host.querySelector(this.outlet) as any;
 
-          if(!slot) {
+          if (!slot) {
             throw new Error(`failed to find slot ${this.outlet} within ${(host as any)!.innerHTML}`)
           }
 
-          slot.innerHTML = '';
 
           if (typeof routeToRender.rendered === 'string') {
+            slot.innerHTML = '';
             slot!.innerHTML = routeToRender.rendered;
           } else if (routeToRender.rendered instanceof HTMLElement) {
+            slot.replaceChildren(routeToRender.rendered);
             slot!.appendChild(routeToRender.rendered);
           }
 
@@ -398,7 +401,7 @@ export class VanillaRouter {
    * Get the current active route
    * @returns Current route object
    */
-  public getCurrentRoute(): RouteConfig | null {
+  public getCurrentRoute(): Route | null {
     return this.currentRoute;
   }
 
