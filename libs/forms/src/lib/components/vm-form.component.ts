@@ -1,4 +1,4 @@
-import { $div, $form, $input, $label, $option, $select } from '@vanilla-mint/dom';
+import { $div, $form, $label, $option, $select } from '@vanilla-mint/dom';
 import { effect, signal } from '@preact/signals-core';
 import { TFormFields } from '../types/form-fields.type';
 import { TFormLayout } from '../types/form-layout.type';
