@@ -6,7 +6,6 @@ import {
   $h1,
   $h2,
   $header,
-  $img,
   $main,
   $section,
 } from '@vanilla-mint/dom';
