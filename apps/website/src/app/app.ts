@@ -6,19 +6,19 @@ import {
   $h1,
   $h2,
   $header,
+  $img,
   $main,
   $section,
 } from '@vanilla-mint/dom';
-import { $vmForm } from '@vanilla-mint/forms';
 import { $navLink } from './components/nav-link.component';
 import { $navBar } from './components/nav-bar.component';
 import {
   basePath,
-  frameworkPath,
   librariesPath,
-  toolsPath,
+  notesPath,
 } from './constants/paths.constant';
-import { Route } from '@vanilla-mint/router';
+import { notesPage } from './pages/notes.page';
+import { landingPage } from './pages/landing.page';
 const libraries = ['dom', 'router', 'dom-router', 'core'];
 export const companyId = 'c2f57fb2-d19a-4f9f-b299-34ed310375fc';
 const apiBase = `https://issessvim.hievilmath.org/api/company/${companyId}`;
@@ -47,21 +47,17 @@ document.querySelector('#app')!.appendChild(
                     children: [
                       $navLink({ href: basePath, textContent: 'Home' }),
                       $navLink({
-                        href: frameworkPath,
-                        textContent: 'Framework',
-                      }),
-                      $navLink({
                         href: librariesPath,
                         textContent: 'Libraries',
                       }),
-                      $navLink({ href: toolsPath, textContent: 'Tools' }),
+                      $navLink({ href: notesPath, textContent: 'Notes' }),
                     ],
                   }),
                 ],
               }),
               $main({
-                className: `grow`,
-                children: [$div({ className: `outlet grow` })],
+                className: `grow flex flex-col justify-stretch items-stretch`,
+                children: [$div({ className: `outlet grow flex flex-col justify-stretch items-stretch` })],
               }),
               $footer({
                 className:
@@ -77,7 +73,12 @@ document.querySelector('#app')!.appendChild(
           }),
         children: [
           {
-            path: '/',
+            path: basePath,
+            render: landingPage
+          },
+          {
+            path: notesPath,
+            render: notesPage,
             loader: async () => {
               const response = await fetch(`${apiBase}/note`, {
                 method: 'GET',
@@ -86,38 +87,6 @@ document.querySelector('#app')!.appendChild(
               const notes = await response.json();
               return { notes };
             },
-            render: ({ data }) =>
-              $div({
-                children: [
-                  $h2({ textContent: 'Home with router-dom' }),
-                  ...data!.notes.map((note) =>
-                    $div({ textContent: note.title })
-                  ),
-                  $vmForm({
-                    config: {
-                      firstName: {
-                        type: 'text',
-                      },
-                      lastName: {
-                        type: 'text',
-                      },
-                    },
-                    value: { firstName: 'string', lastName: 'string' },
-                    onSubmit: (things) => console.warn(things) as any,
-                    onChange: (things) => console.warn(things) as any,
-                    layout: [['firstName', 'lastName']],
-                  }),
-                ],
-              }),
-          } as Route<any, { notes: Array<{ title: string }> }>,
-          {
-            path: toolsPath,
-            render: () => $div({ children: [$h2({ textContent: 'Tools' })] }),
-          },
-          {
-            path: frameworkPath,
-            render: () =>
-              $div({ children: [$h2({ textContent: 'Framework' })] }),
           },
           {
             path: librariesPath,
@@ -129,7 +98,6 @@ document.querySelector('#app')!.appendChild(
               }),
 
             children: [
-              // { path: '/libraries', loader: () => { }, render: () => $div({  }) },
               {
                 path: `/:library`,
                 render: ({ params }) => {
