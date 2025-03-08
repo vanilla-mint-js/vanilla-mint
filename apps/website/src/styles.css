@@ -46,7 +46,7 @@
   --neutral-300-contrast: var(--neutral-light-300-contrast);
   --neutral-400-contrast: var(--neutral-light-400-contrast);
 }
-/*
+
 @media (prefers-color-scheme: dark) {
   :root {
     --surface: var(--neutral-100-dark);
@@ -60,7 +60,7 @@
     --neutral-300-contrast: var(--neutral-dark-300-contrast);
     --neutral-400-contrast: var(--neutral-dark-400-contrast);
   }
-} */
+}
 
 body {
   font-family: 'Montserrat', sans-serif;

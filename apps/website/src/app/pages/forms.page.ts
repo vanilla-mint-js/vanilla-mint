@@ -4,11 +4,11 @@ import { $vmInput } from "@vanilla-mint/forms";
 import { effect, signal } from "@preact/signals-core";
 import { $pageSection } from "../components/page-section.component";
 
-const thing = signal('asdf');
+const thing = signal('');
 
-effect(() => {
-    console.warn({ thingValue: thing.value })
-});
+// effect(() => {
+//     console.warn({ thingValue: thing.value })
+// });
 
 export const formsPage: Route['render'] = () => {
     return $div({
@@ -24,8 +24,7 @@ export const formsPage: Route['render'] = () => {
                 className: 'bg-neutral-100', children: [
                     $vmInput({
                         value: thing as any,
-                        onchange: (_) => {
-                            console.warn({ _ });
+                        onkeyup: (_) => {
                             thing.value = (_.target as any).value;
                         }
                     }),
