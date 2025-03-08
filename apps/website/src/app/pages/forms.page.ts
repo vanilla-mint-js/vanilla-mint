@@ -1,7 +1,7 @@
 import { $div, $h2, $p } from "@vanilla-mint/dom";
 import { Route } from "@vanilla-mint/router";
 import { $vmInput } from "@vanilla-mint/forms";
-import { effect, signal } from "@preact/signals-core";
+import { signal } from "@preact/signals-core";
 import { $pageSection } from "../components/page-section.component";
 
 const thing = signal('');
