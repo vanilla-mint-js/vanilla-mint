@@ -285,7 +285,6 @@ export class VanillaRouter {
 
           const routeHasParams = !!(routeToRender.paramNames?.filter(Boolean).length);
           if (!routeToRender.rendered || routeHasParams) {
-            console.warn({routeHasParams, routeToRender});
             let data: any = {};
             if (typeof routeToRender.loader === 'function') {
               const dataResponse = routeToRender.loader(this.params);

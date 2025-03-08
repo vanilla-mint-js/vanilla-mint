@@ -11,16 +11,19 @@ import {
 } from '@vanilla-mint/dom';
 import { $navLink } from './components/nav-link.component';
 import { $navBar } from './components/nav-bar.component';
-import {
-  basePath,
-  librariesPath,
-  notesPath,
-} from './constants/paths.constant';
 import { notesPage } from './pages/notes.page';
 import { landingPage } from './pages/landing.page';
+import { formsPage } from './pages/forms.page';
 const libraries = ['dom', 'router', 'dom-router', 'core'];
 export const companyId = 'c2f57fb2-d19a-4f9f-b299-34ed310375fc';
 const apiBase = `https://issessvim.hievilmath.org/api/company/${companyId}`;
+
+export const basePath = '/';
+export const frameworkPath = '/framework';
+export const librariesPath = '/libraries';
+export const notesPath = '/notes';
+export const formsPath = '/forms';
+
 
 document.querySelector('#app')!.appendChild(
   $router({
@@ -36,7 +39,7 @@ document.querySelector('#app')!.appendChild(
             children: [
               $header({
                 className:
-                  'bg-neutral-100 text-neutral-100-contrast flex flex-row justify-between items-center p-4',
+                  'sticky top-0 bg-neutral-100 text-neutral-100-contrast flex flex-row justify-between items-center p-4 drop-shadow-lg',
                 children: [
                   $h1({
                     className: 'font-bold text-2xl text-primary',
@@ -45,6 +48,7 @@ document.querySelector('#app')!.appendChild(
                   $navBar({
                     children: [
                       $navLink({ href: basePath, textContent: 'Home' }),
+                      $navLink({ href: formsPath, textContent: 'Forms' }),
                       $navLink({
                         href: librariesPath,
                         textContent: 'Libraries',
@@ -74,6 +78,10 @@ document.querySelector('#app')!.appendChild(
           {
             path: basePath,
             render: landingPage
+          },
+          {
+            path: formsPath,
+            render: formsPage
           },
           {
             path: notesPath,
