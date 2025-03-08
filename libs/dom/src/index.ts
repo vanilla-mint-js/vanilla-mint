@@ -1,6 +1,6 @@
 export * from './lib/constants/style-manager.constant';
 
-export * from './lib/functions/_.function';
+export * from './lib/functions/as-element-factory.function';
 export * from './lib/functions/as-id.function';
 export * from './lib/functions/extract-style.function';
 export * from './lib/functions/set-element-attributes.function';
@@ -13,3 +13,5 @@ export * from './lib/functions/styled.function';
 
 export * from './lib/types/css-properties.type';
 export * from './lib/types/element-props.type';
+
+export * from './lib/dom';

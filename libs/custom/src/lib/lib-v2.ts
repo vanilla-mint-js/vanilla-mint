@@ -3,7 +3,6 @@ import { combineLatest, fromEvent, Observable, shareReplay, Subject, Subscriptio
 import { appendChild } from "./functions/append-child.function";
 import { classListAdd } from "./functions/class-list-add.function";
 import { classListRemove } from "./functions/class-list-remove.function";
-import { createElement } from "./functions/create-element.function";
 import { insertCss } from "./functions/insert-css.function";
 import { prependChild } from "./functions/prepend-child.function";
 import { setAttrs } from "./functions/set-attrs.function";
@@ -12,7 +11,7 @@ import { setCssVars } from "./functions/set-css-vars.function";
 import { setStyle } from "./functions/set-style.function";
 import { setStyles } from "./functions/set-styles.function";
 import { define } from "@vanilla-mint/components";
-import { _, TElement, TGenericElementProps } from '@vanilla-mint/dom';
+import { asElementFactory, TElement, TGenericElementProps } from '@vanilla-mint/dom';
 import { TKeysOf } from "./vanilla-mint.class";
 
 export abstract class VanillaMint<TAttrs> extends HTMLElement {
@@ -144,7 +143,7 @@ export abstract class VanillaMint<TAttrs> extends HTMLElement {
   vmAppendChild = appendChild.bind(null, this);
   vmClassListAdd = classListAdd.bind(null, this);
   vmClassListRemove = classListRemove.bind(null, this);
-  vmCreateElement = createElement.bind(null);
+//   vmCreateElement = createElement.bind(null);
   vmInsertCss = insertCss.bind(null, this);
   vmPrependChild = prependChild.bind(null, this);
   vmSetAttrs = setAttrs.bind(null, this);
@@ -209,5 +208,5 @@ export function mint<TAttrs>(
 
   define(Subclass);
 
-  return (props: TGenericElementProps) => _(document.createElement(tagName), props) as TElement
+  return (props: TGenericElementProps) => asElementFactory(document.createElement(tagName), props) as TElement
 }
