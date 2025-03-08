@@ -1,6 +1,6 @@
-export function define(mintable: CustomElementConstructor & { tagName: string }, tagNameOverride?: string) {
-    const tagName = tagNameOverride || mintable.tagName;
+export function define(mintable: CustomElementConstructor, tagNameOverride?: string) {
+    const tagName = tagNameOverride || (mintable as any).tagName;
     if (!customElements.get(tagName)) {
-        customElements.define(mintable.tagName, mintable);
+        customElements.define(tagName, mintable);
     }
 }
