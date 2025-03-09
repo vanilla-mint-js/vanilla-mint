@@ -11,7 +11,7 @@ import { setCssVars } from "./functions/set-css-vars.function";
 import { setStyle } from "./functions/set-style.function";
 import { setStyles } from "./functions/set-styles.function";
 import { define } from "@vanilla-mint/components";
-import { asElementFactory, TElement, TGenericElementProps } from '@vanilla-mint/dom';
+import { asElementFactory, TElement, TElementVmProps } from '@vanilla-mint/dom';
 import { TKeysOf } from "./vanilla-mint.class";
 
 export abstract class VanillaMint<TAttrs> extends HTMLElement {
@@ -208,5 +208,5 @@ export function mint<TAttrs>(
 
   define(Subclass);
 
-  return (props: TGenericElementProps) => asElementFactory(document.createElement(tagName), props) as TElement
+  return (props: TElementVmProps) => asElementFactory(document.createElement(tagName), props) as TElement
 }

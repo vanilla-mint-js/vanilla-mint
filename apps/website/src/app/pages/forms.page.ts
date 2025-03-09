@@ -4,7 +4,7 @@ import { $vmInput } from "@vanilla-mint/forms";
 import { signal } from "@preact/signals-core";
 import { $pageSection } from "../components/page-section.component";
 
-const thing = signal('');
+const thing = signal('things');
 
 // effect(() => {
 //     console.warn({ thingValue: thing.value })
@@ -23,11 +23,12 @@ export const formsPage: Route['render'] = () => {
             $pageSection({
                 className: 'bg-neutral-100', children: [
                     $vmInput({
+                        placeholder: 'something',
                         value: thing as any,
-                        onkeyup: (_) => {
+                        onkeyup: (_: any) => {
                             thing.value = (_.target as any).value;
                         }
-                    }),
+                    } as any),
                     $p({ textContent: thing as any }),
                 ]
             })
