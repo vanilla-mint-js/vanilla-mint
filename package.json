@@ -24,6 +24,7 @@
     "@nx/vite": "20.5.0",
     "@nx/web": "20.5.0",
     "@nx/workspace": "20.5.0",
+    "@onivoro/onix": "^20.5.1",
     "@swc-node/register": "1.9.2",
     "@swc/core": "1.5.7",
     "@swc/helpers": "~0.5.11",
