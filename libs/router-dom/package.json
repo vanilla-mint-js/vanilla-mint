@@ -3,10 +3,11 @@
   "repository": {
     "url": "https://github.com/vanilla-mint-js/vanilla-mint"
   },
-  "version": "0.2.1",
+  "version": "0.2.2",
   "dependencies": {
-    "@vanilla-mint/dom": "latest",
-    "@vanilla-mint/router": "latest"
+    "@preact/signals-core": "^1.8.0",
+    "@vanilla-mint/dom": "0.2.2",
+    "@vanilla-mint/router": "0.2.2"
   },
   "devDependencies": {
     "csstype": "^3.1.3"
