@@ -22,9 +22,11 @@ export const sequencePage: Route<any, {}>['render'] = () =>
                             driver,
                         ],
                         steps: [
-                            { from: customer, to: amazon },
-                            { from: amazon, to: driver },
-                            { from: driver, to: customer },
+                            // { internally: customer, will: 'think about placing an order' },
+                            { from: customer, to: amazon, with: 'order', withJson: {things: 'and stuff'} },
+                            // { internally: amazon, will: 'process the order' },
+                            { from: amazon, to: driver, with: 'package' },
+                            { from: driver, to: customer, with: 'package' },
                         ],
                     })
                 ]
