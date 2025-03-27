@@ -14,6 +14,7 @@ import { $navBar } from './components/nav-bar.component';
 import { notesPage } from './pages/notes.page';
 import { landingPage } from './pages/landing.page';
 import { formsPage } from './pages/forms.page';
+import { sequencePage } from './pages/sequence.page';
 const libraries = ['dom', 'router', 'dom-router', 'core'];
 export const companyId = 'c2f57fb2-d19a-4f9f-b299-34ed310375fc';
 const apiBase = `https://issessvim.hievilmath.org/api/company/${companyId}`;
@@ -23,6 +24,7 @@ export const frameworkPath = '/framework';
 export const librariesPath = '/libraries';
 export const notesPath = '/notes';
 export const formsPath = '/forms';
+export const sequencePath = '/sequence';
 
 
 document.querySelector('#app')!.appendChild(
@@ -48,6 +50,7 @@ document.querySelector('#app')!.appendChild(
                   $navBar({
                     children: [
                       $navLink({ href: basePath, textContent: 'Home' }),
+                      $navLink({ href: sequencePath, textContent: 'Sequence' }),
                       $navLink({ href: formsPath, textContent: 'Forms' }),
                       $navLink({
                         href: librariesPath,
@@ -82,6 +85,10 @@ document.querySelector('#app')!.appendChild(
           {
             path: formsPath,
             render: formsPage
+          },
+          {
+            path: sequencePath,
+            render: sequencePage
           },
           {
             path: notesPath,
