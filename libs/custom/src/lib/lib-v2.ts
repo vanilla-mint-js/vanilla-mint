@@ -10,9 +10,9 @@ import { setCssVar } from "./functions/set-css-var.function";
 import { setCssVars } from "./functions/set-css-vars.function";
 import { setStyle } from "./functions/set-style.function";
 import { setStyles } from "./functions/set-styles.function";
-import { define } from "@vanilla-mint/components";
 import { asElementFactory, TElement, TElementVmProps } from '@vanilla-mint/dom';
 import { TKeysOf } from "./vanilla-mint.class";
+import { define } from "./functions/define.function";
 
 export abstract class VanillaMint<TAttrs> extends HTMLElement {
   private _id: string | undefined;

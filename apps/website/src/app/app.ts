@@ -33,6 +33,10 @@ document.querySelector('#app')!.appendChild(
       'min-h-[100vh] flex flex-col items-stretch justify-stretch w-full bg-neutral-300 text-neutral-300-contrast',
     children: [
       {
+        path: sequencePath,
+        render: sequencePage
+      },
+      {
         path: basePath,
         render: () =>
           $div({
@@ -50,7 +54,7 @@ document.querySelector('#app')!.appendChild(
                   $navBar({
                     children: [
                       $navLink({ href: basePath, textContent: 'Home' }),
-                      $navLink({ href: sequencePath, textContent: 'Sequence' }),
+                      $navLink({ href: sequencePath + '-embedded', textContent: 'Sequence' }),
                       $navLink({ href: formsPath, textContent: 'Forms' }),
                       $navLink({
                         href: librariesPath,
@@ -87,7 +91,7 @@ document.querySelector('#app')!.appendChild(
             render: formsPage
           },
           {
-            path: sequencePath,
+            path: sequencePath + '-embedded',
             render: sequencePage
           },
           {

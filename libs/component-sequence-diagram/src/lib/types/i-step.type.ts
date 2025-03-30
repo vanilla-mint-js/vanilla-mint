@@ -1,4 +1,3 @@
-
 export interface IStep {
   with?: string|string[];
   from?: string;
