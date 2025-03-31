@@ -6,8 +6,7 @@ import { $handoff } from "./handoff.component";
 import { colors } from '../colors.constant';
 import { $modal } from "./modal.component";
 
-export const $sequenceStep = ({ step, systems, stepIndex, widthNumeric, ...props }: TElementProps<HTMLElement> & { step: IStep, systems: string[], widthNumeric: number, stepIndex: number }) => {
-    let open = false;
+export const $sequenceStep = ({ step, systems, stepIndex, widthNumeric }: TElementProps<HTMLElement> & { step: IStep, systems: string[], widthNumeric: number, stepIndex: number }) => {
     const { startIndex, endIndex } = getSystemIndex(step, systems);
     const from = startIndex;
     const to = endIndex;
