@@ -15,6 +15,7 @@ import { notesPage } from './pages/notes.page';
 import { landingPage } from './pages/landing.page';
 import { formsPage } from './pages/forms.page';
 import { sequencePage } from './pages/sequence.page';
+import { spanishPage } from './pages/spanish.page';
 const libraries = ['dom', 'router', 'dom-router', 'core'];
 export const companyId = 'c2f57fb2-d19a-4f9f-b299-34ed310375fc';
 const apiBase = `https://issessvim.hievilmath.org/api/company/${companyId}`;
@@ -54,6 +55,7 @@ document.querySelector('#app')!.appendChild(
                   $navBar({
                     children: [
                       $navLink({ href: basePath, textContent: 'Home' }),
+                      $navLink({ href: '/spanish', textContent: 'Spanish' }),
                       $navLink({ href: sequencePath + '-embedded', textContent: 'Sequence' }),
                       $navLink({ href: formsPath, textContent: 'Forms' }),
                       $navLink({
@@ -85,6 +87,10 @@ document.querySelector('#app')!.appendChild(
           {
             path: basePath,
             render: landingPage
+          },
+          {
+            path: '/spanish',
+            render: spanishPage
           },
           {
             path: formsPath,
