@@ -15,7 +15,8 @@ import { notesPage } from './pages/notes.page';
 import { landingPage } from './pages/landing.page';
 import { formsPage } from './pages/forms.page';
 import { sequencePage } from './pages/sequence.page';
-import { spanishPage } from './pages/spanish.page';
+import { spanishConjugationPage, spanishConjugationRoute } from './spanish/pages/spanish-conjugation.page';
+import { spanishWorksheetRoute, spanishWorksheetPage } from './spanish/pages/spanish-worksheet.page';
 const libraries = ['dom', 'router', 'dom-router', 'core'];
 export const companyId = 'c2f57fb2-d19a-4f9f-b299-34ed310375fc';
 const apiBase = `https://issessvim.hievilmath.org/api/company/${companyId}`;
@@ -55,7 +56,8 @@ document.querySelector('#app')!.appendChild(
                   $navBar({
                     children: [
                       $navLink({ href: basePath, textContent: 'Home' }),
-                      $navLink({ href: '/spanish', textContent: 'Spanish' }),
+                      $navLink({ href: spanishConjugationRoute, textContent: 'Spanish Congujations' }),
+                      $navLink({ href: spanishWorksheetRoute, textContent: 'Spanish Worksheet' }),
                       $navLink({ href: sequencePath + '-embedded', textContent: 'Sequence' }),
                       $navLink({ href: formsPath, textContent: 'Forms' }),
                       $navLink({
@@ -89,8 +91,12 @@ document.querySelector('#app')!.appendChild(
             render: landingPage
           },
           {
-            path: '/spanish',
-            render: spanishPage
+            path: spanishConjugationRoute,
+            render: spanishConjugationPage
+          },
+          {
+            path: spanishWorksheetRoute,
+            render: spanishWorksheetPage
           },
           {
             path: formsPath,
