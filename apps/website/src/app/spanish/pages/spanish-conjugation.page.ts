@@ -2,16 +2,12 @@ import { $div, $option, $select } from "@vanilla-mint/dom";
 import { Route } from "@vanilla-mint/router";
 import { $conjugationTable } from "../components/conjugation-table.component";
 import { $landingSection } from "../../components/landing-section.component";
-import { effect, signal } from "@preact/signals-core";
+import { signal } from "@preact/signals-core";
 import { infinitives } from "../constants/infinitives.constant";
 
 export const spanishConjugationRoute = '/spanish-conjugation';
 export const spanishConjugationPage: Route['render'] = () => {
     const infinitive = signal('');
-
-    effect(() => {
-        console.warn(infinitive.value)
-    })
 
     return $div({
         className: 'grow flex flex-col justify-center items-center gap-16',

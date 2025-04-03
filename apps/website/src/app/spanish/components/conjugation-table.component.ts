@@ -28,8 +28,7 @@ export function $conjugationTable(infinitive: { value?: string }): HTMLElement {
                     children: [
                         $td({ textContent: pronoun, style: { fontWeight: 'bold', color: 'var(--primary)' } }),
                         $td({ textContent: pronombre, style: { fontWeight: 'bold', color: 'var(--primary)' } }),
-                        $td({ textContent: ending, style: { fontWeight: 'bold', color: 'var(--primary)' } }),
-                        infinitive.value ? $td({ textContent: infinitive.value.replace('ar', ending), style: { fontWeight: 'bold', color: 'var(--accent)' } }) : undefined as any,
+                        infinitive.value ? $td({ textContent: infinitive.value.replace('ar', ending), style: { fontWeight: 'bold', color: 'var(--accent)' } }) : $td({ textContent: ending, style: { fontWeight: 'bold', color: 'var(--primary)' } }),
                     ].filter(Boolean)
                 })
             )
