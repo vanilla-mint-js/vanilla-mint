@@ -1,6 +1,7 @@
 import { $div } from "@vanilla-mint/dom";
 import { Route } from "@vanilla-mint/router";
 import { $landingSection } from "../../components/landing-section.component";
+import { infinitives } from "../constants/infinitives.constant";
 
 const sentences = [
     'I speak Spanish.',
@@ -15,7 +16,7 @@ const sentences = [
     'John buys bread.',
     'I call my brother.',
     'They travel a lot.',
-    'She helps mi mom.',
+    'She helps my mom.',
     'He swims in the pool.',
     'She paints turkeys.',
     'We cook food in the cocina.',
@@ -24,6 +25,13 @@ const sentences = [
     'He waits for my sister.',
     'They ask questions.',
 ];
+const style = {
+    display: 'flex',
+    flexDirection: 'column',
+    fontSize: '1.2rem',
+    padding: '.5rem',
+    gap: '.4rem'
+} as any;
 
 export const spanishWorksheetRoute = '/spanish-worksheet';
 export const spanishWorksheetPage: Route['render'] = () => {
@@ -33,16 +41,25 @@ export const spanishWorksheetPage: Route['render'] = () => {
             $landingSection({
                 children: [
                     $div({
-                        children: sentences.map((textContent, i) =>
+                        style: {
+                            display: 'flex',
+                            flexDirection: 'row',
+                            gap: '1rem',
+                        },
+                        children: [
                             $div({
-                                style: {
-                                    display: 'flex',
-                                    fontSize: '1.2rem',
-                                    padding: '.5rem',
-                                },
-                                textContent: `${i + 1}. ${textContent}`
+                                style: {...style, color: 'var(--primary)'},
+                                children: Object.entries(infinitives).map(([verbo, verb]) => $div({ textContent: `${verbo} - ${verb}` }))
+                            }),
+                            $div({
+                                style,
+                                children: sentences.map((textContent, i) =>
+                                    $div({
+                                        textContent: `${i + 1}. ${textContent}`
+                                    })
+                                )
                             })
-                        )
+                        ]
                     })
                 ]
             })
