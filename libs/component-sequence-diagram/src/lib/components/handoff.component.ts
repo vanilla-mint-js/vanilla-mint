@@ -6,12 +6,8 @@ export const $handoff = ({ isRtl, selfDirected }: { isRtl: boolean, selfDirected
             className: 'handoff',
             style: {
                 display: 'flex',
-                left: isRtl ? '.5rem' : undefined,
-                right: isRtl ? undefined : '.5rem',
-                top: '.3rem',
-                position: 'relative',
                 padding: '0',
-                scale: '1.4'
+                scale: '1.6'
             },
             children: !selfDirected ? [isRtl ? leftArrowHtmlEntity() : rightArrowHtmlEntity()] : []
         });

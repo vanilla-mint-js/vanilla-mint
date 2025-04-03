@@ -33,11 +33,9 @@ export const $sequenceStep = ({ step, systems, stepIndex, widthNumeric }: TEleme
                 className: 'vm-step',
                 style: {
                     display: 'flex',
-                    overflowX: 'scroll',
-                    overflowY: 'hidden',
                     borderRadius: '4px',
-                    flexDirection: isRtl ? 'row' : 'row-reverse',
                     minWidth: 0,
+                    flexDirection: 'column',
                     position: 'relative',
                     boxSizing: 'border-box',
                     color: '#ffffff99',
@@ -46,63 +44,68 @@ export const $sequenceStep = ({ step, systems, stepIndex, widthNumeric }: TEleme
                     maxWidth: `${selfDirected ? widthNumeric : stepWidthNumeric}%`,
                     textAlign: ltr ? 'left' : 'right',
                     flexGrow: '1',
-                    // clipPath: selfDirected ? undefined : (
-                    //     ltr ?
-                    //     'polygon(0 0, 100% 0, 100% calc(100% - 1rem), calc(100% - 1rem) 100%, 0 100%)' :
-                    //     'polygon(0 0, 100% 0, 100% 100%, 1rem 100%, 0 calc(100% - 1rem))'
-                    // )
                 },
                 children: [
                     $div({
                         style: {
-                            color: colors[from],
-                            backgroundColor: '#ffffff99',
-                            padding: '0.4rem',
-                            fontWeight: '700',
-                            fontSize: '1.2rem',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'space-between',
-                            ...(isRtl ? { borderTopLeftRadius: '4px', borderBottomLeftRadius: '4px' } : { borderTopRightRadius: '4px', borderBottomRightRadius: '4px' }),
-                            alignItems: 'center',
-                        },
-                        children: [
-                            $a({ textContent: `${stepIndex + 1}`, id: `${stepIndex + 1}`, href: `${location.pathname || ''}#${stepIndex + 1}`, style: { color: colors[from] } }),
-                            $handoff({ isRtl, selfDirected })
-                        ]
-                    }),
-                    $div({
-                        style: {
-                            flexGrow: '1',
                         },
                         children: [
                             $div({
-                                innerHTML: getMessage(step, startName, endName),
                                 style: {
-                                    padding: '0.5rem',
-                                    fontSize: '.9rem',
-                                    textAlign: selfDirected ? 'center' : (isRtl ? 'left' : 'right'),
-                                }
+                                    color: colors[from],
+                                    backgroundColor: '#ffffff99',
+                                    padding: '0.4rem',
+                                    fontWeight: '700',
+                                    borderTopLeftRadius: '4px', borderTopRightRadius: '4px',
+                                    fontSize: '1.2rem',
+                                    display: 'flex',
+                                    flexDirection: isRtl ? 'row' : 'row-reverse',
+                                    justifyContent: 'space-between',
+
+                                    alignItems: 'center',
+                                },
+                                children: [
+                                    $handoff({ isRtl, selfDirected }),
+                                    $a({ textContent: `${stepIndex + 1}`, id: `${stepIndex + 1}`, href: `${location.pathname || ''}#${stepIndex + 1}`, style: { color: colors[from] } }),
+                                    $handoff({ isRtl, selfDirected })
+                                ]
                             }),
                             $div({
                                 style: {
-                                    display: 'flex',
-                                    flexDirection: isRtl ? 'row' : 'row-reverse',
+                                    flexGrow: '1',
                                 },
                                 children: [
-                                    step.withJson ? $modal({
-                                        buttonLabel: 'JSON +',
-                                        style: {backgroundColor: colors[from], borderRadius: '4px', padding: '0'},
+                                    $div({
+                                        innerHTML: getMessage(step, startName, endName),
+                                        style: {
+                                            overflowX: 'scroll',
+                                            overflowY: 'hidden',
+                                            padding: '0.5rem',
+                                            fontSize: '.9rem',
+                                            textAlign: selfDirected ? 'center' : (isRtl ? 'right' : 'left'),
+                                        }
+                                    }),
+                                    $div({
+                                        style: {
+                                            display: 'flex',
+                                            flexDirection: isRtl ? 'row' : 'row-reverse',
+                                        },
                                         children: [
-                                            $h3({ innerHTML: `<b>Step ${stepIndex + 1}</b>. ${getMessage(step, startName, endName)}`, style: { padding: '1rem', letterSpacing: '.1rem', color: '#ffffff77' }}),
-                                            $pre({textContent: JSON.stringify(step.withJson, null, 2), style: {backgroundColor: '#ffffff99', textAlign: 'left', padding: '1rem', overflow: 'scroll'}})
-                                        ]
-                                    }) : null as any
-                                ].filter(Boolean)
-                            })
-                        ]
-                    }),
-                ],
+                                            step.withJson ? $modal({
+                                                buttonLabel: 'JSON +',
+                                                style: {backgroundColor: colors[from], borderRadius: '4px', padding: '0'},
+                                                children: [
+                                                    $h3({ innerHTML: `<b>Step ${stepIndex + 1}</b>. ${getMessage(step, startName, endName)}`, style: { padding: '1rem', letterSpacing: '.1rem', color: '#ffffff77' }}),
+                                                    $pre({textContent: JSON.stringify(step.withJson, null, 2), style: {backgroundColor: '#ffffff99', textAlign: 'left', padding: '1rem', overflow: 'scroll'}})
+                                                ]
+                                            }) : null as any
+                                        ].filter(Boolean)
+                                    })
+                                ]
+                            }),
+                        ],
+                    })
+                ]
             })
         ]
     });

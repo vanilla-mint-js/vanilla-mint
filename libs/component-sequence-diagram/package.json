@@ -3,7 +3,7 @@
   "repository": {
     "url": "https://github.com/vanilla-mint-js/vanilla-mint"
   },
-  "version": "0.2.9",
+  "version": "0.2.10",
   "dependencies": {
     "@preact/signals-core": "^1.8.0",
     "@vanilla-mint/dom": "0.2.2",
