@@ -32,7 +32,8 @@
       "@vanilla-mint/dom": ["libs/dom/src/index.ts"],
       "@vanilla-mint/forms": ["libs/forms/src/index.ts"],
       "@vanilla-mint/router": ["libs/router/src/index.ts"],
-      "@vanilla-mint/router-dom": ["libs/router-dom/src/index.ts"]
+      "@vanilla-mint/router-dom": ["libs/router-dom/src/index.ts"],
+      "@vanilla-mint/svg": ["libs/svg/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
