@@ -23,6 +23,13 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint"
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["build"],
+      "options": {
+        "command": "cd dist/libs/component-csv-table && npm publish"
+      }
     }
   }
 }

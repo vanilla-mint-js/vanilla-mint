@@ -27,6 +27,11 @@
     "@nx/vite:test": {
       "cache": true,
       "inputs": ["default", "^production"]
+    },
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "dist/{projectRoot}"
+      }
     }
   },
   "namedInputs": {
@@ -47,6 +52,16 @@
       "linter": "none",
       "unitTestRunner": "none",
       "e2eTestRunner": "none"
+    }
+  },
+  "release": {
+    "projectsRelationship": "fixed",
+    "version": {
+      "preVersionCommand": "nx run-many -t build --projects=\"@vanilla-mint/*\""
+    },
+    "git": {
+      "tag": true,
+      "tagTemplate": "v{version}"
     }
   },
   "useInferencePlugins": false,
