@@ -7,8 +7,8 @@
   "license": "MIT",
   "dependencies": {
     "@preact/signals-core": "^1.8.0",
-    "@vanilla-mint/dom": "0.2.2",
-    "@vanilla-mint/custom": "0.2.2",
+    "@vanilla-mint/dom": "0.2.10",
+    "@vanilla-mint/custom": "0.2.10",
     "rxjs": "latest"
   },
   "devDependencies": {
