@@ -3,13 +3,13 @@
   "repository": {
     "url": "https://github.com/vanilla-mint-js/vanilla-mint"
   },
-  "version": "0.2.13",
+  "version": "0.3.0",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@vanilla-mint/custom": "0.2.13",
+    "@vanilla-mint/custom": "0.3.0",
     "rxjs": "latest"
   },
   "main": "./index.js",
