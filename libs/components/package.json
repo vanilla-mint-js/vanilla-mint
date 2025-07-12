@@ -5,6 +5,9 @@
   },
   "version": "0.2.12",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@vanilla-mint/custom": "0.2.12",
     "rxjs": "latest"

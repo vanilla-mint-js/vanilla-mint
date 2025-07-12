@@ -5,6 +5,9 @@
   },
   "version": "0.2.12",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "csstype": "^3.1.3"
   },
