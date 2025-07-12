@@ -15,15 +15,6 @@
         "outputPath": "dist/libs/router-dom"
       }
     },
-    "postbuild": {
-      "executor": "nx:run-commands",
-      "dependsOn": [
-        "build"
-      ],
-      "options": {
-        "command": "node scripts/fix-dts-imports.js"
-      }
-    },
     "test": {
       "executor": "@nx/vite:test",
       "outputs": [
@@ -40,8 +31,7 @@
     "publish": {
       "executor": "nx:run-commands",
       "dependsOn": [
-        "build",
-        "postbuild"
+        "build"
       ],
       "options": {
         "command": "cd dist/libs/router-dom && npm publish"

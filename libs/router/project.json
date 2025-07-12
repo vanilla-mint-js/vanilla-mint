@@ -30,17 +30,10 @@
     "publish": {
       "executor": "nx:run-commands",
       "dependsOn": [
-        "build",
-        "postbuild"
+        "build"
       ],
       "options": {
         "command": "cd dist/libs/router && npm publish"
-      }
-    },
-    "postbuild": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "node scripts/fix-dts-imports.js"
       }
     }
   }

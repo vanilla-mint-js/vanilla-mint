@@ -8,8 +8,7 @@
     "build": "npm i @rollup/rollup-linux-x64-gnu && nx build app-website",
     "buildlocal": "nx build app-website",
     "start": "nx serve demo",
-    "build:libs": "nx run-many --target=build --projects=dom,router,router-dom,forms,component-sequence-diagram && nx run-many --target=postbuild --projects=dom,router,router-dom,forms,component-sequence-diagram",
-    "fix:dts": "node scripts/fix-dts-imports.js",
+    "build:libs": "nx run-many --target=build --projects=dom,router,router-dom,forms,component-sequence-diagram",
     "components:deploy": "nx build components --skip-nx-cache && cd dist/libs/components && npm publish --access public",
     "core:deploy": "nx build core --skip-nx-cache && cd dist/libs/core && npm publish --access public"
   },

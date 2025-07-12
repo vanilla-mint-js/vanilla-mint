@@ -1,6 +1,7 @@
 import { viteConfigFactory } from '@onivoro/onix';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import { mergeConfig } from 'vite';
+import dts from 'vite-plugin-dts';
 
 const baseConfig = viteConfigFactory({
   root: __dirname,
