@@ -3,12 +3,12 @@
   "repository": {
     "url": "https://github.com/vanilla-mint-js/vanilla-mint"
   },
-  "version": "0.2.10",
+  "version": "0.2.11",
   "license": "MIT",
   "dependencies": {
     "@preact/signals-core": "^1.8.0",
-    "@vanilla-mint/dom": "0.2.10",
-    "@vanilla-mint/custom": "0.2.10",
+    "@vanilla-mint/dom": "0.2.11",
+    "@vanilla-mint/custom": "0.2.11",
     "rxjs": "latest"
   },
   "devDependencies": {

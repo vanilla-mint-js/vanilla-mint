@@ -3,7 +3,7 @@
   "repository": {
     "url": "https://github.com/vanilla-mint-js/vanilla-mint"
   },
-  "version": "0.2.10",
+  "version": "0.2.11",
   "license": "MIT",
   "devDependencies": {
     "csstype": "^3.1.3"
