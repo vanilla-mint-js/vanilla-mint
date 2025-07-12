@@ -4,6 +4,7 @@
     "url": "https://github.com/vanilla-mint-js/vanilla-mint"
   },
   "version": "0.2.2",
+  "license": "MIT",
   "main": "./index.js",
   "module": "./index.mjs",
   "typings": "./index.d.ts"

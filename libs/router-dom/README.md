@@ -1,140 +1,149 @@
 # @vanilla-mint/router-dom
 
-## Design goals
+DOM-integrated routing component that seamlessly combines client-side routing with reactive web components.
 
-- DRYness
-- Simplicity
-- No language server or magic compilation (outside of TypeScript)
-- Type safety
-- Flexibility
-- Portability
-- Familiarity
+## Installation
 
-## Example counter app
-
-### Signals, tailwind, and a button functional component
-
-```js
-import { $b, $button, $div, TElementProps } from "@vanilla-mint/router-dom";
-import { signal, effect } from "@preact/signals";
-
-// button.component.ts
-type TBtnProps = Pick<TElementProps, 'textContent'> & {onclick: Function, variant: 'plus' | 'minus'};
-
-const $btn = ({variant, ...props}: TBtnProps) => $button({
-  ...props,
-  className: `${{plus: 'bg-green-800 rounded-r-2xl', minus: 'bg-red-800 rounded-l-2xl'}[variant]} p-8 rounded text-2xl font-bold hover:opacity-100 opacity-50 cursor-pointer hover:scale-[102%]`,
-});
-
-
-
-// main.ts
-const count = signal(0);
-
-const label = $b({ style: { fontSize: '8rem' } });
-effect(() => { label.textContent = `${count.value}`; });
-
-document.querySelector<HTMLDivElement>('#app')!
-  .appendChild(
-    $div({
-      className: 'bg-teal-400 min-h-screen grid place-items-center',
-      children: [
-        $div({
-          className: 'w-[50%] flex flex-row justify-between items-center gap-16 rounded-xl',
-          children: [
-            $btn({onclick: () => count.value--, textContent: '-', variant: 'minus'}),
-            label,
-            $btn({onclick: () => count.value++, textContent: '+', variant: 'plus'}),
-          ]
-        })
-      ]
-    })
-  );
+```bash
+npm install @vanilla-mint/router-dom
 ```
 
-### Signals and inline styles
+## Features
 
-```js
-import { $b, $button, $div } from "@vanilla-mint/router-dom";
-import { signal, effect } from "@preact/signals-core";
+- 🎯 **Component-Based Routing** - Declarative router component for DOM integration
+- 🔄 **Reactive Routes** - Automatic re-rendering on route changes
+- 📱 **History API Support** - Modern browser navigation with pushState
+- 🎨 **Template-Based** - Define routes using HTML-like templates
+- 🚀 **Lazy Loading** - Dynamic component loading for performance
 
-const count = signal(0);
+## Basic Usage
 
-const label = $b({ style: { fontSize: '2rem' } });
-effect(() => { label.textContent = `${count.value}`; });
+### Router Setup with Nested Routes
 
-const minus = $button({ style: { backgroundColor: 'red' }, textContent: '-' });
-minus.onclick = () => count.value--; // declare handler outside  declaration optionally
+```typescript
+import { $router } from '@vanilla-mint/router-dom';
+import { $div, $header, $main, $footer, $h1 } from '@vanilla-mint/dom';
 
-// declare handler as part of declaration optionally
-const plus = $button({ style: { backgroundColor: 'green' }, textContent: '+', onclick: () => count.value++ } as any);
-
-
-document.querySelector<HTMLDivElement>('#app')!
-  .appendChild(
-    $div({
-      className: 'main',
-      style: {
-        height: '100vh',
-        display: 'grid',
-        placeItems: 'center'
+// Example from apps/website/src/app/app.ts
+document.querySelector('#app')!.appendChild(
+  $router({
+    className: 'min-h-[100vh] flex flex-col items-stretch justify-stretch w-full bg-neutral-300 text-neutral-300-contrast',
+    children: [
+      {
+        path: '/sequence',
+        render: sequencePage
       },
-      children: [
-        $div({
-          className: 'counter',
-          style: {
-            padding: '1rem',
-            borderRadius: '.25rem',
-            border: 'solid 1px black',
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            gap: '2rem'
+      {
+        path: '/',
+        render: () =>
+          $div({
+            className: 'grow flex flex-col items-stretch justify-stretch w-full',
+            children: [
+              $header({
+                className: 'sticky top-0 bg-neutral-100 text-neutral-100-contrast flex flex-row justify-between items-center p-4 drop-shadow-lg',
+                children: [
+                  $h1({
+                    className: 'font-bold text-2xl text-primary',
+                    textContent: 'VanillaMintJS',
+                  }),
+                  $navBar({
+                    children: [
+                      $navLink({ href: '/', textContent: 'Home' }),
+                      $navLink({ href: '/forms', textContent: 'Forms' }),
+                      $navLink({ href: '/notes', textContent: 'Notes' }),
+                    ],
+                  }),
+                ],
+              }),
+              $main({
+                className: 'grow flex flex-col justify-stretch items-stretch',
+                children: [$div({ className: 'outlet grow flex flex-col justify-stretch items-stretch' })],
+              }),
+              $footer({
+                className: 'bg-neutral-200 text-neutral-200-contrast flex flex-row justify-center items-center p-4',
+                children: [
+                  $div({
+                    className: 'font-semibold text-primary',
+                    textContent: 'VanillaMintJS 2025',
+                  }),
+                ],
+              }),
+            ],
+          }),
+        children: [
+          {
+            path: '/',
+            render: landingPage
           },
-          children: [
-            minus, label, plus
-          ]
-        })
-      ]
-    })
-  );
+          {
+            path: '/forms',
+            render: formsPage
+          },
+          {
+            path: '/notes',
+            render: notesPage,
+            loader: async () => {
+              const response = await fetch(`${apiBase}/note`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+              });
+              const notes = await response.json();
+              return { notes };
+            },
+          },
+          {
+            path: '/libraries',
+            render: () =>
+              $div({
+                textContent: 'Libraries',
+                className: 'libs',
+                children: [$div({ className: 'outlet' })],
+              }),
+            children: [
+              {
+                path: '/:library',
+                render: ({ params }) => {
+                  return $section({
+                    children: [
+                      $h2({ textContent: params?.library }),
+                      $div({ className: 'outlet' }),
+                    ],
+                  });
+                },
+                children: [
+                  {
+                    path: '/:version',
+                    render: ({ params }) => {
+                      return $section({
+                        children: [$h2({ textContent: params?.version })],
+                      });
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  })
+);
 ```
 
-### Signals and tailwind
+### Key Features Demonstrated
 
-```js
-import { $b, $button, $div } from "@vanilla-mint/router-dom";
-import { signal, effect } from "@preact/signals";
+- **Nested Routes**: Complex route hierarchies with parent-child relationships
+- **Data Loading**: Async data loading with the `loader` function for API calls
+- **Dynamic Parameters**: Route parameters like `/:library` and `/:version`
+- **Layout Components**: Shared layouts with outlet placeholders for child routes
+- **CSS Integration**: Full integration with CSS classes and styling
 
-const count = signal(0);
+## Browser Support
 
-const buttonClassName = 'p-8 rounded text-2xl font-bold hover:opacity-100 opacity-50 cursor-pointer hover:scale-[102%]';
+- Chrome/Edge 88+
+- Firefox 85+
+- Safari 14+
 
-const label = $b({ style: { fontSize: '8rem' } });
-effect(() => { label.textContent = `${count.value}`; });
+## License
 
-const minus = $button({ textContent: '-', className: `${buttonClassName} bg-red-800 rounded-l-2xl` });
-minus.onclick = () => count.value--; // declare handler outside  declaration
-
-const plus = $button({
-  textContent: '+',
-  className: `${buttonClassName} bg-green-800 rounded-r-2xl`,
-  onclick: () => count.value++ // declare handler as part of declaration
-});
-
-document.querySelector<HTMLDivElement>('#app')!
-  .appendChild(
-    $div({
-      className: 'bg-teal-400 min-h-screen grid place-items-center',
-      children: [
-        $div({
-          className: 'w-[50%] flex flex-row justify-between items-center gap-16 rounded-xl',
-          children: [
-            minus, label, plus
-          ]
-        })
-      ]
-    })
-  );
-```
+MIT License - see LICENSE file for details.

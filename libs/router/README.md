@@ -1,140 +1,133 @@
 # @vanilla-mint/router
 
-## Design goals
+Lightweight, declarative client-side routing with promise-based route handlers and nested routing support.
 
-- DRYness
-- Simplicity
-- No language server or magic compilation (outside of TypeScript)
-- Type safety
-- Flexibility
-- Portability
-- Familiarity
+## Installation
 
-## Example counter app
-
-### Signals, tailwind, and a button functional component
-
-```js
-import { $b, $button, $div, TElementProps } from "@vanilla-mint/router";
-import { signal, effect } from "@preact/signals";
-
-// button.component.ts
-type TBtnProps = Pick<TElementProps, 'textContent'> & {onclick: Function, variant: 'plus' | 'minus'};
-
-const $btn = ({variant, ...props}: TBtnProps) => $button({
-  ...props,
-  className: `${{plus: 'bg-green-800 rounded-r-2xl', minus: 'bg-red-800 rounded-l-2xl'}[variant]} p-8 rounded text-2xl font-bold hover:opacity-100 opacity-50 cursor-pointer hover:scale-[102%]`,
-});
-
-
-
-// main.ts
-const count = signal(0);
-
-const label = $b({ style: { fontSize: '8rem' } });
-effect(() => { label.textContent = `${count.value}`; });
-
-document.querySelector<HTMLDivElement>('#app')!
-  .appendChild(
-    $div({
-      className: 'bg-teal-400 min-h-screen grid place-items-center',
-      children: [
-        $div({
-          className: 'w-[50%] flex flex-row justify-between items-center gap-16 rounded-xl',
-          children: [
-            $btn({onclick: () => count.value--, textContent: '-', variant: 'minus'}),
-            label,
-            $btn({onclick: () => count.value++, textContent: '+', variant: 'plus'}),
-          ]
-        })
-      ]
-    })
-  );
+```bash
+npm install @vanilla-mint/router
 ```
 
-### Signals and inline styles
+## Features
 
-```js
-import { $b, $button, $div } from "@vanilla-mint/router";
-import { signal, effect } from "@preact/signals-core";
+- 🛣️ **Declarative Routing** - Simple route configuration with pattern matching
+- 🔄 **Promise-Based** - Async route handlers with built-in loading states
+- 📱 **Hash & History API** - Support for both hash and pushState routing
+- 🎯 **Route Parameters** - Extract dynamic segments from URLs
+- 🔧 **Route Guards** - Authentication and authorization controls
+- 📊 **Nested Routes** - Hierarchical routing with layout components
 
-const count = signal(0);
+## Basic Usage
 
-const label = $b({ style: { fontSize: '2rem' } });
-effect(() => { label.textContent = `${count.value}`; });
+### Route Type and Parameter Access
 
-const minus = $button({ style: { backgroundColor: 'red' }, textContent: '-' });
-minus.onclick = () => count.value--; // declare handler outside  declaration optionally
+```typescript
+import { Route } from '@vanilla-mint/router';
 
-// declare handler as part of declaration optionally
-const plus = $button({ style: { backgroundColor: 'green' }, textContent: '+', onclick: () => count.value++ } as any);
+// Example from apps/website/src/app/pages/forms.page.ts
+export const formsPage: Route['render'] = () => {
+    return $div({
+        className: 'grow flex flex-col justify-center items-center gap-16',
+        children: [
+            $pageSection({
+                children: [
+                    $h2({ textContent: 'Forms', className: 'text-6xl' }),
+                    $p({ className: 'text-lg', innerHTML: 'Out-of-the box Material Design with significant customization via CSS variables.' }),
+                ]
+            }),
+        ],
+    });
+}
 
-
-document.querySelector<HTMLDivElement>('#app')!
-  .appendChild(
-    $div({
-      className: 'main',
-      style: {
-        height: '100vh',
-        display: 'grid',
-        placeItems: 'center'
-      },
-      children: [
-        $div({
-          className: 'counter',
-          style: {
-            padding: '1rem',
-            borderRadius: '.25rem',
-            border: 'solid 1px black',
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            gap: '2rem'
-          },
-          children: [
-            minus, label, plus
-          ]
+// Example with typed parameters from apps/website/src/app/app.ts
+export const libraryPage: Route<any, {}>['render'] = ({ params }) => {
+  console.warn({ params });
+  return $section({
+    children: [
+      $h2({ textContent: params?.library }),
+      $div({ className: 'outlet' }),
+      ...[1, 2, 3].map((v) =>
+        $a({
+          className: 'p-2',
+          href: `/libraries/${params.library}/${v}`,
+          textContent: v.toString(),
         })
-      ]
-    })
-  );
+      ),
+    ],
+  });
+};
+
+// Example with version parameter
+export const versionPage: Route<any, {}>['render'] = ({ params }) => {
+  console.warn({ params });
+  return $section({
+    children: [$h2({ textContent: params?.version })],
+  });
+};
 ```
 
-### Signals and tailwind
+### Route Configuration with Data Loading
 
-```js
-import { $b, $button, $div } from "@vanilla-mint/router";
-import { signal, effect } from "@preact/signals";
-
-const count = signal(0);
-
-const buttonClassName = 'p-8 rounded text-2xl font-bold hover:opacity-100 opacity-50 cursor-pointer hover:scale-[102%]';
-
-const label = $b({ style: { fontSize: '8rem' } });
-effect(() => { label.textContent = `${count.value}`; });
-
-const minus = $button({ textContent: '-', className: `${buttonClassName} bg-red-800 rounded-l-2xl` });
-minus.onclick = () => count.value--; // declare handler outside  declaration
-
-const plus = $button({
-  textContent: '+',
-  className: `${buttonClassName} bg-green-800 rounded-r-2xl`,
-  onclick: () => count.value++ // declare handler as part of declaration
-});
-
-document.querySelector<HTMLDivElement>('#app')!
-  .appendChild(
-    $div({
-      className: 'bg-teal-400 min-h-screen grid place-items-center',
-      children: [
-        $div({
-          className: 'w-[50%] flex flex-row justify-between items-center gap-16 rounded-xl',
-          children: [
-            minus, label, plus
-          ]
-        })
-      ]
-    })
-  );
+```typescript
+// Example from apps/website/src/app/app.ts
+const routes = [
+  {
+    path: '/notes',
+    render: notesPage,
+    loader: async () => {
+      const response = await fetch(`${apiBase}/note`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const notes = await response.json();
+      return { notes };
+    },
+  },
+  {
+    path: '/libraries/:library/:version',
+    render: ({ params }) => {
+      return $section({
+        children: [
+          $h2({ textContent: `${params?.library} v${params?.version}` }),
+        ],
+      });
+    },
+  },
+];
 ```
+
+## API Documentation
+
+### Router Class
+
+```typescript
+class Router {
+  constructor(config: RouterConfig);
+  start(): void;
+  navigate(path: string): void;
+  back(): void;
+  forward(): void;
+  getCurrentRoute(): Route | null;
+}
+```
+
+### Route Definition
+
+```typescript
+interface Route {
+  path: string;
+  handler: (params: object, query: object) => void | Promise<void>;
+  guard?: (params: object, query: object) => boolean | Promise<boolean>;
+  meta?: object;
+}
+```
+
+## Browser Support
+
+- Chrome/Edge 88+
+- Firefox 85+
+- Safari 14+
+
+## License
+
+MIT License - see LICENSE file for details.

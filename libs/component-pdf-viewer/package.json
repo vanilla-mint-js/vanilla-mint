@@ -4,6 +4,7 @@
     "url": "https://github.com/vanilla-mint-js/vanilla-mint"
   },
   "version": "0.1.0",
+  "license": "MIT",
   "dependencies": {
     "@vanilla-mint/custom": "0.1.0",
     "rxjs": "latest"
