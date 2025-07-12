@@ -1,3 +1,14 @@
+## 0.4.0 (2025-07-12)
+
+### 🩹 Fixes
+
+- hack dts imports ([7620ef1](https://github.com/vanilla-mint-js/vanilla-mint/commit/7620ef1))
+- build ([38b9c1e](https://github.com/vanilla-mint-js/vanilla-mint/commit/38b9c1e))
+
+### ❤️ Thank You
+
+- icedlee337
+
 ## 0.3.0 (2025-07-12)
 
 This was a version bump only, there were no code changes.
