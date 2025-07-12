@@ -8,14 +8,27 @@
     "build": {
       "executor": "@nx/vite:build",
       "generatePackageJson": true,
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/libs/router-dom"
       }
     },
+    "postbuild": {
+      "executor": "nx:run-commands",
+      "dependsOn": [
+        "build"
+      ],
+      "options": {
+        "command": "node scripts/fix-dts-imports.js"
+      }
+    },
     "test": {
       "executor": "@nx/vite:test",
-      "outputs": ["{options.reportsDirectory}"],
+      "outputs": [
+        "{options.reportsDirectory}"
+      ],
       "options": {
         "passWithNoTests": true,
         "reportsDirectory": "../../coverage/libs/router-dom"
@@ -26,7 +39,10 @@
     },
     "publish": {
       "executor": "nx:run-commands",
-      "dependsOn": ["build"],
+      "dependsOn": [
+        "build",
+        "postbuild"
+      ],
       "options": {
         "command": "cd dist/libs/router-dom && npm publish"
       }

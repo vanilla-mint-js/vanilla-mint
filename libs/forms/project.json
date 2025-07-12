@@ -8,14 +8,18 @@
     "build": {
       "executor": "@nx/vite:build",
       "generatePackageJson": true,
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/libs/forms"
       }
     },
     "test": {
       "executor": "@nx/vite:test",
-      "outputs": ["{options.reportsDirectory}"],
+      "outputs": [
+        "{options.reportsDirectory}"
+      ],
       "options": {
         "passWithNoTests": true,
         "reportsDirectory": "../../coverage/libs/forms"
@@ -26,9 +30,18 @@
     },
     "publish": {
       "executor": "nx:run-commands",
-      "dependsOn": ["build"],
+      "dependsOn": [
+        "build",
+        "postbuild"
+      ],
       "options": {
         "command": "cd dist/libs/forms && npm publish"
+      }
+    },
+    "postbuild": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node scripts/fix-dts-imports.js"
       }
     }
   }
