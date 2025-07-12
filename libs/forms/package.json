@@ -3,14 +3,14 @@
   "repository": {
     "url": "https://github.com/vanilla-mint-js/vanilla-mint"
   },
-  "version": "0.2.12",
+  "version": "0.2.13",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
     "@preact/signals-core": "^1.8.0",
-    "@vanilla-mint/dom": "0.2.12"
+    "@vanilla-mint/dom": "0.2.13"
   },
   "devDependencies": {
     "csstype": "^3.1.3"
